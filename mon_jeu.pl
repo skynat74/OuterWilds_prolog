@@ -7,7 +7,7 @@
 %
 
 % il faut declarer les predicats "dynamiques" qui vont etre modifies par le programme.
-:- dynamic position/2, position_courante/1.
+:- dynamic position/2, position_courante/1, statue/1.
 
 % on remet a jours les positions des objets et du joueur
 :- retractall(position(_, _)), retractall(position_courante(_)).
@@ -23,6 +23,9 @@
 
 % position du joueur. Ce predicat sera modifie au fur et a mesure de la partie (avec `retract` et `assert`)
 position_courante(camp).
+
+% la statue n est pas activee au debut
+statue(desactivee).
 
 % position des objets
 position(combinaison, vaisseau).
@@ -62,6 +65,16 @@ aller(etage) :-
         regarder, !.
 
 aller(musee) :-
+        position(codes, en_main),
+        statue(desactivee),
+        position_courante(etage),
+        retract(position_courante(etage)),
+        assert(position_courante(musee)),
+        retract(statue(desactivee)),
+        assert(statue(activee)),
+        decrire(evenement_statue), !.
+
+aller(musee) :-
         position_courante(etage),
         retract(position_courante(etage)),
         assert(position_courante(musee)),
@@ -91,6 +104,7 @@ aller(fusee) :-
         write("Vous vous dirigez vers la fusee... Vous voyez un ascenseur vous indiquant que vous 
         n'avez pas les codes de lancement necessaire. Vous faites demi-tour."), nl,
         fail.
+
 
 aller(espace) :-
         position_courante(fusee),
@@ -154,11 +168,7 @@ voir(statue) :-
         position(codes, en_main),
         write("Vous voyez une statue mysterieuse des Nomai, une civilisation ancienne et disparue. Vous lisez :
         'Cette statue est une des rares que nous ayons decouvertes.'
-        'On pense que les Nomai l'ont sculptee pour honorer un evenement important de leur histoire.'
-        Soudainement, la statue ouvre les yeux et vous regarde brusquement.
-        Vous n'entendez qu'un bruit sourd et voyez ses grands yeux violets, 
-        tandis que vos souvenirs depuis votre reveil defilent devant vos yeux.
-        Tout d'un coup, ses yeux s'eteignent et le bruit sourd cesse..."), nl.
+        'On pense que les Nomai l'ont sculptee pour honorer un evenement important de leur histoire.'"), nl.
 
 voir(statue) :-
         write("Vous voyez une statue mysterieuse des Nomai, une civilisation ancienne et disparue. Vous lisez :
@@ -168,13 +178,34 @@ voir(statue) :-
 voir(maquettes) :-
         write("Vous voyez un modele reduit du systeme solaire montrant les orbites des differentes planetes.. 
         Vous lisez les informations suivantes :
-        'Voici notre systeme solaire, compose de Timber Hearth et de ses voisines. 
+        'Voici notre systeme solaire, compose de Atrebois et de ses voisines. 
         Chacune des planetes a ses propres mysteres, qui continuent d'intriguer les chercheurs.'"), nl.
+
+voir(journal) :-
+        position_courante(fusee),
+        write("C'est mon premier jour dans le programme spatial !
+        J'ai vraiment hate de partir explorer toutes les planetes de notre systeme solaire.
+        Je pars avec le traducteur et grace a lui je suis sur que je pourrai en apprendre davantage sur les numai...
+        Je reussirai a comprendre pourquoi ils on disparu, tout le monde sera fier de moi sur Atrebois !"), nl.
 
 voir(sigles) :-
         position_courante(musee),
-        write("
-        
+        position(traducteur, en_main),
+        affiche_sigle,
+        write("Votre traducteur vous affiche :
+        'Cassava : Nous sommes bientôt prets ! Filix et moi avons acheve la construction et d'apres elle,
+        le calibrage de l'appareil ne devrait pas prendre longtemps.'
+        'Filix : Fort heureusement, l'absence d'atmosphere sur la Rocaille facilitera le calibrage.
+        Apres tout ce temps, je suis impatiente qu'on reprenne enfin nos recherches !'"), nl.
+
+voir(sigles) :-
+        write("Vous vous approchez et observez les ruines nomai. Vous pouvez y apercevoir d'etranges sigles nomai incomprehensibles : "),
+        affiche_sigle.
+
+
+
+affiche_sigle :-
+        write("        
                            @@@@@@@@
                         @@@        @@@
                      @@@              @@@
@@ -199,22 +230,6 @@ voir(sigles) :-
                        @@@@@@@@
         
         "), nl.
-
-voir(sigles) :-
-        position_courante(musee),
-        position(traducteur, en_main),
-        write("Vous pouvez lire:
-        'Cassava : Nous sommes bientôt prêts ! Filix et moi avons achevé la construction et d'après elle,
-        le calibrage de l'appareil ne devrait pas prendre longremps.'
-        'Filix : Fort heureusement, l'absence d'atmosphère sur la Rocaille facilitera le calibrage.
-        Après tout ce temps, je suis impatiente qu'on reprenne enfin nos recherches !'"), nl.
-
-voir(journal) :-
-        position_courante(fusee),
-        write("C'est mon premier jour dans le programme spatial !
-        J'ai vraiment hate de partir explorer toutes les planetes de notre systeme solaire.
-        Je pars avec le traducteur et grace a lui je suis sur que je pourrai en apprendre davantage sur les numai...
-        Je reussirai a comprendre pourquoi ils on disparu, tout le monde sera fier de moi sur Atrebois !"), nl.
 
 
 % dialogue personnages
@@ -278,7 +293,6 @@ decrire(etage) :-
     -> (Options : parler, aller musee)"), nl.
 
 decrire(fusee) :-
-        position_courante(camp),
         write("Vous arrivez a l'ascenseur, entrez les codes de lancement et arrivez a la plateforme de lancement ou vous attend votre fusee.
         Vous entrez par l'ecoutille, vous voici dans votre vaisseau spatial.
         Vous pouvez y voir votre combinaison spatial, le journal de bord ainsi que les commandes du vaisseau.
@@ -286,7 +300,15 @@ decrire(fusee) :-
 
 decrire(espace) :-
     write("Vous prenez les commandes de votre vaisseau, allumez les moteur et vous envolez.
-    Vous dépassez la ligne d'horizon à vive allure et ne voyez plus que les etoiles dans le noir...
+    Vous depassez la ligne d'horizon a vive allure et ne voyez plus que les etoiles dans le noir...
     Vous etes desormais dans l'espace, vous pouvez aller ou vous voulez !
     -> (Options : aller cravite, aller leviathe, aller station, aller comete, aller atrebois)"), nl.
 
+decrire(evenement_statue) :-
+    write("Vous descendez les escaliers et vous retrouvez devant la statue nomai du musee.
+    Soudainement, la statue ouvre les yeux et vous regarde brusquement.
+    Vous n'entendez qu'un bruit sourd et voyez ses grands yeux violets, 
+    tandis que vos souvenirs depuis votre reveil defilent devant vos yeux.
+    Tout d'un coup, ses yeux s'eteignent et le bruit sourd cesse...
+    Vous restez au beau milieu du musee, perplexe. Vous regardez autours de vous... 
+    Personne d'autre que la ruine nomai contenant des sigles n'a vu ce que vous venez de voir."), nl.
