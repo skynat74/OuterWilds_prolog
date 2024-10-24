@@ -1,28 +1,28 @@
 %%% INFO-501, TP3
 %%% Enzo Goldstein
 %%%
-%%% Lancez la "requête"
+%%% Lancez la "requete"
 %%% jouer.
 %%% pour commencer une partie !
 %
 
-% il faut déclarer les prédicats "dynamiques" qui vont être modifiés par le programme.
+% il faut declarer les predicats "dynamiques" qui vont etre modifies par le programme.
 :- dynamic position/2, position_courante/1.
 
-% on remet à jours les positions des objets et du joueur
+% on remet a jours les positions des objets et du joueur
 :- retractall(position(_, _)), retractall(position_courante(_)).
 
-% on déclare des opérateurs, pour autoriser `prendre torche` au lieu de `prendre(torche)`
+% on declare des operateurs, pour autoriser `prendre torche` au lieu de `prendre(torche)`
 :- op(1000, fx, prendre).
 :- op(1000, fx, lacher).
 :- op(1000, fx, aller).
 
 
 
-% position du joueur. Ce prédicat sera modifié au fur et à mesure de la partie (avec `retract` et `assert`)
+% position du joueur. Ce predicat sera modifie au fur et a mesure de la partie (avec `retract` et `assert`)
 position_courante(feu_de_camp).
 
-% passages entre les différent endroits du jeu
+% passages entre les different endroits du jeu
 passage(quelque_part, nord, quelque_part).
 
 % position des objets
@@ -32,7 +32,7 @@ position(truc, quelque_part).
 % ramasser un objet
 prendre(X) :-
         position(X, en_main),
-        write("Vous l'avez déjà !"), nl,
+        write("Vous l'avez deja !"), nl,
         !.
 
 prendre(X) :-
@@ -60,7 +60,7 @@ lacher(X) :-
         !.
 
 lacher(_) :-
-        write("Vous n'avez pas ça en votre possession !"), nl,
+        write("Vous n'avez pas ca en votre possession !"), nl,
         fail.
 
 
@@ -71,21 +71,28 @@ e :- aller(est).
 o :- aller(ouest).
 
 
-% déplacements
+% deplacements
 aller(musee) :-
-        position_courante(reveil),
-        retract(position_courante(reveil)),
+        position_courante(feu_de_camp),
+        retract(position_courante(feu_de_camp)),
         assert(position_courante(musee)),
         regarder, !.
 
-aller(_) :-
-        write("Vous ne pouvez pas aller par là."),
+aller(fusee) :-
+        position(codes, en_main),
+        position_courante(feu_de_camp),
+        retract(position_courante(feu_de_camp)),
+        assert(position_courante(fusee)),
+        regarder, !.
+
+aller(fusee) :-
+        write("Vous vous dirigez vers la fusee... Vous voyez un ascenseur vous indiquant que vous 
+        n'avez pas les codes de lancement necessaire. Vous faites demi-tour."), nl,
         fail.
 
-% discussions personnages
-parler :-
-        position_courante(reveil),
-        parler(ardoise_initial).
+aller(_) :-
+        write("Vous ne pouvez pas aller par la."),
+        fail.
 
 
 % regarder autour de soi
@@ -95,7 +102,7 @@ regarder :-
         lister_objets(Place), nl.
 
 
-% afficher la liste des objets à l emplacement donné
+% afficher la liste des objets a l emplacement donne
 lister_objets(Place) :-
         position(X, Place),
         write("Il y a "), write(X), write(" ici."), nl,
@@ -113,11 +120,11 @@ fin :-
 % affiche les instructions du jeu
 instructions :-
         nl,
-        write("Les commandes doivent être données avec la syntaxe Prolog habituelle."), nl,
+        write("Les commandes doivent etre donnees avec la syntaxe Prolog habituelle."), nl,
         write("Les commandes existantes sont :"), nl,
         write("jouer.                   -- pour commencer une partie."), nl,
-        write("n.  s.  e.  o.           -- pour aller dans cette direction (nord / sud / est / ouest)."), nl,
-        write("aller(direction)         -- pour aller dans cette direction."), nl,
+        write("dire(mot).               -- pour dire quelque chose aux pnj."), nl,
+        write("aller(direction).        -- pour aller dans cette direction."), nl,
         write("prendre(objet).          -- pour prendre un objet."), nl,
         write("lacher(objet).           -- pour lacher un objet en votre possession."), nl,
         write("regarder.                -- pour regarder autour de vous."), nl,
@@ -133,88 +140,92 @@ jouer :-
         decrire(reveil),
         regarder.
 
+
+% voir objets
+voir(statue) :-
+        position(codes, en_main),
+        write("Vous voyez une statue mysterieuse des Nomai, une civilisation ancienne et disparue. Vous lisez :
+        'Cette statue est une des rares que nous ayons decouvertes.'
+        'On pense que les Nomai l'ont sculptee pour honorer un evenement important de leur histoire.'
+        Soudainement, la statue ouvre les yeux et vous regarde brusquement.
+        Vous n'entendez qu'un bruit sourd et voyez ses grands yeux violets, 
+        tandis que vos souvenirs depuis votre reveil defilent devant vos yeux.
+        Tout d'un coup, ses yeux s'eteignent et le bruit sourd cesse...
+        "), nl.
+
+voir(statue) :-
+        write("Vous voyez une statue mysterieuse des Nomai, une civilisation ancienne et disparue. Vous lisez :
+        'Cette statue est une des rares que nous ayons decouvertes.'
+        'On pense que les Nomai l'ont sculptee pour honorer un evenement important de leur histoire.'
+        "), nl.
+
+voir(maquettes) :-
+        write("Vous voyez un modele reduit du systeme solaire montrant les orbites des differentes planetes.. 
+        Vous lisez les informations suivantes :
+        'Voici notre systeme solaire, compose de Timber Hearth et de ses voisines. 
+        Chacune des planetes a ses propres mysteres, qui continuent d'intriguer les chercheurs.'
+        "), nl.
+
+
 % dialogue personnages
-
-
-
 parler :-
     position_courante(feu_de_camp),
-    write("Si c'est pas notre pilote ! Je vois que tu es de retour de ta dernière nuit à la belle étoile avant ton décollage.
-        Alors ça y est, c'est le grand jour ? J'ai l'impression que tu as rejoint le programme spatial pas plus tard qu'hier, 
-        et voilà soudain que tu t'apprêtes à partir pour ton premier voyage en solitaire.
-        Qu'est-ce que t'en dis - t'as pas hâte de t'envoler à bord de ce petit bijou ? Le plein est fait, y'a plus qu'à décoller !
-        → (Options : Allons y, OK). "), nl.
+    write("Si c'est pas notre pilote ! Je vois que tu es de retour de ta derniere nuit a la belle etoile avant ton decollage.
+        Alors ca y est, c'est le grand jour ? J'ai l'impression que tu as rejoint le programme spatial pas plus tard qu'hier, 
+        et voila soudain que tu t'appretes a partir pour ton premier voyage en solitaire.
+        Qu'est-ce que t'en dis - t'as pas hate de t'envoler a bord de ce petit bijou ? Le plein est fait, y'a plus qu'a decoller !
+        -> (Options : dire allons-y, dire ok). "), nl.
 
 parler :-
-    position_courante(feu_de_camp),
-    dialogue(ardoise_allons_y),
-    write("Ta motivation fait plaisir à voir, mais souviens-toi, si tu bousilles la fusée, viens pas m'en demander un autre. 
-        Je ne suis pas en alliage d'aluminium léger résistant à la rentrée atmosphérique, tu sais.
-        Quoi qu'il en soit, tu vas devoir parler à Cornée à l'observatoire pour obtenir les codes de lancement si tu veux pouvoir décoller. 
-        Amène-les-moi une fois que tu auras fait tes adieux ou je ne sais quoi."),
-        retract(dialogue(ardoise_allons_y)), nl.
-
-parler :-
-    position_courante(feu_de_camp),
-    dialogue(ardoise_ok),
-    write("Ha ha ! Tout est prêt de mon côté - on va enfin pouvoir tester le nouveau système d'atterrissage 
-        hydraulique avec un pilote plutôt que le système automatique ! ... En parlant de pilote, 
-        évite de t'écraser à ton premier atterrissage, compris ? Quoi qu'il en soit, tu vas devoir parler à 
-        Cornée à l'observatoire pour obtenir les codes de lancement si tu veux pouvoir décoller. 
-        Amène-les-moi une fois que tu auras fait tes adieux ou je ne sais quoi."),
-        retract(dialogue(ardoise_ok)), nl.
-
-parler(cornee) :-
-    write("Te voilà ! Je viens de terminer les observations préalables. Les conditions météorologiques locales sont bonnes. 
+    position_courante(musee),
+    write("Te voila ! Je viens de terminer les observations prealables. Les conditions meteorologiques locales sont bonnes. 
         C'est l'heure pour notre plus jeune astronaute de prendre son envol !
-        Et tu seras notre toute première recrue à partir avec un traducteur de nomaï portable !
-        Je t'avoue que rien que d'y penser, j'en ai la tête qui tourne.
-        On est mieux équipés que jamais pour lever le voile sur les mystères des Nomaï. 
+        Et tu seras notre toute premiere recrue a partir avec un traducteur de nomai portable !
+        Je t'avoue que rien que d'y penser, j'en ai la tete qui tourne.
+        On est mieux equipes que jamais pour lever le voile sur les mysteres des Nomaï. 
         Vous avez fait un travail remarquable, toi et Hal ! Voici les codes de lancement pour utiliser l'ascenseur.
-        → (Obtenu : traducteur, codes)"),
+        -> (Obtenu : traducteur, codes)"),
         assert(position(traducteur, en_main)),
         assert(position(codes, en_main)), nl.
+
+% interaction personnages
+dire(allons-y) :-
+    position_courante(feu_de_camp),
+    write("Ta motivation fait plaisir a voir, mais souviens-toi, si tu bousilles la fusee, viens pas m'en demander un autre. 
+        Je ne suis pas en alliage d'aluminium leger resistant a la rentree atmospherique, tu sais.
+        Quoi qu'il en soit, tu vas devoir parler a Cornee a l'observatoire pour obtenir les codes de lancement si tu veux pouvoir decoller. 
+        Amene-les-moi une fois que tu auras fait tes adieux ou je ne sais quoi."), nl.
+
+dire(ok) :-
+    position_courante(feu_de_camp),
+    write("Ha ha ! Tout est pret de mon côte - on va enfin pouvoir tester le nouveau systeme d'atterrissage 
+        hydraulique avec un pilote plutôt que le systeme automatique ! ... En parlant de pilote, 
+        evite de t'ecraser a ton premier atterrissage, compris ? Quoi qu'il en soit, tu vas devoir parler a 
+        Cornee a l'observatoire pour obtenir les codes de lancement si tu veux pouvoir decoller. 
+        Amene-les-moi une fois que tu auras fait tes adieux ou je ne sais quoi."), nl.
 
 
 
 % descriptions des emplacements
 decrire(reveil) :-
-    write("Vous vous réveillez dans la nature, observant le ciel. 
-    Vous voyez les étoiles et distinguer une forme exploser au loin... 
-    Une planète de très grande taille parcourt tranquillement ton champ de vision.
+    write("Vous vous reveillez dans la nature, observant le ciel. 
+    Vous voyez les etoiles et distinguer une forme exploser au loin... 
+    Une planete de tres grande taille parcourt tranquillement ton champ de vision.
     "), nl.
 
 decrire(feu_de_camp) :-
-    write("Le feu crépite et éclaire la nuit, un villageois se tient près du bois crépitant.
-    Une fusée se tient en hauteur, cela vous donne le tournis. Un ascenseur près de vous permet d'y accéder.
-    Au delà du feu, se tient un chemin menant vers un batiment éclairée...
-    → (Options : parler villageois, aller fusee, aller musee)"), nl.
+    write("Le feu crepite et eclaire la nuit, un villageois se tient pres du bois crepitant.
+    Une fusee se tient en hauteur, cela vous donne le tournis. Un ascenseur pres de vous permet d'y acceder.
+    Au dela du feu, se tient un chemin menant vers un batiment eclairee...
+    -> (Options : parler, aller fusee, aller musee)"), nl.
 
 
 decrire(musee) :-
-    write("Vous rentrez, ébloui, dans un grand batiment avec une multitude de statues, maquettes et d'étranges cailloux.
-    Chaque objet semble plus intéressant l'un que l'autre.
-    → (Options : voir statue, parler villageois, voir maquettes)"), nl.
+    write("Vous rentrez, ebloui, dans un grand batiment avec une multitude de statues, maquettes et d'etranges cailloux.
+    Chaque objet semble plus interessant l'un que l'autre.
+    -> (Options : voir statue, parler, voir maquettes)"), nl.
 
-decrire(maquettes) :-
-    write("Vous voyez un modèle réduit du système solaire montrant les orbites des différentes planètes.. Vous lisez les informations suivantes :
-    'Voici notre système solaire, composé de Timber Hearth et de ses voisines. Chacune des planètes a ses propres mystères, qui continuent d'intriguer les chercheurs.'
-    "), nl.
+decrire(musee_etage) :-
+    write(""), nl.
 
 
-decrire(statue) :-
-        position(codes, en_main),
-        write("Vous voyez une statue mystérieuse des Nomai, une civilisation ancienne et disparue. Vous lisez :
-        'Cette statue est une des rares que nous ayons découvertes.'
-        'On pense que les Nomai l'ont sculptée pour honorer un événement important de leur histoire.'
-        Soudainement, la statue ouvre les yeux et vous regarde brusquement.
-        Vous n'entendez qu'un bruit sourd et voyez ses grands yeux violets, 
-        tandis que vos souvenirs depuis votre réveil défilent devant vos yeux.
-        Tout d'un coup, ses yeux s'éteignent et le bruit sourd cesse...
-        "), nl.
-
-decrire(statue) :-
-        write("Vous voyez une statue mystérieuse des Nomai, une civilisation ancienne et disparue. Vous lisez :
-        'Cette statue est une des rares que nous ayons découvertes.'
-        'On pense que les Nomai l'ont sculptée pour honorer un événement important de leur histoire.'
-        "), nl.
