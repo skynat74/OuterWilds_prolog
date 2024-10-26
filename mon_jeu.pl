@@ -7,7 +7,7 @@
 %
 
 % il faut declarer les predicats "dynamiques" qui vont etre modifies par le programme.
-:- dynamic position/2, position_courante/1, statue/1, planete/1.
+:- dynamic position/2, position_courante/1, statue/1, planete/1, au_moins_une_mort/1.
 :- discontiguous position/2.
 
 % on remet a jours les positions des objets et du joueur
@@ -35,6 +35,9 @@ planete(atrebois).
 
 % la statue n est pas activee au debut
 % statue(desactivee).
+
+% le joueur n est pas encore mort au debut
+au_moins_une_mort(faux).
 
 % position des objets
 position(combinaison, vaisseau).
@@ -102,6 +105,19 @@ aller(camp) :-
         assert(position_courante(camp)),
         regarder, !.
 
+aller(fusee) :-
+        position(codes, en_main),
+        position_courante(camp),
+        retract(position_courante(camp)),
+        assert(position_courante(fusee)),
+        regarder, !.
+
+aller(fusee) :-
+        position_courante(camp),
+        write("Vous vous dirigez vers la fusee... Vous voyez un ascenseur vous indiquant que vous 
+        n'avez pas les codes de lancement necessaire. Vous faites demi-tour."), nl.
+
+% Cravite
 aller(ruines) :-
         position_courante(dehors),
         retract(position_courante(dehors)),
@@ -113,27 +129,19 @@ aller(dehors) :-
         retract(position_courante(ruines)),
         assert(position_courante(dehors)),
         regarder, !.
-
-
+        
 aller(fusee) :-
-        position(codes, en_main),
-        position_courante(camp),
-        retract(position_courante(camp)),
-        assert(position_courante(fusee)),
-        regarder, !.
-
-aller(fusee) :-
-        position(codes, en_main),
         position_courante(dehors),
         retract(position_courante(dehors)),
         assert(position_courante(fusee)),
         regarder, !.
 
-aller(fusee) :-
-        position_courante(camp),
-        write("Vous vous dirigez vers la fusee... Vous voyez un ascenseur vous indiquant que vous 
-        n'avez pas les codes de lancement necessaire. Vous faites demi-tour."), nl.
-
+aller(trou) :-
+        position_courante(dehors),
+        retract(position_courante(dehors)),
+        assert(position_courante(trou)),
+        regarder,
+        mort, !.
 
 % deplacements spaciaux
 aller(espace) :-
@@ -185,6 +193,26 @@ lister_objets(Place) :-
 
 lister_objets(_).
 
+% morts
+mort :-
+        statue(activee),
+        write("Vous restez un peu dans le noir jusqu'a ce que vous voyiez une sorte de masque nomai arriver au loin.
+        Il est accompagne de rayons violets et vous voyez vos souvenirs depuis votre reveil defiler.
+        Vous rentrer alors dans l'oeil du masque."), nl,
+        retract(position_courante(X)),
+        assert(position_courante(camp)),
+        retract(planete(Y)),
+        assert(planete(atrebois)),
+        retract(au_moins_une_mort(Z)),
+        assert(au_moins_une_mort(vrai)),
+        decrire(reveil),
+        regarder, nl.
+
+mort :-
+        statue(desactivee),
+        write("Le noir de la mort ne se dissipa jamais... Les autres Atriens ne vous reverrons plus jamais."),
+        fin.
+
 
 % fin de partie
 fin :-
@@ -217,6 +245,7 @@ jouer :-
 
 
 % voir objets
+% Atrebois
 voir(statue) :-
         statue(activee),
         write("Vous voyez une statue mysterieuse des Nomai, une civilisation ancienne et disparue. Vous lisez :
@@ -249,15 +278,15 @@ voir(sigles) :-
         write("Votre traducteur vous affiche :
         'Cassava : Nous sommes bientôt prets ! Filix et moi avons acheve la construction et d'apres elle,
         le calibrage de l'appareil ne devrait pas prendre longtemps.'
-        'Filix : Fort heureusement, l'absence d'atmosphere sur la Rocaille facilitera le calibrage.
+        'Filix : Fort heureusement, l'absence d'atmosphere sur Cravite facilitera le calibrage.
         Apres tout ce temps, je suis impatiente qu'on reprenne enfin nos recherches !'"), nl.
 
 voir(sigles) :-
         write("Vous vous approchez et observez les ruines nomai. Vous pouvez y apercevoir d'etranges sigles nomai incomprehensibles : "),
-        affiche_sigle.
+        affiche_sigle, nl.
 
 
-
+% General
 affiche_sigle :-
         write("        
                            @@@@@@@@
@@ -288,16 +317,25 @@ affiche_sigle :-
 
 % dialogue personnages
 parler :-
-    position_courante(camp),
-    write("Si c'est pas notre pilote ! Je vois que tu es de retour de ta derniere nuit a la belle etoile avant ton decollage.
+        position_courante(camp),
+        au_moins_une_mort(faux),
+        write("Si c'est pas notre pilote ! Je vois que tu es de retour de ta derniere nuit a la belle etoile avant ton decollage.
         Alors ca y est, c'est le grand jour ? J'ai l'impression que tu as rejoint le programme spatial pas plus tard qu'hier, 
         et voila soudain que tu t'appretes a partir pour ton premier voyage en solitaire.
         Qu'est-ce que t'en dis - t'as pas hate de t'envoler a bord de ce petit bijou ? Le plein est fait, y'a plus qu'a decoller !
         -> (Options : dire allons-y, dire ok). "), nl.
 
 parler :-
-    position_courante(etage),
-    write("Te voila ! Je viens de terminer les observations prealables. Les conditions meteorologiques locales sont bonnes. 
+        position_courante(camp),
+        au_moins_une_mort(vrai),
+        write("Alors, t'as pas hâte de t'envoler à bord de cette fusée ? Le plein est fait, y'a plus qu'à décoller !
+        -> (Options : dire allons-y, dire ok, dire je_viens_de_mourir). "), nl.
+        
+        
+
+parler :-
+        position_courante(etage),
+        write("Te voila ! Je viens de terminer les observations prealables. Les conditions meteorologiques locales sont bonnes. 
         C'est l'heure pour notre plus jeune astronaute de prendre son envol !
         Et tu seras notre toute premiere recrue a partir avec un traducteur de nomai portable !
         Je t'avoue que rien que d'y penser, j'en ai la tete qui tourne.
@@ -309,18 +347,23 @@ parler :-
 
 % interaction personnages
 dire(allons-y) :-
-    position_courante(camp),
-    write("Ta motivation fait plaisir a voir, mais souviens-toi, si tu bousilles la fusee, viens pas m'en demander un autre. 
+        position_courante(camp),
+        write("Ta motivation fait plaisir a voir, mais souviens-toi, si tu bousilles la fusee, viens pas m'en demander un autre. 
         Je ne suis pas en alliage d'aluminium leger resistant a la rentree atmospherique, tu sais.
         Quoi qu'il en soit, tu vas devoir parler a Cornee a l'observatoire pour obtenir les codes de lancement si tu veux pouvoir decoller."), nl.
 
 dire(ok) :-
-    position_courante(camp),
-    write("Ha ha ! Tout est pret de mon côte - on va enfin pouvoir tester le nouveau systeme d'atterrissage 
+        position_courante(camp),
+        write("Ha ha ! Tout est pret de mon côte - on va enfin pouvoir tester le nouveau systeme d'atterrissage 
         hydraulique avec un pilote plutôt que le systeme automatique ! ... En parlant de pilote, 
         evite de t'ecraser a ton premier atterrissage, compris ? Quoi qu'il en soit, tu vas devoir parler a 
         Cornee a l'observatoire pour obtenir les codes de lancement si tu veux pouvoir decoller."), nl.
 
+dire(je_viens_de_mourir) :-
+        position_courante(camp),
+        au_moins_une_mort(vrai),
+        write("Hola ! On a fait un cauchemar ? Tu dors encore a moitie, mais tu m'as l'air bel et bien envie.
+        Je sais que c'est la tradition de dormir a la belle etoile la veille d'un depart, mais si tu veux mon avis, ça vous rend un peu nerveux."), nl.
 
 
 % descriptions des emplacements
@@ -370,7 +413,7 @@ decrire(evenement_statue) :-
     write("Vous descendez les escaliers et vous retrouvez devant la statue nomai du musee.
     Soudainement, la statue ouvre les yeux et vous regarde brusquement.
     Vous n'entendez qu'un bruit sourd et voyez ses grands yeux violets, 
-    tandis que vos souvenirs depuis votre reveil defilent devant vos yeux.
+    tandis que vos souvenirs depuis votre reveil defilent devant vos yeux avec des rayons violets les encerclant.
     Tout d'un coup, ses yeux s'eteignent et le bruit sourd cesse...
     Vous restez au beau milieu du musee, perplexe. Vous regardez autours de vous... 
     Personne d'autre que la ruine nomai contenant des sigles n'a vu ce que vous venez de voir."), nl.
@@ -383,24 +426,35 @@ decrire(dehors) :-
         -> (Options : aller fusee, aller ruines, aller trou)"), nl.
 
 decrire(ruines) :-
-        write("Vous arrivez dans ce qui s'apparente à un hall d'entree assez grand ou vous pouvez y apercevoir des endroits intriguants.
-        Tout d'abord, vous voyez une grande structure au milieu de la salle ainsi que des sigles similaires à ceux du musee sur le mur.
-        Ensuite, il y a des portes menant à d'autres endroits. Une porte mène à l'exterieur, une autre vers ce qui semble etre un dortoir
+        write("Vous arrivez dans ce qui s'apparente a un hall d'entree assez grand ou vous pouvez y apercevoir des endroits intriguants.
+        Tout d'abord, vous voyez une grande structure au milieu de la salle ainsi que des sigles similaires a ceux du musee sur le mur.
+        Ensuite, il y a des portes menant a d'autres endroits. Une porte mene a l'exterieur, une autre vers ce qui semble etre un dortoir
         et la derniere vers ce qui pourrait correspondre a une salle a manger.
         -> (Options : voir structure, voir sigles, aller dortoir, aller salle_a_manger, aller cravite)"), nl.
 
+decrire(trou) :-
+        write("Vous sautez dans le vide en direction le centre de la planete, c'est-a-dire le trou noir.
+        Vous rentrez dedans et... Le vide de l'espace vous entoure.
+        Vous apercevez toujours une multitudes d'etoiles ainsi que le soleil au loin,
+        mais bizarrement il n'emet pas la meme lumiere que d'habitude... Ce n'est pas le soleil, c'est une autre etoile.
+        Vous etes en fait a l'autre bout de la galaxie.
+        Vous vous retournez et voyez, de la d'ou vous etes arrivez, une lumiere blanche eblouissante.
+        Vous essayez alors de revenir a l'interieur mais la lumiere vous repousse... C'est un trou blanc !
+        Vous etes condamne a errer dans l'espace. Petit a petit votre reserve d'oxygene se vide.
+        Vous vous asfixiez et soudain, plus rien..."), nl.
 
-% atterrissages
+
+% Atterrissages
 decrire(atterrissage_cravite) :-
         planete(cravite),
         write("Vous volez jusqu'a la planete, esquivez une des nombreuses meteorites s'ecrasant sur cravite et vous posez.
         Vous sortez alors de votre vaisseau, la planete parait assez hostile.
-        Soudainement, vous voyez tout un pan de la planete s'écrouler pas loin.
+        Soudainement, vous voyez tout un pan de la planete s'ecrouler pas loin.
         A travers ce trou vous voyez le centre de la planete... C'est un trou noir.
         Mieux vaut ne pas tomber en bas, qui sait ce qu'il y a dans un trou noir..."), nl.
 
 decrire(atterrissage_atrebois) :-
         write("Vous atterrissez tranquillement sur la plateforme de lancement du village...
-        Vous vous empressez de sortir de votre vaisseau pour éteindre le feu que vous venez d'initié,
+        Vous vous empressez de sortir de votre vaisseau pour eteindre le feu que vous venez d'initie,
         pas facile d'atterrir sur une plateforme en bois.
         Vous prenez alors l'ascenseur pour descendre et arrivez au camp."), nl.
