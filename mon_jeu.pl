@@ -23,6 +23,7 @@
 
 % position du joueur. Ce predicat sera modifie au fur et a mesure de la partie (avec `retract` et `assert`)
 position_courante(camp).
+planete(atrebois).
 
 % la statue n est pas activee au debut
 statue(desactivee).
@@ -102,14 +103,21 @@ aller(fusee) :-
 aller(fusee) :-
         position_courante(camp),
         write("Vous vous dirigez vers la fusee... Vous voyez un ascenseur vous indiquant que vous 
-        n'avez pas les codes de lancement necessaire. Vous faites demi-tour."), nl,
-        fail.
+        n'avez pas les codes de lancement necessaire. Vous faites demi-tour."), nl.
 
 
 aller(espace) :-
         position_courante(fusee),
         retract(position_courante(fusee)),
         assert(position_courante(espace)),
+        regarder, !.
+
+aller(cravite) :-
+        position_courante(espace),
+        retract(position_courante(espace)),
+        assert(position_courante(cravite)),
+        retract(planete(atrebois)),
+        assert(planete(cravite)),
         regarder, !.
 
 aller(_) :-
@@ -168,7 +176,8 @@ voir(statue) :-
         position(codes, en_main),
         write("Vous voyez une statue mysterieuse des Nomai, une civilisation ancienne et disparue. Vous lisez :
         'Cette statue est une des rares que nous ayons decouvertes.'
-        'On pense que les Nomai l'ont sculptee pour honorer un evenement important de leur histoire.'"), nl.
+        'On pense que les Nomai l'ont sculptee pour honorer un evenement important de leur histoire.'
+        La statue a les yeux ouverts."), nl.
 
 voir(statue) :-
         write("Vous voyez une statue mysterieuse des Nomai, une civilisation ancienne et disparue. Vous lisez :
@@ -293,10 +302,17 @@ decrire(etage) :-
     -> (Options : parler, aller musee)"), nl.
 
 decrire(fusee) :-
+        planete(atrebois),
         write("Vous arrivez a l'ascenseur, entrez les codes de lancement et arrivez a la plateforme de lancement ou vous attend votre fusee.
         Vous entrez par l'ecoutille, vous voici dans votre vaisseau spatial.
         Vous pouvez y voir votre combinaison spatial, le journal de bord ainsi que les commandes du vaisseau.
         -> (Options : prendre combinaison, voir journal, aller espace, aller camp)"), nl.
+
+decrire(fusee) :-
+        planete(cravite),
+        write("Vous vous dirigez vers votre fusee et entrez par l'ecoutille.
+        Vous pouvez y voir votre combinaison spatial, le journal de bord ainsi que les commandes du vaisseau.
+        -> (Options : prendre combinaison, voir journal, aller espace, aller cravite)"), nl.
 
 decrire(espace) :-
     write("Vous prenez les commandes de votre vaisseau, allumez les moteur et vous envolez.
@@ -312,3 +328,14 @@ decrire(evenement_statue) :-
     Tout d'un coup, ses yeux s'eteignent et le bruit sourd cesse...
     Vous restez au beau milieu du musee, perplexe. Vous regardez autours de vous... 
     Personne d'autre que la ruine nomai contenant des sigles n'a vu ce que vous venez de voir."), nl.
+
+decrire(cravite) :-
+        write("Vous volez jusqu'a la planete, esquivez une des nombreuses meteorites s'ecrasant sur cravite et vous posez.
+        Vous sortez alors de votre vaisseau, la planete parait assez hostile.
+        Soudainement, vous voyez tout un pan de la planete s'écrouler pas loin.
+        A travers ce trou vous voyez le centre de la planete... C'est un trou noir.
+        Mieux vaut ne pas tomber en bas, qui sait ce qu'il y a dans un trou noir...
+        Autour de vous vous voyez le trou cree par la meteorite, votre vaisseau vous attendant sagement
+        ainsi que, plus interressant, d'anciennes ruines nomai.
+        -> (Options : aller fusee, aller ruines, aller trou)"), nl.
+
