@@ -7,7 +7,8 @@
 %
 
 % il faut declarer les predicats "dynamiques" qui vont etre modifies par le programme.
-:- dynamic position/2, position_courante/1, statue/1.
+:- dynamic position/2, position_courante/1, statue/1, planete/1.
+:- discontiguous position/2.
 
 % on remet a jours les positions des objets et du joueur
 :- retractall(position(_, _)), retractall(position_courante(_)).
@@ -19,6 +20,13 @@
 :- op(1000, fx, dire).
 :- op(1000, fx, voir).
 
+% cheats
+position(traducteur, en_main).
+position(codes, en_main).
+statue(activee).
+
+test(X) :-
+        write(X).
 
 
 % position du joueur. Ce predicat sera modifie au fur et a mesure de la partie (avec `retract` et `assert`)
@@ -26,7 +34,7 @@ position_courante(camp).
 planete(atrebois).
 
 % la statue n est pas activee au debut
-statue(desactivee).
+% statue(desactivee).
 
 % position des objets
 position(combinaison, vaisseau).
@@ -53,16 +61,11 @@ prendre(X) :-
 
 
 % deplacements
+% Atrebois
 aller(musee) :-
         position_courante(camp),
         retract(position_courante(camp)),
         assert(position_courante(musee)),
-        regarder, !.
-
-aller(etage) :-
-        position_courante(musee),
-        retract(position_courante(musee)),
-        assert(position_courante(etage)),
         regarder, !.
 
 aller(musee) :-
@@ -81,6 +84,12 @@ aller(musee) :-
         assert(position_courante(musee)),
         regarder, !.
 
+aller(etage) :-
+        position_courante(musee),
+        retract(position_courante(musee)),
+        assert(position_courante(etage)),
+        regarder, !.
+
 aller(camp) :-
         position_courante(musee),
         retract(position_courante(musee)),
@@ -93,10 +102,30 @@ aller(camp) :-
         assert(position_courante(camp)),
         regarder, !.
 
+aller(ruines) :-
+        position_courante(dehors),
+        retract(position_courante(dehors)),
+        assert(position_courante(ruines)),
+        regarder, !.
+
+aller(dehors) :-
+        position_courante(ruines),
+        retract(position_courante(ruines)),
+        assert(position_courante(dehors)),
+        regarder, !.
+
+
 aller(fusee) :-
         position(codes, en_main),
         position_courante(camp),
         retract(position_courante(camp)),
+        assert(position_courante(fusee)),
+        regarder, !.
+
+aller(fusee) :-
+        position(codes, en_main),
+        position_courante(dehors),
+        retract(position_courante(dehors)),
         assert(position_courante(fusee)),
         regarder, !.
 
@@ -106,18 +135,34 @@ aller(fusee) :-
         n'avez pas les codes de lancement necessaire. Vous faites demi-tour."), nl.
 
 
+% deplacements spaciaux
 aller(espace) :-
         position_courante(fusee),
+        planete(X),
         retract(position_courante(fusee)),
         assert(position_courante(espace)),
+        retract(planete(X)),
+        assert(planete(espace)),
         regarder, !.
 
 aller(cravite) :-
         position_courante(espace),
+        planete(X),
         retract(position_courante(espace)),
-        assert(position_courante(cravite)),
-        retract(planete(atrebois)),
+        assert(position_courante(dehors)),
+        retract(planete(X)),
         assert(planete(cravite)),
+        decrire(atterrissage_cravite),
+        regarder, !.
+
+aller(atrebois) :-
+        position_courante(espace),
+        planete(X),
+        retract(position_courante(espace)),
+        assert(position_courante(camp)),
+        retract(planete(X)),
+        assert(planete(atrebois)),
+        decrire(atterrissage_atrebois),
         regarder, !.
 
 aller(_) :-
@@ -173,7 +218,7 @@ jouer :-
 
 % voir objets
 voir(statue) :-
-        position(codes, en_main),
+        statue(activee),
         write("Vous voyez une statue mysterieuse des Nomai, une civilisation ancienne et disparue. Vous lisez :
         'Cette statue est une des rares que nous ayons decouvertes.'
         'On pense que les Nomai l'ont sculptee pour honorer un evenement important de leur histoire.'
@@ -279,6 +324,7 @@ dire(ok) :-
 
 
 % descriptions des emplacements
+% Atrebois
 decrire(reveil) :-
     write("Vous vous reveillez dans la nature, observant le ciel. 
     Vous voyez les etoiles et distinguer une forme exploser au loin... 
@@ -312,7 +358,7 @@ decrire(fusee) :-
         planete(cravite),
         write("Vous vous dirigez vers votre fusee et entrez par l'ecoutille.
         Vous pouvez y voir votre combinaison spatial, le journal de bord ainsi que les commandes du vaisseau.
-        -> (Options : prendre combinaison, voir journal, aller espace, aller cravite)"), nl.
+        -> (Options : prendre combinaison, voir journal, aller espace, aller dehors)"), nl.
 
 decrire(espace) :-
     write("Vous prenez les commandes de votre vaisseau, allumez les moteur et vous envolez.
@@ -329,13 +375,32 @@ decrire(evenement_statue) :-
     Vous restez au beau milieu du musee, perplexe. Vous regardez autours de vous... 
     Personne d'autre que la ruine nomai contenant des sigles n'a vu ce que vous venez de voir."), nl.
 
-decrire(cravite) :-
+% Cravite
+decrire(dehors) :-
+        planete(cravite),
+        write("Autour de vous vous voyez le trou cree par la meteorite, votre vaisseau vous attendant sagement
+        ainsi que, plus interressant, d'anciennes ruines nomai.
+        -> (Options : aller fusee, aller ruines, aller trou)"), nl.
+
+decrire(ruines) :-
+        write("Vous arrivez dans ce qui s'apparente à un hall d'entree assez grand ou vous pouvez y apercevoir des endroits intriguants.
+        Tout d'abord, vous voyez une grande structure au milieu de la salle ainsi que des sigles similaires à ceux du musee sur le mur.
+        Ensuite, il y a des portes menant à d'autres endroits. Une porte mène à l'exterieur, une autre vers ce qui semble etre un dortoir
+        et la derniere vers ce qui pourrait correspondre a une salle a manger.
+        -> (Options : voir structure, voir sigles, aller dortoir, aller salle_a_manger, aller cravite)"), nl.
+
+
+% atterrissages
+decrire(atterrissage_cravite) :-
+        planete(cravite),
         write("Vous volez jusqu'a la planete, esquivez une des nombreuses meteorites s'ecrasant sur cravite et vous posez.
         Vous sortez alors de votre vaisseau, la planete parait assez hostile.
         Soudainement, vous voyez tout un pan de la planete s'écrouler pas loin.
         A travers ce trou vous voyez le centre de la planete... C'est un trou noir.
-        Mieux vaut ne pas tomber en bas, qui sait ce qu'il y a dans un trou noir...
-        Autour de vous vous voyez le trou cree par la meteorite, votre vaisseau vous attendant sagement
-        ainsi que, plus interressant, d'anciennes ruines nomai.
-        -> (Options : aller fusee, aller ruines, aller trou)"), nl.
+        Mieux vaut ne pas tomber en bas, qui sait ce qu'il y a dans un trou noir..."), nl.
 
+decrire(atterrissage_atrebois) :-
+        write("Vous atterrissez tranquillement sur la plateforme de lancement du village...
+        Vous vous empressez de sortir de votre vaisseau pour éteindre le feu que vous venez d'initié,
+        pas facile d'atterrir sur une plateforme en bois.
+        Vous prenez alors l'ascenseur pour descendre et arrivez au camp."), nl.
