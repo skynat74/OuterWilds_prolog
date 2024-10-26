@@ -63,7 +63,12 @@ prendre(X) :-
         fail.
 
 
-% deplacements
+% DDDDDDDDDDDD     EEEEEEEEEEEE     PPPPPPPPPPP       LLLLL             AAAAAAAAA     CCCCCCCCCCCCC   EEEEEEEEEEEE     MMMMM      MMMMM     EEEEEEEEEEEE     NNNN        NNNN    TTTTTTTTTTTT     SSSSSSSSSSSS
+% DDDD       DDDD  EEEE             PPPP      PPPP    LLLLL             AAAA   AAAA  CCCC             EEEE             MMMMMMM  MMMMMMM     EEEE             NNNNNN      NNNN        TTTT      SSSS          
+% DDDD        DDD  EEEEEEEEEEEE     PPPPPPPPPPPP      LLLLL             AAAAAAAAAAA CCCC              EEEEEEEEEEEE     MMMMMMMMMMMMMMMM     EEEEEEEEEEEE     NNNN NNN    NNNN        TTTT       SSSSSSSSSSSS
+% DDDD        DDD  EEEE             PPPP              LLLLL             AAAA   AAAA CCCC              EEEE             MMMMMMMMMMMMMMMM     EEEE             NNNN   NNN  NNNN        TTTT                 SSSS
+% DDDDDDDDDDDD     EEEEEEEEEEEE     PPPP              LLLLLLLLLLLLLLL   AAAA   AAAA    CCCCCCCCCCCCC  EEEEEEEEEEEE     MMMMM       MMMM     EEEEEEEEEEEE     NNNN      NNNNN        TTTT       SSSSSSSSSSSS
+
 % Atrebois
 aller(musee) :-
         position_courante(camp),
@@ -153,6 +158,13 @@ aller(espace) :-
         assert(planete(espace)),
         regarder, !.
 
+aller(soleil) :-
+        position_courante(espace),
+        retract(position_courante(espace)),
+        assert(position_courante(soleil)),
+        regarder, 
+        mort, !.
+
 aller(cravite) :-
         position_courante(espace),
         planete(X),
@@ -178,6 +190,13 @@ aller(_) :-
         fail.
 
 
+% AAAAAAAAAAA     UUUU       UUUU     TTTTTTTTTTTT     RRRRRRRRRRRR     EEEEEEEEEEEE     SSSSSSSSSSSS
+% AAAAA    AAAAA  UUUU       UUUU         TTTT         RRRR      RRRR   EEEE            SSSS
+% AAAAAAAAAAAAAA  UUUU       UUUU         TTTT         RRRRRRRRRRRRR    EEEEEEEEEEEE      SSSSSSSSSSSS
+% AAAAA    AAAAA  UUUU       UUUU         TTTT         RRRR   RRRR      EEEE                     SSSS
+% AAAAA    AAAAA    UUUUUUUUUUUU          TTTT         RRRR     RRRR    EEEEEEEEEEEE     SSSSSSSSSSSS
+
+
 % regarder autour de soi
 regarder :-
         position_courante(Place),
@@ -196,22 +215,23 @@ lister_objets(_).
 % morts
 mort :-
         statue(activee),
-        write("Vous restez un peu dans le noir jusqu'a ce que vous voyiez une sorte de masque nomai arriver au loin.
-        Il est accompagne de rayons violets et vous voyez vos souvenirs depuis votre reveil defiler.
-        Vous rentrer alors dans l'oeil du masque."), nl,
-        retract(position_courante(X)),
-        assert(position_courante(camp)),
-        retract(planete(Y)),
-        assert(planete(atrebois)),
-        retract(au_moins_une_mort(Z)),
-        assert(au_moins_une_mort(vrai)),
-        decrire(reveil),
-        regarder, nl.
+        decrire(mort), nl,
+        reveil.
 
 mort :-
         statue(desactivee),
         write("Le noir de la mort ne se dissipa jamais... Les autres Atriens ne vous reverrons plus jamais."),
         fin.
+
+reveil :-
+        retract(position_courante(_)),
+        assert(position_courante(camp)),
+        retract(planete(_)),
+        assert(planete(atrebois)),
+        retract(au_moins_une_mort(_)),
+        assert(au_moins_une_mort(vrai)),
+        decrire(reveil),
+        regarder, nl.
 
 
 % fin de partie
@@ -244,32 +264,38 @@ jouer :-
         regarder.
 
 
-% voir objets
+% VVVV         VVVV      OOOOOOOOOOOO      IIIIIIIIIIIIII     RRRRRRRRRRRR
+%   VVVV     VVVV      OOOO        OOOO         IIII          RRRR      RRRR
+%     VVVV VVVV        OOOO        OOOO         IIII          RRRRRRRRRRRRR
+%       VVVVV          OOOO        OOOO         IIII          RRRR   RRRR
+%         VV             OOOOOOOOOOOO      IIIIIIIIIIIIII     RRRR     RRRR
+
+
 % Atrebois
 voir(statue) :-
         statue(activee),
         write("Vous voyez une statue mysterieuse des Nomai, une civilisation ancienne et disparue. Vous lisez :
         'Cette statue est une des rares que nous ayons decouvertes.'
         'On pense que les Nomai l'ont sculptee pour honorer un evenement important de leur histoire.'
-        La statue a les yeux ouverts."), nl.
+        La statue a les yeux ouverts."), nl, !.
 
 voir(statue) :-
         write("Vous voyez une statue mysterieuse des Nomai, une civilisation ancienne et disparue. Vous lisez :
         'Cette statue est une des rares que nous ayons decouvertes.'
-        'On pense que les Nomai l'ont sculptee pour honorer un evenement important de leur histoire.'"), nl.
+        'On pense que les Nomai l'ont sculptee pour honorer un evenement important de leur histoire.'"), nl, !.
 
 voir(maquettes) :-
         write("Vous voyez un modele reduit du systeme solaire montrant les orbites des differentes planetes.. 
         Vous lisez les informations suivantes :
         'Voici notre systeme solaire, compose de Atrebois et de ses voisines. 
-        Chacune des planetes a ses propres mysteres, qui continuent d'intriguer les chercheurs.'"), nl.
+        Chacune des planetes a ses propres mysteres, qui continuent d'intriguer les chercheurs.'"), nl, !.
 
 voir(journal) :-
         position_courante(fusee),
         write("C'est mon premier jour dans le programme spatial !
         J'ai vraiment hate de partir explorer toutes les planetes de notre systeme solaire.
         Je pars avec le traducteur et grace a lui je suis sur que je pourrai en apprendre davantage sur les numai...
-        Je reussirai a comprendre pourquoi ils on disparu, tout le monde sera fier de moi sur Atrebois !"), nl.
+        Je reussirai a comprendre pourquoi ils on disparu, tout le monde sera fier de moi sur Atrebois !"), nl, !.
 
 voir(sigles) :-
         position_courante(musee),
@@ -279,7 +305,7 @@ voir(sigles) :-
         'Cassava : Nous sommes bientôt prets ! Filix et moi avons acheve la construction et d'apres elle,
         le calibrage de l'appareil ne devrait pas prendre longtemps.'
         'Filix : Fort heureusement, l'absence d'atmosphere sur Cravite facilitera le calibrage.
-        Apres tout ce temps, je suis impatiente qu'on reprenne enfin nos recherches !'"), nl.
+        Apres tout ce temps, je suis impatiente qu'on reprenne enfin nos recherches !'"), nl, !.
 
 voir(sigles) :-
         write("Vous vous approchez et observez les ruines nomai. Vous pouvez y apercevoir d'etranges sigles nomai incomprehensibles : "),
@@ -315,7 +341,12 @@ affiche_sigle :-
         "), nl.
 
 
-% dialogue personnages
+% DDDDDDDDDDDD      IIIIIIIIIIIII     AAAAAAAAA     LLLLL             OOOOOOOOOOO     GGGGGGGGGGG    UUUU       UUUU     EEEEEEEEEEEE     SSSSSSSSSSSS
+% DDDD      DDDD         IIII         AAAA   AAAA   LLLLL          OOOO       OOOO  GGGG             UUUU       UUUU     EEEE            SSSS
+% DDDD        DDD        IIII         AAAAAAAAAAA   LLLLL          OOOO       OOOO  GGGG   GGGGGGG   UUUU       UUUU     EEEE              SSSSSSSSSSSS
+% DDDD      DDDD         IIII         AAAA   AAAA   LLLLL          OOOO       OOOO  GGGG       GGG   UUUU       UUUU     EEEE                     SSSS
+% DDDDDDDDDDDD      IIIIIIIIIIIII     AAAA   AAAA   LLLLLLLLLLLLL    OOOOOOOOOOO     GGGGGGGGGGGG     UUUUUUUUUUUUUU     EEEEEEEEEEEE     SSSSSSSSSSSS
+
 parler :-
         position_courante(camp),
         au_moins_une_mort(faux),
@@ -323,13 +354,13 @@ parler :-
         Alors ca y est, c'est le grand jour ? J'ai l'impression que tu as rejoint le programme spatial pas plus tard qu'hier, 
         et voila soudain que tu t'appretes a partir pour ton premier voyage en solitaire.
         Qu'est-ce que t'en dis - t'as pas hate de t'envoler a bord de ce petit bijou ? Le plein est fait, y'a plus qu'a decoller !
-        -> (Options : dire allons-y, dire ok). "), nl.
+        -> (Options : dire allons-y, dire ok). "), nl, !.
 
 parler :-
         position_courante(camp),
         au_moins_une_mort(vrai),
         write("Alors, t'as pas hâte de t'envoler à bord de cette fusée ? Le plein est fait, y'a plus qu'à décoller !
-        -> (Options : dire allons-y, dire ok, dire je_viens_de_mourir). "), nl.
+        -> (Options : dire allons-y, dire ok, dire je_viens_de_mourir). "), nl, !.
         
         
 
@@ -362,11 +393,16 @@ dire(ok) :-
 dire(je_viens_de_mourir) :-
         position_courante(camp),
         au_moins_une_mort(vrai),
-        write("Hola ! On a fait un cauchemar ? Tu dors encore a moitie, mais tu m'as l'air bel et bien envie.
+        write("Hola ! On a fait un cauchemar ? Tu dors encore a moitie, mais tu m'as l'air bel et bien en vie.
         Je sais que c'est la tradition de dormir a la belle etoile la veille d'un depart, mais si tu veux mon avis, ça vous rend un peu nerveux."), nl.
 
 
-% descriptions des emplacements
+% DDDDDDDDDDDD     EEEEEEEEEEEE     SSSSSSSSSSSS     CCCCCCCCCCCCC  RRRRRRRRRRRR     IIIIIIIIIIIII    PPPPPPPPPPP       TTTTTTTTTTTT     IIIIIIIIIIIII    OOOOOOOOOOO     NNNN        NNNN     SSSSSSSSSSSS
+% DDDD      DDDD   EEEE            SSSS            CCCC             RRRR      RRRR       IIII         PPPP      PPPP        TTTT             IIII       OOOO       OOOO   NNNNNN      NNNN    SSSS
+% DDDD        DDD  EEEEEEEEEEEE       SSSSSSSSSSS CCCC              RRRRRRRRRRRRR        IIII         PPPPPPPPPPPP          TTTT             IIII       OOOO       OOOO   NNNN NNN    NNNN      SSSSSSSSSSSS
+% DDDD      DDDD   EEEE                       SSSS CCCC             RRRR   RRRR          IIII         PPPP                  TTTT             IIII       OOOO       OOOO   NNNN   NNN  NNNN             SSSS
+% DDDDDDDDDDDD     EEEEEEEEEEEE     SSSSSSSSSSSS     CCCCCCCCCCCCC  RRRR     RRRR    IIIIIIIIIIIII    PPPP                  TTTT         IIIIIIIIIIIII    OOOOOOOOOOO     NNNN     NNNNN      SSSSSSSSSSSS
+
 % Atrebois
 decrire(reveil) :-
     write("Vous vous reveillez dans la nature, observant le ciel. 
@@ -403,20 +439,14 @@ decrire(fusee) :-
         Vous pouvez y voir votre combinaison spatial, le journal de bord ainsi que les commandes du vaisseau.
         -> (Options : prendre combinaison, voir journal, aller espace, aller dehors)"), nl.
 
-decrire(espace) :-
-    write("Vous prenez les commandes de votre vaisseau, allumez les moteur et vous envolez.
-    Vous depassez la ligne d'horizon a vive allure et ne voyez plus que les etoiles dans le noir...
-    Vous etes desormais dans l'espace, vous pouvez aller ou vous voulez !
-    -> (Options : aller cravite, aller leviathe, aller station, aller comete, aller atrebois)"), nl.
-
 decrire(evenement_statue) :-
-    write("Vous descendez les escaliers et vous retrouvez devant la statue nomai du musee.
-    Soudainement, la statue ouvre les yeux et vous regarde brusquement.
-    Vous n'entendez qu'un bruit sourd et voyez ses grands yeux violets, 
-    tandis que vos souvenirs depuis votre reveil defilent devant vos yeux avec des rayons violets les encerclant.
-    Tout d'un coup, ses yeux s'eteignent et le bruit sourd cesse...
-    Vous restez au beau milieu du musee, perplexe. Vous regardez autours de vous... 
-    Personne d'autre que la ruine nomai contenant des sigles n'a vu ce que vous venez de voir."), nl.
+        write("Vous descendez les escaliers et vous retrouvez devant la statue nomai du musee.
+        Soudainement, la statue ouvre les yeux et vous regarde brusquement.
+        Vous n'entendez qu'un bruit sourd et voyez ses grands yeux violets, 
+        tandis que vos souvenirs depuis votre reveil defilent devant vos yeux avec des rayons violets les encerclant.
+        Tout d'un coup, ses yeux s'eteignent et le bruit sourd cesse...
+        Vous restez au beau milieu du musee, perplexe. Vous regardez autours de vous... 
+        Personne d'autre que la ruine nomai contenant des sigles n'a vu ce que vous venez de voir."), nl.
 
 % Cravite
 decrire(dehors) :-
@@ -443,6 +473,22 @@ decrire(trou) :-
         Vous etes condamne a errer dans l'espace. Petit a petit votre reserve d'oxygene se vide.
         Vous vous asfixiez et soudain, plus rien..."), nl.
 
+% Espace
+decrire(espace) :-
+        write("Vous prenez les commandes de votre vaisseau, allumez les moteur et vous envolez.
+        Vous depassez la ligne d'horizon a vive allure et ne voyez plus que les etoiles dans le noir...
+        Vous etes desormais dans l'espace, vous pouvez aller ou vous voulez !
+        -> (Options : aller soleil, aller cravite)"), nl.
+
+decrire(soleil) :-
+        write("Vous accelerez en direction du soleil, vous prenez de plus en plus de vitesse.
+        Plus vous vous rapprochez, plus il fait chaud dans le cockpit et moins vous voyez devant vous.
+        Soudainement, vous vous dites qu'aller dans le soleil ne sers a rien et est sacrement dangereux.
+        Il est vrai qu'une telle decision est diffcilement comprehensible.
+        Vous commencez donc a faire demi-tour, reacteurs pleine puissance.
+        Malheureusement, vous etes deja trop pres et la gravite du soleil est trop puissante.
+        Vous vous retrouvez bruler par le soleil, puis vous vous retrouvez dans le noir...").
+
 
 % Atterrissages
 decrire(atterrissage_cravite) :-
@@ -455,6 +501,12 @@ decrire(atterrissage_cravite) :-
 
 decrire(atterrissage_atrebois) :-
         write("Vous atterrissez tranquillement sur la plateforme de lancement du village...
-        Vous vous empressez de sortir de votre vaisseau pour eteindre le feu que vous venez d'initie,
-        pas facile d'atterrir sur une plateforme en bois.
+        Vous vous empressez de sortir de votre vaisseau pour eteindre le feu que vous venez de lancer.
+        Le feu s'eteint, pas facile d'atterrir sur une plateforme en bois.
         Vous prenez alors l'ascenseur pour descendre et arrivez au camp."), nl.
+
+
+decrire(mort) :-
+        write("Vous restez un peu dans le noir jusqu'a ce que vous voyiez une sorte de masque nomai arriver au loin.
+        Il est accompagne de rayons violets et vous voyez vos souvenirs depuis votre reveil defiler.
+        Vous rentrer alors dans l'oeil du masque."), nl.
