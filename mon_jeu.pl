@@ -129,6 +129,12 @@ aller(ruines) :-
         assert(position_courante(ruines)),
         regarder, !.
 
+aller(ruines) :-
+        position_courante(dortoir),
+        retract(position_courante(dortoir)),
+        assert(position_courante(ruines)),
+        regarder, !.
+
 aller(dehors) :-
         position_courante(ruines),
         retract(position_courante(ruines)),
@@ -147,6 +153,12 @@ aller(trou) :-
         assert(position_courante(trou)),
         regarder,
         mort, !.
+
+aller(dortoir) :-
+        position_courante(ruines),
+        retract(position_courante(ruines)),
+        assert(position_courante(dortoir)),
+        regarder, !.
 
 % deplacements spaciaux
 aller(espace) :-
@@ -273,6 +285,7 @@ jouer :-
 
 % Atrebois
 voir(statue) :-
+        position_courante(musee),
         statue(activee),
         write("Vous voyez une statue mysterieuse des Nomai, une civilisation ancienne et disparue. Vous lisez :
         'Cette statue est une des rares que nous ayons decouvertes.'
@@ -280,11 +293,13 @@ voir(statue) :-
         La statue a les yeux ouverts."), nl, !.
 
 voir(statue) :-
+        position_courante(musee),
         write("Vous voyez une statue mysterieuse des Nomai, une civilisation ancienne et disparue. Vous lisez :
         'Cette statue est une des rares que nous ayons decouvertes.'
         'On pense que les Nomai l'ont sculptee pour honorer un evenement important de leur histoire.'"), nl, !.
 
 voir(maquettes) :-
+        position_courante(musee),
         write("Vous voyez un modele reduit du systeme solaire montrant les orbites des differentes planetes.. 
         Vous lisez les informations suivantes :
         'Voici notre systeme solaire, compose de Atrebois et de ses voisines. 
@@ -308,8 +323,50 @@ voir(sigles) :-
         Apres tout ce temps, je suis impatiente qu'on reprenne enfin nos recherches !'"), nl, !.
 
 voir(sigles) :-
+        position_courante(musee),
         write("Vous vous approchez et observez les ruines nomai. Vous pouvez y apercevoir d'etranges sigles nomai incomprehensibles : "),
         affiche_sigle, nl.
+
+% Cravite
+voir(structure) :-
+        position_courante(ruines),
+        write("Vous regardez de plus pres la structure, il y a un ecriteau a cote. Vous traduisez :
+        Soyez bienvenue en ces lieux, cet autel est un espace dédié à la contemplation de ce qui nous a conduits 
+        jusqu’à ce système stellaire : le signal de l’œil.
+        Nous avons repéré le signal de l’œil au cours de nos pérégrinations et l’avons suivi jusqu’ici pour en découvrir la source.
+        voici ce que nous savons : la source du signal (ce que nous avons décidez d’appeler l’œil de l’univers) 
+        est plus ancienne que l’univers lui-même, c’est tout ce que nous savons pour l’instant.
+        L’œil est plus ancien que l’univers, imaginez ce que nous pourrions apprendre grâce a lui !"), nl.
+
+voir(sigle) :-
+        position_courante(ruines),
+        affiche_sigle,
+        write("Votre traducteur vous affiche :
+        'Perso_1 : Tout le monde est sain et sauf, tant mieux.'
+        'Perso_2 : Je n'y comprend rien, que s'est-il passe ?'
+        'Perso_3 : Je crois que l'on s'est fait attaquer par la planete sombronce lorsque l'on est entre dans le systeme.'
+        'Perso_1 : Effectivement, la planete semble etre totalement corrompu par une espece de plante invasive et aggressive.
+                   Nous avons pu nous en sortir par contre, nous avons certainement perdu notre vaisseau stellaire a jamais,
+                   c'est un probleme de taille consequente.'
+        'Perso_2 : Que faisons nous alors ? Nous recreons un vaisseau ?'
+        'Perso_1 : Nous allons d'abord nous assurer que nous sommes en securite ici et que nous avons de quoi survivre,
+                   Ensuite, je partirai sur les autres planetes du systeme pour voir si nous avons de quoi en refaire un nouveau.'"), nl.
+
+voir(sigles) :-
+        position_courante(dortoir),
+        affiche_sigle,
+        write("Votre traducteur vous affiche :
+        'Perso_3 : Ca va perso_4 ? Tu n'as pas l'air bien.'
+        'Perso_4 : J'avoue que ca fait beaucoup de pression... 
+                   Ils me demandent quand meme de recreer un generateur similaire a celui du vaisseau mere.'
+        'Perso_3 : Ne t'inquiete pas je suis sur que tu vas y arriver ! "), nl.
+
+% Intrus
+voir(appareil) :-
+        position courante(dehors),
+        planete(intrus),
+        write("Votre traducteur vous affiche :
+        "), nl.
 
 
 % General
@@ -339,6 +396,7 @@ affiche_sigle :-
                        @@@@@@@@
         
         "), nl.
+
 
 
 % DDDDDDDDDDDD      IIIIIIIIIIIII     AAAAAAAAA     LLLLL             OOOOOOOOOOO     GGGGGGGGGGG    UUUU       UUUU     EEEEEEEEEEEE     SSSSSSSSSSSS
@@ -404,6 +462,13 @@ dire(je_viens_de_mourir) :-
 % DDDDDDDDDDDD     EEEEEEEEEEEE     SSSSSSSSSSSS     CCCCCCCCCCCCC  RRRR     RRRR    IIIIIIIIIIIII    PPPP                  TTTT         IIIIIIIIIIIII    OOOOOOOOOOO     NNNN     NNNNN      SSSSSSSSSSSS
 
 % Atrebois
+decrire(fusee) :-
+        planete(atrebois),
+        write("Vous arrivez a l'ascenseur, entrez les codes de lancement et arrivez a la plateforme de lancement ou vous attend votre fusee.
+        Vous entrez par l'ecoutille, vous voici dans votre vaisseau spatial.
+        Vous pouvez y voir votre combinaison spatial, le journal de bord ainsi que les commandes du vaisseau.
+        -> (Options : prendre combinaison, voir journal, aller espace, aller camp)"), nl.
+        
 decrire(reveil) :-
     write("Vous vous reveillez dans la nature, observant le ciel. 
     Vous voyez les etoiles et distinguer une forme exploser au loin... 
@@ -426,19 +491,6 @@ decrire(etage) :-
     Cornee, le gerant du musee, se tient pres de son bureau.
     -> (Options : parler, aller musee)"), nl.
 
-decrire(fusee) :-
-        planete(atrebois),
-        write("Vous arrivez a l'ascenseur, entrez les codes de lancement et arrivez a la plateforme de lancement ou vous attend votre fusee.
-        Vous entrez par l'ecoutille, vous voici dans votre vaisseau spatial.
-        Vous pouvez y voir votre combinaison spatial, le journal de bord ainsi que les commandes du vaisseau.
-        -> (Options : prendre combinaison, voir journal, aller espace, aller camp)"), nl.
-
-decrire(fusee) :-
-        planete(cravite),
-        write("Vous vous dirigez vers votre fusee et entrez par l'ecoutille.
-        Vous pouvez y voir votre combinaison spatial, le journal de bord ainsi que les commandes du vaisseau.
-        -> (Options : prendre combinaison, voir journal, aller espace, aller dehors)"), nl.
-
 decrire(evenement_statue) :-
         write("Vous descendez les escaliers et vous retrouvez devant la statue nomai du musee.
         Soudainement, la statue ouvre les yeux et vous regarde brusquement.
@@ -449,6 +501,12 @@ decrire(evenement_statue) :-
         Personne d'autre que la ruine nomai contenant des sigles n'a vu ce que vous venez de voir."), nl.
 
 % Cravite
+decrire(fusee) :-
+        planete(cravite),
+        write("Vous vous dirigez vers votre fusee et entrez par l'ecoutille.
+        Vous pouvez y voir votre combinaison spatial, le journal de bord ainsi que les commandes du vaisseau.
+        -> (Options : prendre combinaison, voir journal, aller espace, aller dehors)"), nl.
+
 decrire(dehors) :-
         planete(cravite),
         write("Autour de vous vous voyez le trou cree par la meteorite, votre vaisseau vous attendant sagement
@@ -460,7 +518,7 @@ decrire(ruines) :-
         Tout d'abord, vous voyez une grande structure au milieu de la salle ainsi que des sigles similaires a ceux du musee sur le mur.
         Ensuite, il y a des portes menant a d'autres endroits. Une porte mene a l'exterieur, une autre vers ce qui semble etre un dortoir
         et la derniere vers ce qui pourrait correspondre a une salle a manger.
-        -> (Options : voir structure, voir sigles, aller dortoir, aller salle_a_manger, aller cravite)"), nl.
+        -> (Options : voir structure, voir sigles, aller dortoir, aller salle_a_manger, aller dehors)"), nl.
 
 decrire(trou) :-
         write("Vous sautez dans le vide en direction le centre de la planete, c'est-a-dire le trou noir.
@@ -472,6 +530,30 @@ decrire(trou) :-
         Vous essayez alors de revenir a l'interieur mais la lumiere vous repousse... C'est un trou blanc !
         Vous etes condamne a errer dans l'espace. Petit a petit votre reserve d'oxygene se vide.
         Vous vous asfixiez et soudain, plus rien..."), nl.
+
+decrire(dortoir) :-
+        write("Vous arrivez dans la salle ou se situe plusieurs lits.
+        Sur deux d'entre eux se trouve des squelettes nomai, ils semblaient dormir paisiblement avant de mourir.
+        Derriere vous se trouve la porte pour revenir dans le hall.
+        Au fond de la piece, vous voyez des sigles nomai.
+        -> (Options : voir sigles, aller ruines)"), nl.
+
+
+% Intrus
+decrire(fusee) :-
+        planete(intrus),
+        write("Vous partez en direction de votre fusee en vous concentrant pour ne pas glisser sur la glace.
+        Vous arrivez a l'atteindre, vous accrochez a elle pour ne pas partir plus loin et rentrez par l'ecoutille.
+        Vous pouvez y voir votre combinaison spatial, le journal de bord ainsi que les commandes du vaisseau.
+        -> (Options : prendre combinaison, voir journal, aller espace, aller dehors)"), nl.
+
+decrire(dehors) :-
+        planete(intrus),
+        write("Vous regardez autours de vous.
+        Vous pouvez voir une navette nomai coincee dans la glace de la comete avec un appareil de communication nomai a ses pieds.
+        Vous pouvez aussi apercevoir une crevasse dans la glace s'enfoncant dans l'intrus.
+        Enfin, vous voyez votre fusee qui ne bouge pas trop de la ou vous l'avez laissee.
+        -> (Options : voir appareil, aller crevasse, aller fusee)"), nl.
 
 % Espace
 decrire(espace) :-
@@ -504,6 +586,10 @@ decrire(atterrissage_atrebois) :-
         Vous vous empressez de sortir de votre vaisseau pour eteindre le feu que vous venez de lancer.
         Le feu s'eteint, pas facile d'atterrir sur une plateforme en bois.
         Vous prenez alors l'ascenseur pour descendre et arrivez au camp."), nl.
+
+decrire(atterrissage_intrus) :-
+        write("Vous atterrissez difficilement sur la surface glacee de la comete.
+        Une fois votre vaisseau stabilise entre trois morceaux de glace, vous sortez de votre vaisseau"), nl.
 
 
 decrire(mort) :-
