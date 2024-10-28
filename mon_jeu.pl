@@ -123,28 +123,30 @@ aller(fusee) :-
         n'avez pas les codes de lancement necessaire. Vous faites demi-tour."), nl.
 
 % Cravite
-aller(ruines) :-
-        position_courante(dehors),
-        retract(position_courante(dehors)),
-        assert(position_courante(ruines)),
-        regarder, !.
-
-aller(ruines) :-
-        position_courante(dortoir),
-        retract(position_courante(dortoir)),
-        assert(position_courante(ruines)),
-        regarder, !.
-
-aller(dehors) :-
-        position_courante(ruines),
-        retract(position_courante(ruines)),
-        assert(position_courante(dehors)),
-        regarder, !.
-        
 aller(fusee) :-
         position_courante(dehors),
         retract(position_courante(dehors)),
         assert(position_courante(fusee)),
+        regarder, !.
+
+aller(dehors) :-
+        position_courante(fusee),
+        retract(position_courante(fusee)),
+        assert(position_courante(dehors)),
+        regarder, !.
+
+aller(dehors) :-
+        position_courante(caverne),
+        planete(cravite),
+        retract(position_courante(caverne)),
+        assert(position_courante(dehors)),
+        regarder, !.
+
+aller(dehors) :-
+        position_courante(capsule),
+        planete(cravite),
+        retract(position_courante(capsule)),
+        assert(position_courante(dehors)),
         regarder, !.
 
 aller(trou) :-
@@ -154,10 +156,34 @@ aller(trou) :-
         regarder,
         mort, !.
 
+aller(caverne) :-
+        position_courante(ruines),
+        retract(position_courante(ruines)),
+        assert(position_courante(caverne)),
+        regarder, !. 
+
+aller(caverne) :-
+        position_courante(dehors),
+        retract(position_courante(dehors)),
+        assert(position_courante(caverne)),
+        regarder, !.    
+
+aller(plafond) :-
+        position_courante(caverne),
+        retract(position_courante(caverne)),
+        assert(position_courante(ruines)),
+        regarder, !.
+
 aller(dortoir) :-
         position_courante(ruines),
         retract(position_courante(ruines)),
         assert(position_courante(dortoir)),
+        regarder, !.
+
+aller(ruines) :-
+        position_courante(dortoir),
+        retract(position_courante(dortoir)),
+        assert(position_courante(ruines)),
         regarder, !.
 
 % deplacements spaciaux
@@ -195,6 +221,16 @@ aller(atrebois) :-
         retract(planete(X)),
         assert(planete(atrebois)),
         decrire(atterrissage_atrebois),
+        regarder, !.
+
+aller(intrus) :-
+        position_courante(espace),
+        planete(X),
+        retract(position_courante(espace)),
+        assert(position_courante(dehors)),
+        retract(planete(X)),
+        assert(planete(intrus)),
+        decrire(atterrissage_intrus),
         regarder, !.
 
 aller(_) :-
@@ -338,19 +374,67 @@ voir(structure) :-
         est plus ancienne que l’univers lui-même, c’est tout ce que nous savons pour l’instant.
         L’œil est plus ancien que l’univers, imaginez ce que nous pourrions apprendre grâce a lui !"), nl.
 
-voir(sigle) :-
-        position_courante(ruines),
+voir(sigles) :-
+        position_courante(dehors),
+        planete(cravite),
         affiche_sigle,
         write("Votre traducteur vous affiche :
-        'Perso_1 : Tout le monde est sain et sauf, tant mieux.'
-        'Perso_2 : Je n'y comprend rien, que s'est-il passe ?'
-        'Perso_3 : Je crois que l'on s'est fait attaquer par la planete sombronce lorsque l'on est entre dans le systeme.'
-        'Perso_1 : Effectivement, la planete semble etre totalement corrompu par une espece de plante invasive et aggressive.
-                   Nous avons pu nous en sortir par contre, nous avons certainement perdu notre vaisseau stellaire a jamais,
-                   c'est un probleme de taille consequente.'
-        'Perso_2 : Que faisons nous alors ? Nous recreons un vaisseau ?'
-        'Perso_1 : Nous allons d'abord nous assurer que nous sommes en securite ici et que nous avons de quoi survivre,
-                   Ensuite, je partirai sur les autres planetes du systeme pour voir si nous avons de quoi en refaire un nouveau.'"), nl.
+        Eni : 'Tout le monde va bien ? Nos coordonnées sont stabilisées.
+                Par contre que s'est-il passé ? J'ai l'impression que c'est toute la planète Sombronce qui a attaque le vaisseau.'
+        Lann : 'Effectivement, la planete semble etre totalement corrompu par une espece de plante invasive et aggressive.
+                Nous avons pu nous en sortir, par contre je ne sais pas ce qu'il est advenue des autres capsules
+                et j'ai vu le vaisseau se faire engloutir pas la planète...'
+        Vesh : 'Oui et pour l'instant nous n'avons aucun moyen de communiquer avec les capusles ou le vaisseau. 
+                Les autres capsules ont pu s’écraser sur n'importe quelle planète dans ce système... 
+                Nous devrions essayer de les contacter dès que nous le pourrons.'
+        Eni : 'Je suis tout à fait d'accord mais… regardez la surface de cette planète. 
+                Elle se déforme, elle craque… Elle semble prête à s'effondrer d’un instant à l’autre.'
+                J’ai repéré une zone un peu plus loin qui paraît plus stable ; on pourrait y trouver refuge temporairement.'
+        Vesh : 'Tu as vus juste, la zone est particulièremet instable, allons-y !'"), nl.
+
+voir(terminal) :-
+        position_courante(capsule),
+        write("Votre traducteur affiche :
+        Début du journal de bord : Capsule se sauvetage 1. Vaisseau endommagé. Séquence d’urgence activée. En attente du départ du vaisseau.
+        Lancement de la capsule de sauvetage 3… Lacement de la capsule de sauvetage 2...Lancement de la capsule de sauvetage 1.
+        ALERTE. Collision imminente. Préparation à l’impact.
+        Analyse de l’environnement externe… Analyse terminée. Instabilités structurelles majeures détectées. 
+        Poches d’air respirable détectés. Energie solaire adéquate détectée."), nl.
+
+voir(boule) :-
+        position_courante(capsule),
+        write("Vous vous approchez de la boule et remarquez que votre scanneur fait de plus en plus de bruit.
+        C'est en fait une balise envoyant des signaux de secours.
+        Elle est activee depuis que les nomai se sont crashes ici."), nl.
+
+voir(sigles) :-
+        position_courante(caverne),
+        write("Votre traducteur vous affiche :
+        Eni : 'Voilà... le système de communication est en place, on ne pourra pas contacter d'autre vaisseau nomai avec ca 
+                mais au moins on devrait pouvoir communiquer avec les autres capsules qui se sont écrasees dans le systeme.'
+        Vesh : 'Ici la capsule de sauvetage 1. Y a-t-il quelqu’un ? Répondez... .
+                Allez... Foli...Keek...que quelqu’un réponde.'
+        Lann : 'Ils n’entendent peut-être pas. Les autres capsules pourraient être hors de portée, ou...'
+        Eni : 'Ou détruites. Et si notre vaisseau principal a lui aussi été touché… il n’a sans doute pas survécu à l'impact.
+                Nous sommes... seuls.'
+        Vesh : 'Que faisons nous alors ? Nous pourions reconstruire un vaisseau ?'
+        Eni : 'Refaire un vaisseau nous prendrai un temps monstrueux !
+                Et nous ne savons pas comment le signal de l'oeil se comporte, il pourrait disparaitre entre temps.
+                Il est trop important, nous devons continuer les recherches dessus.'
+        Vesh : 'Oui mais si on refaisait un vaisseau nous pourrions contacter des vaisseaux nomai qui pourraient nous aider.'
+        Lann : 'Eni a raison, tu as vus les relevés dans le vaisseau toi aussi, l'oeil est trop important.'
+        Vesh : 'Très bien, le source du signal prime.'
+        Lann : 'Sinon j'ai eu le temps de faire de nouvelles analyses sur la planète et j’ai trouvé une zone beaucoup plus stable.
+                Ce serait un abri parfait. Par contre pour l'atteindre nous aurons besoin d'accrocher des cristaux antigravitationnels au plafond
+                pour passer sous la planète. En effet, passer par l'exterieur serait trop risqué.'
+        Eni : 'Une route de cristaux suspendus ? Ce sera complexe… mais faisable. 
+                Nous avons de quoi fabriquer des cristaux ici.'
+        Vesh : 'Parfait, alors faisons-le !'
+        Lann : 'Je vais partir en premier installer la route lorsque j'aurais les cristaux.
+                Vous n'aurez plus qu'a 'aller' au 'plafond'.'"), nl.
+
+
+
 
 voir(sigles) :-
         position_courante(dortoir),
@@ -547,16 +631,11 @@ decrire(fusee) :-
 
 decrire(dehors) :-
         planete(cravite),
-        write("Autour de vous vous voyez le trou cree par la meteorite, votre vaisseau vous attendant sagement
-        ainsi que, plus interressant, d'anciennes ruines nomai.
-        -> (Options : aller fusee, aller ruines, aller trou)"), nl.
-
-decrire(ruines) :-
-        write("Vous arrivez dans ce qui s'apparente a un hall d'entree assez grand ou vous pouvez y apercevoir des endroits intriguants.
-        Tout d'abord, vous voyez une grande structure au milieu de la salle ainsi que des sigles similaires a ceux du musee sur le mur.
-        Ensuite, il y a des portes menant a d'autres endroits. Une porte mene a l'exterieur, une autre vers ce qui semble etre un dortoir
-        et la derniere vers ce qui pourrait correspondre a une salle a manger.
-        -> (Options : voir structure, voir sigles, aller dortoir, aller salle_a_manger, aller dehors)"), nl.
+        write("Vous regardez autours de vous.
+        Il y a votre fusee vous attendant sagement ainsi que le trou cree par la meteorite.
+        Vous voyez aussi une capsule de sauvetage nomai avec des sigles ecrient par terre a cote.
+        Enfin, vous voyez un chemin permettant d'acceder a une petite caverne.
+        -> (Options : voir sigles, aller fusee, aller trou, aller caspule, aller caverne)"), nl.
 
 decrire(trou) :-
         write("Vous sautez dans le vide en direction le centre de la planete, c'est-a-dire le trou noir.
@@ -568,6 +647,26 @@ decrire(trou) :-
         Vous essayez alors de revenir a l'interieur mais la lumiere vous repousse... C'est un trou blanc !
         Vous etes condamne a errer dans l'espace. Petit a petit votre reserve d'oxygene se vide.
         Vous vous asfixiez et soudain, plus rien..."), nl.
+
+decrire(capsule) :-
+        write("Vous rentrez dans la capsule, elle n'est plus en très bon état.
+        Tout ce que vous pouvez y voir c'est un terminal au fond ainsi qu'une boule excitant vos appareils.
+        Il y a derriere vous la porte pour revenir dehors.
+        -> (Options : voir terminal, voir boule, aller dehors)"), nl.
+
+decrire(caverne) :-
+        write("Vous arrivez dans la caverne et voyez un petit camp nomai laissé à l'abandon.
+        Vous pouvez voir des sigles nomai au sol.
+        Vous apercevez de droles de caillou accroché au plafond et a un mur, ils semvlent recreer un chemin.
+        Et il y a l'entree de la caverne permettant de revenir dehors.
+        -> (Options : voir sigles, aller dehors)"), nl.
+
+decrire(ruines) :-
+        write("Vous arrivez dans ce qui s'apparente a un hall d'entree assez grand ou vous pouvez y apercevoir des endroits intriguants.
+        Tout d'abord, vous voyez une grande structure au milieu de la salle ainsi que des sigles similaires a ceux du musee sur le mur.
+        Ensuite, il y a des portes menant a d'autres endroits. Une porte mene a l'exterieur, une autre vers ce qui semble etre un dortoir
+        et la derniere vers ce qui pourrait correspondre a une salle a manger.
+        -> (Options : voir structure, voir sigles, aller dortoir, aller salle_a_manger, aller dehors)"), nl.
 
 decrire(dortoir) :-
         write("Vous arrivez dans la salle ou se situe plusieurs lits.
