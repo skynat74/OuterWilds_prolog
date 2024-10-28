@@ -366,8 +366,46 @@ voir(appareil) :-
         position courante(dehors),
         planete(intrus),
         write("Votre traducteur vous affiche :
-        "), nl.
+        'Poke : Voila qui est problématique. Il semblerait que la comète veuille engloutir notre navette sous la glace. 
+                SI nous restons trop longtemps a la surface, la navette pourrait complètement geler.'
+        'Clary : Et si l’une d’entre nous restait à bord de la navette continuer de faire chauffer les moteurs et surveiller la surface ?'
+        'Pye : Je pense que c’est une bonne idée, Clary. Si tu ne vois pas d’inconvénient a rester ici, Poke et moi allons explorer la surface.'"), nl.
 
+voir(appareil) :-
+        position_courante(crevasse),
+        write("Votre traducteur vous affiche :
+        'Pye : Mes relevés d’énergie ont gagné en intensité maintenant que nous sommes sous la surface.
+                Je commence à me demander si ce ne serait pas plus dangereux que nous le pensions.'
+        'Pye :  Clary , tu nous reçois ?'
+        'Clary : Oui mais plus faiblement. Je crains que nous ne perdions entièrement le contact si vous vous aventurez plus profondément.'
+        'Poke : Garde les moteurs de la navette allumés Clary. Nous rentrons dès que nous avons identifié l’origine de ces relevés d’énergie.'
+        'Clary : J’ai bien compris, mais… soyez prudentes, toutes les deux.'"), nl.
+
+voir(appareil) :-
+        position_courante(gallerie),
+        write("Votre traducteur vous affiche :
+        'Poke : Cette enveloppe de pierre sphérique semble être la source  de l’énergie que nous avons relevés… Non ?
+                Je dirais plutôt que la source se trouve à l’intérieur de cette pierre. Je détecte une sorte de matière exotique.
+        'Pye : Cette pierre atténue fortement les relevés que nous recevons.
+                Ils devraient être au moins deux fois supérieurs à ce qu’on voit actuellement.
+        'Poke : Pye, je pense qu’il vaut mieux éviter d’interagir avec cette matière.
+                Pour autant que je sache, un contact direct serait probablement fatal.
+        'Pye : Je n’ai jamais rencontré une coque de ce genre, mais c’est notre seul rempart face a ce qu’elle renferme.
+                Et le pire, c’est que cette matière est incroyablement volatile.
+        'Poke : ...Pye, Je ne sais pas ce qu’il y a dans cette enveloppe de pierre, mais ça n’est pas seulement instable.
+                Cette matière est soumise à une pression de plusieurs tonnes. Regarde les relevés de densité.
+                Je n’ai jamais rien vu d’aussi compact ! Mais qu’est ce que c’est que ça ?
+        'Pye : Sa magnitude est bien supérieur à ce que j’envisageais. Si la pierre venait à céder,
+                la matière mortelle qu’elle renferme se répandrait à une telle vitesse qu’elle engloutirait tout ce système stellaire en un instant.
+                Et la pression 	ne cesse de croître à mesure que la comète s’en approche…
+        'Pye : Retourne immédiatement à la navette ! Il faut prévenir nos camarades du terrible danger qui les menace.
+                Pose ton matériel et cours !
+        'Poke : Que fais tu Pye ?
+        'Pye : Plus on en saura sur cette xenomatière, meilleure seront nos chances de survie. 
+                Je vais essayer d’en apprendre le plus possible. Va prévenir les autres. 
+                Ils pourront peut-être construire un abri… Aller, Poke ! Maintenant !
+                
+        Vous abaissez votre traducteur... Vous regardez le squelette pres de vous... Ca doit etre Pye."), nl.
 
 % General
 affiche_sigle :-
@@ -555,12 +593,27 @@ decrire(dehors) :-
         Enfin, vous voyez votre fusee qui ne bouge pas trop de la ou vous l'avez laissee.
         -> (Options : voir appareil, aller crevasse, aller fusee)"), nl.
 
+decire(crevasse) :-
+        write("Vous arrivez a quelques metres sous la glace dans une caverne de glace.
+        Vous voyez un appareil au sol avec un squellete de nomai toujours vetu d'une combinaison a cote.
+        Vous voyez une gallerie dans la glace permettant de descendre pllus profond.
+        Vous voyez aussi la crevasse permettant de remonter a la surface.
+        -> (Options : voir appareil, aller gallerie, aller dehors)"), nl.
+
+decrire(gallerie) :-
+        write("Vous prenez la gallerie et arrivez au centre de la comete.
+        Vous voyez un rocher de taille consequente qui semble avoir explose de l'interieur.
+        Dans la piece, un autre cadavre de nomai, aussi vetu d'une combinaison, flottant dans les airs.
+        A cote du cadavre vous voyez un autre appareil.
+        Vous voyez aussi la gallerie permettant de remonter.
+        -> (Options : voir appareil, aller crevasse)")
+
 % Espace
 decrire(espace) :-
         write("Vous prenez les commandes de votre vaisseau, allumez les moteur et vous envolez.
         Vous depassez la ligne d'horizon a vive allure et ne voyez plus que les etoiles dans le noir...
         Vous etes desormais dans l'espace, vous pouvez aller ou vous voulez !
-        -> (Options : aller soleil, aller cravite)"), nl.
+        -> (Options : aller soleil, aller cravite, aller intrus)"), nl.
 
 decrire(soleil) :-
         write("Vous accelerez en direction du soleil, vous prenez de plus en plus de vitesse.
