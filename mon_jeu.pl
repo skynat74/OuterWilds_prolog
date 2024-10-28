@@ -156,6 +156,12 @@ aller(trou) :-
         regarder,
         mort, !.
 
+aller(capsule) :-
+        position_courante(dehors),
+        retract(position_courante(dehors)),
+        assert(position_courante(capsule)),
+        regarder, !. 
+
 aller(caverne) :-
         position_courante(ruines),
         retract(position_courante(ruines)),
@@ -184,6 +190,43 @@ aller(ruines) :-
         position_courante(dortoir),
         retract(position_courante(dortoir)),
         assert(position_courante(ruines)),
+        regarder, !.
+
+% Intrus
+aller(fusee) :-
+        position_courante(dehors),
+        retract(position_courante(dehors)),
+        assert(position_courante(fusee)),
+        regarder, !.
+
+aller(dehors) :-
+        position_courante(fusee),
+        retract(position_courante(fusee)),
+        assert(position_courante(dehors)),
+        regarder, !.
+
+aller(dehors) :-
+        position_courante(crevasse),
+        retract(position_courante(crevasse)),
+        assert(position_courante(dehors)),
+        regarder, !.
+
+aller(crevasse) :-
+        position_courante(dehors),
+        retract(position_courante(dehors)),
+        assert(position_courante(crevasse)),
+        regarder, !.
+
+aller(crevasse) :-
+        position_courante(gallerie),
+        retract(position_courante(gallerie)),
+        assert(position_courante(crevasse)),
+        regarder, !.
+
+aller(gallerie) :-
+        position_courante(crevasse),
+        retract(position_courante(crevasse)),
+        assert(position_courante(gallerie)),
         regarder, !.
 
 % deplacements spaciaux
@@ -367,71 +410,72 @@ voir(sigles) :-
 voir(structure) :-
         position_courante(ruines),
         write("Vous regardez de plus pres la structure, il y a un ecriteau a cote. Vous traduisez :
-        Soyez bienvenue en ces lieux, cet autel est un espace dédié à la contemplation de ce qui nous a conduits 
-        jusqu’à ce système stellaire : le signal de l’œil.
-        Nous avons repéré le signal de l’œil au cours de nos pérégrinations et l’avons suivi jusqu’ici pour en découvrir la source.
-        voici ce que nous savons : la source du signal (ce que nous avons décidez d’appeler l’œil de l’univers) 
-        est plus ancienne que l’univers lui-même, c’est tout ce que nous savons pour l’instant.
-        L’œil est plus ancien que l’univers, imaginez ce que nous pourrions apprendre grâce a lui !"), nl.
+        Soyez bienvenue en ces lieux, cet autel est un espace dedie a la contemplation de ce qui nous a conduits 
+        jusqu’a ce systeme stellaire : le signal de l’œil.
+        Nous avons repere le signal de l’œil au cours de nos peregrinations et l’avons suivi jusqu’ici pour en decouvrir la source.
+        voici ce que nous savons : la source du signal (ce que nous avons decidez d’appeler l’œil de l’univers) 
+        est plus ancienne que l’univers lui-meme, c’est tout ce que nous savons pour l’instant.
+        L’œil est plus ancien que l’univers, imaginez ce que nous pourrions apprendre grâce a lui !"), nl, !.
 
 voir(sigles) :-
         position_courante(dehors),
         planete(cravite),
         affiche_sigle,
         write("Votre traducteur vous affiche :
-        Eni : 'Tout le monde va bien ? Nos coordonnées sont stabilisées.
-                Par contre que s'est-il passé ? J'ai l'impression que c'est toute la planète Sombronce qui a attaque le vaisseau.'
+        Eni : 'Tout le monde va bien ? Nos coordonnees sont stabilisees.
+                Par contre que s'est-il passe ? J'ai l'impression que c'est toute la planete Sombronce qui a attaque le vaisseau.'
         Lann : 'Effectivement, la planete semble etre totalement corrompu par une espece de plante invasive et aggressive.
                 Nous avons pu nous en sortir, par contre je ne sais pas ce qu'il est advenue des autres capsules
-                et j'ai vu le vaisseau se faire engloutir pas la planète...'
+                et j'ai vu le vaisseau se faire engloutir pas la planete...'
         Vesh : 'Oui et pour l'instant nous n'avons aucun moyen de communiquer avec les capusles ou le vaisseau. 
-                Les autres capsules ont pu s’écraser sur n'importe quelle planète dans ce système... 
-                Nous devrions essayer de les contacter dès que nous le pourrons.'
-        Eni : 'Je suis tout à fait d'accord mais… regardez la surface de cette planète. 
-                Elle se déforme, elle craque… Elle semble prête à s'effondrer d’un instant à l’autre.'
-                J’ai repéré une zone un peu plus loin qui paraît plus stable ; on pourrait y trouver refuge temporairement.'
-        Vesh : 'Tu as vus juste, la zone est particulièremet instable, allons-y !'"), nl.
+                Les autres capsules ont pu s’ecraser sur n'importe quelle planete dans ce systeme... 
+                Nous devrions essayer de les contacter des que nous le pourrons.'
+        Eni : 'Je suis tout a fait d'accord mais… regardez la surface de cette planete. 
+                Elle se deforme, elle craque… Elle semble prete a s'effondrer d’un instant a l’autre.'
+                J’ai repere une zone un peu plus loin qui paraît plus stable ; on pourrait y trouver refuge temporairement.'
+        Vesh : 'Tu as vus juste, la zone est particulieremet instable, allons-y !'"), nl, !.
 
 voir(terminal) :-
         position_courante(capsule),
         write("Votre traducteur affiche :
-        Début du journal de bord : Capsule se sauvetage 1. Vaisseau endommagé. Séquence d’urgence activée. En attente du départ du vaisseau.
+        Debut du journal de bord : Capsule se sauvetage 1. Vaisseau endommage. Sequence d’urgence activee. En attente du depart du vaisseau.
         Lancement de la capsule de sauvetage 3… Lacement de la capsule de sauvetage 2...Lancement de la capsule de sauvetage 1.
-        ALERTE. Collision imminente. Préparation à l’impact.
-        Analyse de l’environnement externe… Analyse terminée. Instabilités structurelles majeures détectées. 
-        Poches d’air respirable détectés. Energie solaire adéquate détectée."), nl.
+        ALERTE. Collision imminente. Preparation a l’impact.
+        Analyse de l’environnement externe… Analyse terminee. Instabilites structurelles majeures detectees. 
+        Poches d’air respirable detectes. Energie solaire adequate detectee."), nl, !.
 
 voir(boule) :-
         position_courante(capsule),
         write("Vous vous approchez de la boule et remarquez que votre scanneur fait de plus en plus de bruit.
         C'est en fait une balise envoyant des signaux de secours.
-        Elle est activee depuis que les nomai se sont crashes ici."), nl.
+        Elle est activee depuis que les nomai se sont crashes ici."), nl, !.
 
 voir(sigles) :-
         position_courante(caverne),
+        affiche_sigle,
         write("Votre traducteur vous affiche :
-        Eni : 'Voilà... le système de communication est en place, on ne pourra pas contacter d'autre vaisseau nomai avec ca 
-                mais au moins on devrait pouvoir communiquer avec les autres capsules qui se sont écrasees dans le systeme.'
-        Vesh : 'Ici la capsule de sauvetage 1. Y a-t-il quelqu’un ? Répondez... .
-                Allez... Foli...Keek...que quelqu’un réponde.'
-        Lann : 'Ils n’entendent peut-être pas. Les autres capsules pourraient être hors de portée, ou...'
-        Eni : 'Ou détruites. Et si notre vaisseau principal a lui aussi été touché… il n’a sans doute pas survécu à l'impact.
+        Eni : 'Voila... le systeme de communication est en place, on ne pourra pas contacter d'autres vaisseaux nomai avec ca 
+                mais au moins on devrait pouvoir communiquer avec les autres capsules qui se sont ecrasees dans le systeme.'
+        Vesh : 'Ici la capsule de sauvetage 1. Y a-t-il quelqu’un ? Repondez... .
+                Allez... Foli...Keek...que quelqu’un reponde.'
+        Lann : 'Ils n’entendent peut-etre pas. Les autres capsules pourraient etre hors de portee, ou...'
+        Eni : 'Ou detruites. Et si notre vaisseau principal a lui aussi ete touche… il n’a sans doute pas survecu a l'impact.
                 Nous sommes... seuls.'
         Vesh : 'Que faisons nous alors ? Nous pourions reconstruire un vaisseau ?'
         Eni : 'Refaire un vaisseau nous prendrai un temps monstrueux !
                 Et nous ne savons pas comment le signal de l'oeil se comporte, il pourrait disparaitre entre temps.
                 Il est trop important, nous devons continuer les recherches dessus.'
         Vesh : 'Oui mais si on refaisait un vaisseau nous pourrions contacter des vaisseaux nomai qui pourraient nous aider.'
-        Lann : 'Eni a raison, tu as vus les relevés dans le vaisseau toi aussi, l'oeil est trop important.'
-        Vesh : 'Très bien, le source du signal prime.'
-        Lann : 'Sinon j'ai eu le temps de faire de nouvelles analyses sur la planète et j’ai trouvé une zone beaucoup plus stable.
+        Lann : 'Eni a raison, tu as vus les releves dans le vaisseau toi aussi, l'oeil est trop important.'
+        Vesh : 'Tres bien, le source du signal prime.'
+        Lann : 'Sinon j'ai eu le temps de faire de nouvelles analyses sur la planete et j’ai trouve une zone beaucoup plus stable.
                 Ce serait un abri parfait. Par contre pour l'atteindre nous aurons besoin d'accrocher des cristaux antigravitationnels au plafond
-                pour passer sous la planète. En effet, passer par l'exterieur serait trop risqué.'
+                pour passer sous la planete. En effet, passer par l'exterieur serait trop risque.'
         Eni : 'Une route de cristaux suspendus ? Ce sera complexe… mais faisable. 
                 Nous avons de quoi fabriquer des cristaux ici.'
         Vesh : 'Parfait, alors faisons-le !'
         Lann : 'Je vais partir en premier installer la route lorsque j'aurais les cristaux.
-                Vous n'aurez plus qu'a 'aller' au 'plafond'.'"), nl.
+                Vous n'aurez plus qu'a 'aller' au 'plafond'.'"), nl, !.
 
 
 
@@ -443,53 +487,53 @@ voir(sigles) :-
         'Perso_3 : Ca va perso_4 ? Tu n'as pas l'air bien.'
         'Perso_4 : J'avoue que ca fait beaucoup de pression... 
                    Ils me demandent quand meme de recreer un generateur similaire a celui du vaisseau mere.'
-        'Perso_3 : Ne t'inquiete pas je suis sur que tu vas y arriver ! "), nl.
+        'Perso_3 : Ne t'inquiete pas je suis sur que tu vas y arriver ! "), nl, !.
 
 % Intrus
 voir(appareil) :-
-        position courante(dehors),
+        position_courante(dehors),
         planete(intrus),
         write("Votre traducteur vous affiche :
-        'Poke : Voila qui est problématique. Il semblerait que la comète veuille engloutir notre navette sous la glace. 
-                SI nous restons trop longtemps a la surface, la navette pourrait complètement geler.'
-        'Clary : Et si l’une d’entre nous restait à bord de la navette continuer de faire chauffer les moteurs et surveiller la surface ?'
-        'Pye : Je pense que c’est une bonne idée, Clary. Si tu ne vois pas d’inconvénient a rester ici, Poke et moi allons explorer la surface.'"), nl.
+        'Poke : Voila qui est problematique. Il semblerait que la comete veuille engloutir notre navette sous la glace. 
+                Si nous restons trop longtemps a la surface, la navette pourrait completement geler.'
+        'Clary : Et si l’une d’entre nous restait a bord de la navette continuer de faire chauffer les moteurs et surveiller la surface ?'
+        'Pye : Je pense que c’est une bonne idee, Clary. Si tu ne vois pas d’inconvenient a rester ici, Poke et moi allons explorer la surface.'"), nl, !.
 
 voir(appareil) :-
         position_courante(crevasse),
         write("Votre traducteur vous affiche :
-        'Pye : Mes relevés d’énergie ont gagné en intensité maintenant que nous sommes sous la surface.
-                Je commence à me demander si ce ne serait pas plus dangereux que nous le pensions.'
-        'Pye :  Clary , tu nous reçois ?'
-        'Clary : Oui mais plus faiblement. Je crains que nous ne perdions entièrement le contact si vous vous aventurez plus profondément.'
-        'Poke : Garde les moteurs de la navette allumés Clary. Nous rentrons dès que nous avons identifié l’origine de ces relevés d’énergie.'
-        'Clary : J’ai bien compris, mais… soyez prudentes, toutes les deux.'"), nl.
+        'Pye : Mes releves d’energie ont gagne en intensite maintenant que nous sommes sous la surface.
+                Je commence a me demander si ce ne serait pas plus dangereux que nous le pensions.'
+        'Pye :  Clary , tu nous recois ?'
+        'Clary : Oui mais plus faiblement. Je crains que nous ne perdions entierement le contact si vous vous aventurez plus profondement.'
+        'Poke : Garde les moteurs de la navette allumes Clary. Nous rentrons des que nous avons identifie l’origine de ces releves d’energie.'
+        'Clary : J’ai bien compris, mais… soyez prudentes, toutes les deux.'"), nl, !.
 
 voir(appareil) :-
         position_courante(gallerie),
         write("Votre traducteur vous affiche :
-        'Poke : Cette enveloppe de pierre sphérique semble être la source  de l’énergie que nous avons relevés… Non ?
-                Je dirais plutôt que la source se trouve à l’intérieur de cette pierre. Je détecte une sorte de matière exotique.
-        'Pye : Cette pierre atténue fortement les relevés que nous recevons.
-                Ils devraient être au moins deux fois supérieurs à ce qu’on voit actuellement.
-        'Poke : Pye, je pense qu’il vaut mieux éviter d’interagir avec cette matière.
+        'Poke : Cette enveloppe de pierre spherique semble etre la source  de l’energie que nous avons releves… Non ?
+                Je dirais plutôt que la source se trouve a l’interieur de cette pierre. Je detecte une sorte de matiere exotique.
+        'Pye : Cette pierre attenue fortement les releves que nous recevons.
+                Ils devraient etre au moins deux fois superieurs a ce qu’on voit actuellement.
+        'Poke : Pye, je pense qu’il vaut mieux eviter d’interagir avec cette matiere.
                 Pour autant que je sache, un contact direct serait probablement fatal.
-        'Pye : Je n’ai jamais rencontré une coque de ce genre, mais c’est notre seul rempart face a ce qu’elle renferme.
-                Et le pire, c’est que cette matière est incroyablement volatile.
-        'Poke : ...Pye, Je ne sais pas ce qu’il y a dans cette enveloppe de pierre, mais ça n’est pas seulement instable.
-                Cette matière est soumise à une pression de plusieurs tonnes. Regarde les relevés de densité.
-                Je n’ai jamais rien vu d’aussi compact ! Mais qu’est ce que c’est que ça ?
-        'Pye : Sa magnitude est bien supérieur à ce que j’envisageais. Si la pierre venait à céder,
-                la matière mortelle qu’elle renferme se répandrait à une telle vitesse qu’elle engloutirait tout ce système stellaire en un instant.
-                Et la pression 	ne cesse de croître à mesure que la comète s’en approche…
-        'Pye : Retourne immédiatement à la navette ! Il faut prévenir nos camarades du terrible danger qui les menace.
-                Pose ton matériel et cours !
+        'Pye : Je n’ai jamais rencontre une coque de ce genre, mais c’est notre seul rempart face a ce qu’elle renferme.
+                Et le pire, c’est que cette matiere est incroyablement volatile.
+        'Poke : ...Pye, Je ne sais pas ce qu’il y a dans cette enveloppe de pierre, mais ca n’est pas seulement instable.
+                Cette matiere est soumise a une pression de plusieurs tonnes. Regarde les releves de densite.
+                Je n’ai jamais rien vu d’aussi compact ! Mais qu’est ce que c’est que ca ?
+        'Pye : Sa magnitude est bien superieur a ce que j’envisageais. Si la pierre venait a ceder,
+                la matiere mortelle qu’elle renferme se repandrait a une telle vitesse qu’elle engloutirait tout ce systeme stellaire en un instant.
+                Et la pression 	ne cesse de croître a mesure que la comete s’en approche…
+        'Pye : Retourne immediatement a la navette ! Il faut prevenir nos camarades du terrible danger qui les menace.
+                Pose ton materiel et cours !
         'Poke : Que fais tu Pye ?
-        'Pye : Plus on en saura sur cette xenomatière, meilleure seront nos chances de survie. 
-                Je vais essayer d’en apprendre le plus possible. Va prévenir les autres. 
-                Ils pourront peut-être construire un abri… Aller, Poke ! Maintenant !
+        'Pye : Plus on en saura sur cette xenomatiere, meilleure seront nos chances de survie. 
+                Je vais essayer d’en apprendre le plus possible. Va prevenir les autres. 
+                Ils pourront peut-etre construire un abri… Aller, Poke ! Maintenant !
                 
-        Vous abaissez votre traducteur... Vous regardez le squelette pres de vous... Ca doit etre Pye."), nl.
+        Vous abaissez votre traducteur... Vous regardez le squelette pres de vous... Ca doit etre Pye."), nl, !.
 
 % General
 affiche_sigle :-
@@ -539,7 +583,7 @@ parler :-
 parler :-
         position_courante(camp),
         au_moins_une_mort(vrai),
-        write("Alors, t'as pas hâte de t'envoler à bord de cette fusée ? Le plein est fait, y'a plus qu'à décoller !
+        write("Alors, t'as pas hâte de t'envoler a bord de cette fusee ? Le plein est fait, y'a plus qu'a decoller !
         -> (Options : dire allons-y, dire ok, dire je_viens_de_mourir). "), nl, !.
         
         
@@ -574,7 +618,7 @@ dire(je_viens_de_mourir) :-
         position_courante(camp),
         au_moins_une_mort(vrai),
         write("Hola ! On a fait un cauchemar ? Tu dors encore a moitie, mais tu m'as l'air bel et bien en vie.
-        Je sais que c'est la tradition de dormir a la belle etoile la veille d'un depart, mais si tu veux mon avis, ça vous rend un peu nerveux."), nl.
+        Je sais que c'est la tradition de dormir a la belle etoile la veille d'un depart, mais si tu veux mon avis, ca vous rend un peu nerveux."), nl.
 
 
 % DDDDDDDDDDDD     EEEEEEEEEEEE     SSSSSSSSSSSS     CCCCCCCCCCCCC  RRRRRRRRRRRR     IIIIIIIIIIIII    PPPPPPPPPPP       TTTTTTTTTTTT     IIIIIIIIIIIII    OOOOOOOOOOO     NNNN        NNNN     SSSSSSSSSSSS
@@ -649,15 +693,15 @@ decrire(trou) :-
         Vous vous asfixiez et soudain, plus rien..."), nl.
 
 decrire(capsule) :-
-        write("Vous rentrez dans la capsule, elle n'est plus en très bon état.
+        write("Vous rentrez dans la capsule, elle n'est plus en tres bon etat.
         Tout ce que vous pouvez y voir c'est un terminal au fond ainsi qu'une boule excitant vos appareils.
         Il y a derriere vous la porte pour revenir dehors.
         -> (Options : voir terminal, voir boule, aller dehors)"), nl.
 
 decrire(caverne) :-
-        write("Vous arrivez dans la caverne et voyez un petit camp nomai laissé à l'abandon.
+        write("Vous arrivez dans la caverne et voyez un petit camp nomai laisse a l'abandon.
         Vous pouvez voir des sigles nomai au sol.
-        Vous apercevez de droles de caillou accroché au plafond et a un mur, ils semvlent recreer un chemin.
+        Vous apercevez de droles de cailloux accroches au plafond et a un mur.
         Et il y a l'entree de la caverne permettant de revenir dehors.
         -> (Options : voir sigles, aller dehors)"), nl.
 
@@ -666,7 +710,7 @@ decrire(ruines) :-
         Tout d'abord, vous voyez une grande structure au milieu de la salle ainsi que des sigles similaires a ceux du musee sur le mur.
         Ensuite, il y a des portes menant a d'autres endroits. Une porte mene a l'exterieur, une autre vers ce qui semble etre un dortoir
         et la derniere vers ce qui pourrait correspondre a une salle a manger.
-        -> (Options : voir structure, voir sigles, aller dortoir, aller salle_a_manger, aller dehors)"), nl.
+        -> (Options : voir structure, voir sigles, aller dortoir, aller salle_a_manger, aller caverne)"), nl.
 
 decrire(dortoir) :-
         write("Vous arrivez dans la salle ou se situe plusieurs lits.
@@ -680,7 +724,7 @@ decrire(dortoir) :-
 decrire(fusee) :-
         planete(intrus),
         write("Vous partez en direction de votre fusee en vous concentrant pour ne pas glisser sur la glace.
-        Vous arrivez a l'atteindre, vous accrochez a elle pour ne pas partir plus loin et rentrez par l'ecoutille.
+        Vous arrivez a l'atteindre, vous vous accrochez a elle pour ne pas partir plus loin et rvous entrez par l'ecoutille.
         Vous pouvez y voir votre combinaison spatial, le journal de bord ainsi que les commandes du vaisseau.
         -> (Options : prendre combinaison, voir journal, aller espace, aller dehors)"), nl.
 
@@ -692,10 +736,10 @@ decrire(dehors) :-
         Enfin, vous voyez votre fusee qui ne bouge pas trop de la ou vous l'avez laissee.
         -> (Options : voir appareil, aller crevasse, aller fusee)"), nl.
 
-decire(crevasse) :-
+decrire(crevasse) :-
         write("Vous arrivez a quelques metres sous la glace dans une caverne de glace.
-        Vous voyez un appareil au sol avec un squellete de nomai toujours vetu d'une combinaison a cote.
-        Vous voyez une gallerie dans la glace permettant de descendre pllus profond.
+        Vous voyez un appareil au sol avec un squellete de nomai, toujours vetu d'une combinaison, a cote.
+        Vous voyez une gallerie dans la glace permettant de descendre plus profond.
         Vous voyez aussi la crevasse permettant de remonter a la surface.
         -> (Options : voir appareil, aller gallerie, aller dehors)"), nl.
 
@@ -704,15 +748,15 @@ decrire(gallerie) :-
         Vous voyez un rocher de taille consequente qui semble avoir explose de l'interieur.
         Dans la piece, un autre cadavre de nomai, aussi vetu d'une combinaison, flottant dans les airs.
         A cote du cadavre vous voyez un autre appareil.
-        Vous voyez aussi la gallerie permettant de remonter.
-        -> (Options : voir appareil, aller crevasse)")
+        Vous voyez aussi la gallerie permettant de remonter à la crevasse.
+        -> (Options : voir appareil, aller crevasse)"), nl.
 
 % Espace
 decrire(espace) :-
         write("Vous prenez les commandes de votre vaisseau, allumez les moteur et vous envolez.
         Vous depassez la ligne d'horizon a vive allure et ne voyez plus que les etoiles dans le noir...
         Vous etes desormais dans l'espace, vous pouvez aller ou vous voulez !
-        -> (Options : aller soleil, aller cravite, aller intrus)"), nl.
+        -> (Options : aller soleil, aller atrebois, aller cravite, aller intrus)"), nl.
 
 decrire(soleil) :-
         write("Vous accelerez en direction du soleil, vous prenez de plus en plus de vitesse.
@@ -742,7 +786,6 @@ decrire(atterrissage_atrebois) :-
 decrire(atterrissage_intrus) :-
         write("Vous atterrissez difficilement sur la surface glacee de la comete.
         Une fois votre vaisseau stabilise entre trois morceaux de glace, vous sortez de votre vaisseau"), nl.
-
 
 decrire(mort) :-
         write("Vous restez un peu dans le noir jusqu'a ce que vous voyiez une sorte de masque nomai arriver au loin.
