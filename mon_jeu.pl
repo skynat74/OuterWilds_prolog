@@ -415,7 +415,7 @@ voir(structure) :-
         Nous avons repere le signal de l'œil au cours de nos peregrinations et l'avons suivi jusqu'ici pour en decouvrir la source.
         voici ce que nous savons : la source du signal (ce que nous avons decidez d'appeler l'œil de l'univers) 
         est plus ancienne que l'univers lui-meme, c'est tout ce que nous savons pour l'instant.
-        L'œil est plus ancien que l'univers, imaginez ce que nous pourrions apprendre grâce a lui !"), nl, !.
+        L'œil est plus ancien que l'univers, imaginez ce que nous pourrions apprendre grace a lui !"), nl, !.
 
 voir(sigles) :-
         position_courante(dehors),
@@ -427,10 +427,10 @@ voir(sigles) :-
         Lann : 'Effectivement, la planete semble etre totalement corrompu par une espece de plante invasive et aggressive.
                 Nous avons pu nous en sortir, par contre je ne sais pas ce qu'il est advenue des autres capsules
                 et j'ai vu le vaisseau se faire engloutir pas la planete...'
-        Vesh : 'Oui et pour l'instant nous n'avons aucun moyen de communiquer avec les capusles ou le vaisseau. 
-                Les autres capsules ont pu s'ecraser sur n'importe quelle planete dans ce systeme... 
+        Vesh : 'Oui et pour l'instant nous n'avons aucun moyen de communiquer avec les capusles ou le vaisseau.
+                Les autres capsules ont pu s'ecraser sur n'importe quelle planete dans ce systeme...
                 Nous devrions essayer de les contacter des que nous le pourrons.'
-        Eni : 'Je suis tout a fait d'accord mais… regardez la surface de cette planete. 
+        Eni : 'Je suis tout a fait d'accord mais… regardez la surface de cette planete.
                 Elle se deforme, elle craque… Elle semble prete a s'effondrer d'un instant a l'autre.'
                 J'ai repere une zone un peu plus loin qui paraît plus stable ; on pourrait y trouver refuge temporairement.'
         Vesh : 'Tu as vus juste, la zone est particulieremet instable, allons-y !'"), nl, !.
@@ -535,7 +535,7 @@ voir(appareil) :-
 
 % General
 affiche_sigle :-
-        write("        
+        write("
                            @@@@@@@@
                         @@@        @@@
                      @@@              @@@
@@ -581,7 +581,7 @@ parler :-
 parler :-
         position_courante(camp),
         au_moins_une_mort(vrai),
-        write("Alors, t'as pas hâte de t'envoler a bord de cette fusee ? Le plein est fait, y'a plus qu'a decoller !
+        write("Alors, t'as pas hate de t'envoler a bord de cette fusee ? Le plein est fait, y'a plus qu'a decoller !
         -> (Options : dire allons-y, dire ok, dire je_viens_de_mourir). "), nl, !.
         
         
@@ -619,11 +619,11 @@ dire(je_viens_de_mourir) :-
         Je sais que c'est la tradition de dormir a la belle etoile la veille d'un depart, mais si tu veux mon avis, ca vous rend un peu nerveux."), nl.
 
 
-% DDDDDDDDDDDD     EEEEEEEEEEEE     SSSSSSSSSSSS     CCCCCCCCCCCCC  RRRRRRRRRRRR     IIIIIIIIIIIII    PPPPPPPPPPP       TTTTTTTTTTTT     IIIIIIIIIIIII    OOOOOOOOOOO     NNNN        NNNN     SSSSSSSSSSSS
-% DDDD      DDDD   EEEE            SSSS            CCCC             RRRR      RRRR       IIII         PPPP      PPPP        TTTT             IIII       OOOO       OOOO   NNNNNN      NNNN    SSSS
-% DDDD        DDD  EEEEEEEEEEEE       SSSSSSSSSSS CCCC              RRRRRRRRRRRRR        IIII         PPPPPPPPPPPP          TTTT             IIII       OOOO       OOOO   NNNN NNN    NNNN      SSSSSSSSSSSS
-% DDDD      DDDD   EEEE                       SSSS CCCC             RRRR   RRRR          IIII         PPPP                  TTTT             IIII       OOOO       OOOO   NNNN   NNN  NNNN             SSSS
-% DDDDDDDDDDDD     EEEEEEEEEEEE     SSSSSSSSSSSS     CCCCCCCCCCCCC  RRRR     RRRR    IIIIIIIIIIIII    PPPP                  TTTT         IIIIIIIIIIIII    OOOOOOOOOOO     NNNN     NNNNN      SSSSSSSSSSSS
+% DDDDDDDDDDDD     EEEEEEEEEEEE     SSSSSSSSSSSS      CCCCCCCCCCCCC  RRRRRRRRRRRR     IIIIIIIIIIIII    PPPPPPPPPPP       TTTTTTTTTTTT     IIIIIIIIIIIII    OOOOOOOOOOO     NNNN        NNNN     SSSSSSSSSSSS
+% DDDD      DDDD   EEEE            SSSS             CCCC             RRRR      RRRR       IIII         PPPP      PPPP        TTTT             IIII       OOOO       OOOO   NNNNNN      NNNN    SSSS
+% DDDD        DDD  EEEEEEEEEEEE       SSSSSSSSSSS  CCCC              RRRRRRRRRRRRR        IIII         PPPPPPPPPPPP          TTTT             IIII       OOOO       OOOO   NNNN NNN    NNNN      SSSSSSSSSSSS
+% DDDD      DDDD   EEEE                       SSSS  CCCC             RRRR   RRRR          IIII         PPPP                  TTTT             IIII       OOOO       OOOO   NNNN   NNN  NNNN             SSSS
+% DDDDDDDDDDDD     EEEEEEEEEEEE     SSSSSSSSSSSS      CCCCCCCCCCCCC  RRRR     RRRR    IIIIIIIIIIIII    PPPP                  TTTT         IIIIIIIIIIIII    OOOOOOOOOOO     NNNN     NNNNN      SSSSSSSSSSSS
 
 % Atrebois
 decrire(fusee) :-
@@ -727,7 +727,14 @@ decrire(fusee) :-
         -> (Options : prendre combinaison, voir journal, aller espace, aller dehors)"), nl.
 
 decrire(dehors) :-
-        planete(intrus),
+        planete(intrus),decrire(soleil) :-
+        write("Vous accelerez en direction du soleil, vous prenez de plus en plus de vitesse.
+        Plus vous vous rapprochez, plus il fait chaud dans le cockpit et moins vous voyez devant vous.
+        Soudainement, vous vous dites qu'aller dans le soleil ne sers a rien et est sacrement dangereux.
+        Il est vrai qu'une telle decision est diffcilement comprehensible.
+        Vous commencez donc a faire demi-tour, reacteurs pleine puissance.
+        Malheureusement, vous etes deja trop pres et la gravite du soleil est trop puissante.
+        Vous vous retrouvez bruler par le soleil, puis vous vous retrouvez dans le noir...").
         write("Vous regardez autours de vous.
         Vous pouvez voir une navette nomai coincee dans la glace de la comete avec un appareil de communication nomai a ses pieds.
         Vous pouvez aussi apercevoir une crevasse dans la glace s'enfoncant dans l'intrus.
@@ -785,6 +792,7 @@ decrire(atterrissage_intrus) :-
         write("Vous atterrissez difficilement sur la surface glacee de la comete.
         Une fois votre vaisseau stabilise entre trois morceaux de glace, vous sortez de votre vaisseau"), nl.
 
+% Autre
 decrire(mort) :-
         write("Vous restez un peu dans le noir jusqu'a ce que vous voyiez une sorte de masque nomai arriver au loin.
         Il est accompagne de rayons violets et vous voyez vos souvenirs depuis votre reveil defiler.
