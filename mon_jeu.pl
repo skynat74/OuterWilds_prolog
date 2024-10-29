@@ -40,7 +40,6 @@ planete(atrebois).
 au_moins_une_mort(faux).
 
 % position des objets
-position(combinaison, vaisseau).
 
 % ramasser un objet
 prendre(X) :-
@@ -291,17 +290,7 @@ aller(_) :-
 % regarder autour de soi
 regarder :-
         position_courante(Place),
-        decrire(Place), nl,
-        lister_objets(Place), nl.
-
-
-% afficher la liste des objets a l emplacement donne
-lister_objets(Place) :-
-        position(X, Place),
-        write("Il y a "), write(X), write(" ici."), nl,
-        fail.
-
-lister_objets(_).
+        decrire(Place), nl.
 
 % morts
 mort :-
@@ -438,15 +427,16 @@ voir(sigles) :-
 voir(terminal) :-
         position_courante(capsule),
         write("Votre traducteur affiche :
-        Debut du journal de bord : Capsule se sauvetage 1. Vaisseau endommage. Sequence d'urgence activee. En attente du depart du vaisseau.
-        Lancement de la capsule de sauvetage 3… Lacement de la capsule de sauvetage 2...Lancement de la capsule de sauvetage 1.
+        Debut du journal de bord : Capsule de sauvetage 1. Vaisseau endommage. Sequence d'urgence activee. En attente du depart du vaisseau.
+        Lancement de la capsule de sauvetage 3... Lancement de la capsule de sauvetage 2... Lancement de la capsule de sauvetage 1.
         ALERTE. Collision imminente. Preparation a l'impact.
-        Analyse de l'environnement externe… Analyse terminee. Instabilites structurelles majeures detectees. 
-        Poches d'air respirable detectes. Energie solaire adequate detectee."), nl, !.
+        Analyse de l'environnement externe... Analyse terminee. Instabilites structurelles majeures detectees. 
+        Poches d'air respirables detectees. Energie solaire adequate detectee."), nl, !.
+
 
 voir(boule) :-
         position_courante(capsule),
-        write("Vous vous approchez de la boule et remarquez que votre scanneur fait de plus en plus de bruit.
+        write("Vous vous approchez de la boule et remarquez que votre scanner fait de plus en plus de bruit.
         C'est en fait une balise envoyant des signaux de secours.
         Elle est activee depuis que les nomai se sont crashes ici."), nl, !.
 
@@ -482,10 +472,10 @@ voir(sigles) :-
         position_courante(dortoir),
         affiche_sigle,
         write("Votre traducteur vous affiche :
-        'Perso_3 : Ca va perso_4 ? Tu n'as pas l'air bien.'
-        'Perso_4 : J'avoue que ca fait beaucoup de pression... 
+        'Filix : Ca va Pye ? Tu n'as pas l'air bien.'
+        'Pye : J'avoue que ca fait beaucoup de pression... 
                    Ils me demandent quand meme de recreer un generateur similaire a celui du vaisseau mere.'
-        'Perso_3 : Ne t'inquiete pas je suis sur que tu vas y arriver ! "), nl, !.
+        'Filix : Ne t'inquiete pas je suis sur que tu vas y arriver ! "), nl, !.
 
 % Intrus
 voir(appareil) :-
@@ -502,7 +492,7 @@ voir(appareil) :-
         write("Votre traducteur vous affiche :
         'Pye : Mes releves d'energie ont gagne en intensite maintenant que nous sommes sous la surface.
                 Je commence a me demander si ce ne serait pas plus dangereux que nous le pensions.'
-        'Pye :  Clary , tu nous recois ?'
+        'Pye :  Clary, tu nous recois ?'
         'Clary : Oui mais plus faiblement. Je crains que nous ne perdions entierement le contact si vous vous aventurez plus profondement.'
         'Poke : Garde les moteurs de la navette allumes Clary. Nous rentrons des que nous avons identifie l'origine de ces releves d'energie.'
         'Clary : J'ai bien compris, mais… soyez prudentes, toutes les deux.'"), nl, !.
@@ -510,7 +500,7 @@ voir(appareil) :-
 voir(appareil) :-
         position_courante(gallerie),
         write("Votre traducteur vous affiche :
-        'Poke : Cette enveloppe de pierre spherique semble etre la source  de l'energie que nous avons releves… Non ?
+        'Poke : Cette enveloppe de pierre spherique semble etre la source  de l'energie que nous avons releve… Non ?
                 Je dirais plutot que la source se trouve a l'interieur de cette pierre. Je detecte une sorte de matiere exotique.
         'Pye : Cette pierre attenue fortement les releves que nous recevons.
                 Ils devraient etre au moins deux fois superieurs a ce qu'on voit actuellement.
@@ -523,12 +513,12 @@ voir(appareil) :-
                 Je n'ai jamais rien vu d'aussi compact ! Mais qu'est ce que c'est que ca ?
         'Pye : Sa magnitude est bien superieur a ce que j'envisageais. Si la pierre venait a ceder,
                 la matiere mortelle qu'elle renferme se repandrait a une telle vitesse qu'elle engloutirait tout ce systeme stellaire en un instant.
-                Et la pression 	ne cesse de croître a mesure que la comete s'en approche...
+                Et la pression 	ne cesse de croître a mesure que la comete s'en approche…
         'Pye : Retourne immediatement a la navette ! Il faut prevenir nos camarades du terrible danger qui les menace.
                 Pose ton materiel et cours !
         'Poke : Que fais tu Pye ?
-        'Pye : Plus on en saura sur cette xenomatiere, meilleure seront nos chances de survie.
-                Je vais essayer d'en apprendre le plus possible. Va prevenir les autres.
+        'Pye : Plus on en saura sur cette xenomatiere, meilleure seront nos chances de survie. 
+                Je vais essayer d'en apprendre le plus possible. Va prevenir les autres. 
                 Ils pourront peut-etre construire un abri… Aller, Poke ! Maintenant !
         
         Vous abaissez votre traducteur... Vous regardez le squelette pres de vous... Ca doit etre Pye."), nl, !.
@@ -561,11 +551,38 @@ affiche_sigle :-
         
         "), nl.
 
+affiche_oeil :-
+        write("      
+                                         |                  
+                                         |   |             /:#
+                                         {  -|          [ }-
+                                         ] -}         | ] # /
+                                         [-/         @# _( : 
+                                         #          / ] # }
+                         )               #        ( - @- ]
+                          - #            ####    } |] ^ |
+                            [ |]_    ## @@ @@ @##-/@ : ]
+                             } ^#### @ @ @@ @@ @#### [
+                               @@@ @@@@/---]@@@@ @@@@
+                              @@ @@@@/       ]@@ @ @@@
+                 [] } @ # ^ ]@ @@@@|           |@@@ @@@^_ 
+           - [] } @ {] } @ - @@ @|               |@@ @@@/ ]#@
+                [# } @ - : ] @@@ @@|           |@@@ @@@  : ( ]
+                              @@@ @@@/       ]@@@ @@@@       !
+                               @ @@@@@ /---]@@@ @ @@@    
+                              _ ####@@@ @ @ @  @####_  
+                             @|     ##@@ @@@ @##-/-] [@ #
+                            (]/        ####            }(#
+                           (#                            ] _x
+                          {x                                                 
+                            
+        "), nl.
+
 
 
 % DDDDDDDDDDDD      IIIIIIIIIIIII     AAAAAAAAA     LLLLL             OOOOOOOOOOO     GGGGGGGGGGG    UUUU       UUUU     EEEEEEEEEEEE     SSSSSSSSSSSS
 % DDDD      DDDD         IIII         AAAA   AAAA   LLLLL          OOOO       OOOO  GGGG             UUUU       UUUU     EEEE            SSSS
-% DDDD        DDD        IIII         AAAAAAAAAAA   LLLLL          OOOO       OOOO  GGGG   GGGGGGG   UUUU       UUUU     EEEE              SSSSSSSSSSSS
+% DDDD        DDD        IIII         AAAAAAAAAAA   LLLLL          OOOO       OOOO  GGGG   GGGGGGG   UUUU       UUUU     EEEEEE            SSSSSSSSSSSS
 % DDDD      DDDD         IIII         AAAA   AAAA   LLLLL          OOOO       OOOO  GGGG       GGG   UUUU       UUUU     EEEE                     SSSS
 % DDDDDDDDDDDD      IIIIIIIIIIIII     AAAA   AAAA   LLLLLLLLLLLLL    OOOOOOOOOOO     GGGGGGGGGGGG     UUUUUUUUUUUUUU     EEEEEEEEEEEE     SSSSSSSSSSSS
 
@@ -630,8 +647,8 @@ decrire(fusee) :-
         planete(atrebois),
         write("Vous arrivez a l'ascenseur, entrez les codes de lancement et arrivez a la plateforme de lancement ou vous attend votre fusee.
         Vous entrez par l'ecoutille, vous voici dans votre vaisseau spatial.
-        Vous pouvez y voir votre combinaison spatial, le journal de bord ainsi que les commandes du vaisseau.
-        -> (Options : prendre combinaison, voir journal, aller espace, aller camp)"), nl.
+        Vous pouvez y voir votre journal de bord ainsi que les commandes du vaisseau.
+        -> (Options : voir journal, aller espace, aller camp)"), nl.
         
 decrire(reveil) :-
     write("Vous vous reveillez dans la nature, observant le ciel. 
@@ -668,8 +685,8 @@ decrire(evenement_statue) :-
 decrire(fusee) :-
         planete(cravite),
         write("Vous vous dirigez vers votre fusee et entrez par l'ecoutille.
-        Vous pouvez y voir votre combinaison spatial, le journal de bord ainsi que les commandes du vaisseau.
-        -> (Options : prendre combinaison, voir journal, aller espace, aller dehors)"), nl.
+        Vous pouvez y voir votre journal de bord ainsi que les commandes du vaisseau.
+        -> (Options : voir journal, aller espace, aller dehors)"), nl.
 
 decrire(dehors) :-
         planete(cravite),
@@ -723,8 +740,8 @@ decrire(fusee) :-
         planete(intrus),
         write("Vous partez en direction de votre fusee en vous concentrant pour ne pas glisser sur la glace.
         Vous arrivez a l'atteindre, vous vous accrochez a elle pour ne pas partir plus loin et rvous entrez par l'ecoutille.
-        Vous pouvez y voir votre combinaison spatial, le journal de bord ainsi que les commandes du vaisseau.
-        -> (Options : prendre combinaison, voir journal, aller espace, aller dehors)"), nl.
+        Vous pouvez y voir votre journal de bord ainsi que les commandes du vaisseau.
+        -> (Options : voir journal, aller espace, aller dehors)"), nl.
 
 decrire(dehors) :-
         planete(intrus),decrire(soleil) :-
