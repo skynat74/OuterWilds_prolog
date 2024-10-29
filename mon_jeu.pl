@@ -165,7 +165,7 @@ aller(caverne) :-
         position_courante(hall),
         retract(position_courante(hall)),
         assert(position_courante(caverne)),
-        decire(passage_antigrav),
+        decrire(passage_antigrav),
         regarder, !. 
 
 aller(caverne) :-
@@ -486,7 +486,7 @@ voir(sigles) :-
         position_courante(hall),
         affiche_sigle,
         write("Votre traducteur vous affiche :
-        Vesh : 'Ah Eni tu es revnue, alors tu as trouvé l'oeil ?'
+        Vesh : 'Ah Eni tu es revenu, alors tu as trouvé l'oeil ?'
         Eni : 'Bah... les calculs étaient justes, et pourtant... rien. Pas la moindre variation dans le signal.
                 C’est comme si l’Oeil ne diffusait plus rien du tout.'
         Vesh : 'On a vérifié et recalibré chaque paramètre. Le détecteur fonctionne.
