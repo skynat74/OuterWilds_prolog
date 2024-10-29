@@ -433,6 +433,7 @@ voir(terminal) :-
         Analyse de l'environnement externe... Analyse terminee. Instabilites structurelles majeures detectees. 
         Poches d'air respirables detectees. Energie solaire adequate detectee."), nl, !.
 
+
 voir(boule) :-
         position_courante(capsule),
         write("Vous vous approchez de la boule et remarquez que votre scanner fait de plus en plus de bruit.
@@ -467,8 +468,6 @@ voir(sigles) :-
                 Vous n'aurez plus qu'a 'aller' au 'plafond'.'"), nl, !.
 
 
-
-
 voir(sigles) :-
         position_courante(dortoir),
         affiche_sigle,
@@ -485,7 +484,7 @@ voir(appareil) :-
         write("Votre traducteur vous affiche :
         'Poke : Voila qui est problematique. Il semblerait que la comete veuille engloutir notre navette sous la glace. 
                 Si nous restons trop longtemps a la surface, la navette pourrait completement geler.'
-        'Clary : Et si l'une d'entre nous restait a bord de la navette continuer de faire chauffer les moteurs et surveiller la surface ?'
+        'Clary : Et si l'une d'entre nous restait a bord de la navette, continuer de faire chauffer les moteurs et surveiller la surface ?'
         'Pye : Je pense que c'est une bonne idee, Clary. Si tu ne vois pas d'inconvenient a rester ici, Poke et moi allons explorer la surface.'"), nl, !.
 
 voir(appareil) :-
@@ -521,7 +520,7 @@ voir(appareil) :-
         'Pye : Plus on en saura sur cette xenomatiere, meilleure seront nos chances de survie. 
                 Je vais essayer d'en apprendre le plus possible. Va prevenir les autres. 
                 Ils pourront peut-etre construire un abri… Aller, Poke ! Maintenant !
-                
+        
         Vous abaissez votre traducteur... Vous regardez le squelette pres de vous... Ca doit etre Pye."), nl, !.
 
 % General
@@ -764,7 +763,7 @@ decrire(gallerie) :-
         Vous voyez un rocher de taille consequente qui semble avoir explose de l'interieur.
         Dans la piece, un autre cadavre de nomai, aussi vetu d'une combinaison, flottant dans les airs.
         A cote du cadavre vous voyez un autre appareil.
-        Vous voyez aussi la gallerie permettant de remonter à la crevasse.
+        Vous voyez aussi la gallerie permettant de remonter a la crevasse.
         -> (Options : voir appareil, aller crevasse)"), nl.
 
 % Espace
