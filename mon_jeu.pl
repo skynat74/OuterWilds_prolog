@@ -414,12 +414,12 @@ voir(structure) :-
         position_courante(hall),
         affiche_oeil,
         write("Vous regardez de plus pres la structure, il y a un ecriteau a cote. Vous traduisez :
-        Soyez bienvenue en ces lieux, cet autel est un espace dedie a la contemplation de ce qui nous a conduits 
-        jusqu'a ce systeme stellaire : le signal de l'œil.
-        Nous avons repere le signal de l'œil au cours de nos peregrinations et l'avons suivi jusqu'ici pour en decouvrir la source.
-        voici ce que nous savons : la source du signal (ce que nous avons decidez d'appeler l'œil de l'univers) 
+        Soyez bienvenue en ces lieux, cet autel est un espace dedie a la contemplation de ce qui nous a conduit 
+        jusqu'a ce systeme stellaire : le signal de l'oeil.
+        Nous avons repere le signal de l'oeil au cours de nos peregrinations et l'avons suivi jusqu'ici pour en decouvrir la source.
+        Voici ce que nous savons : la source du signal (ce que nous avons decidez d'appeler l'oeil de l'univers) 
         est plus ancienne que l'univers lui-meme, c'est tout ce que nous savons pour l'instant.
-        L'œil est plus ancien que l'univers, imaginez ce que nous pourrions apprendre grace a lui !"), nl, !.
+        L'oeil est plus ancien que l'univers, imaginez ce que nous pourrions apprendre grace a lui !"), nl, !.
 
 voir(sigles) :-
         position_courante(dehors),
@@ -471,7 +471,7 @@ voir(sigles) :-
                 Et nous ne savons pas comment le signal de l'oeil se comporte, il pourrait disparaitre entre temps.
                 Il est trop important, nous devons continuer les recherches dessus.'
         Vesh : 'Oui mais si on refaisait un vaisseau nous pourrions contacter des vaisseaux nomai qui pourraient nous aider.'
-        Lann : 'Eni a raison, tu as vus les releves dans le vaisseau toi aussi, l'oeil est trop important.'
+        Lann : 'Eni a raison, tu as vu les releves dans le vaisseau toi aussi, l'oeil est trop important.'
         Vesh : 'Tres bien, le source du signal prime.'
         Lann : 'Sinon j'ai eu le temps de faire de nouvelles analyses sur la planete et j'ai trouve une zone beaucoup plus stable.
                 Ce serait un abri parfait. Par contre pour l'atteindre nous aurons besoin d'accrocher des cristaux antigravitationnels au plafond
@@ -479,20 +479,20 @@ voir(sigles) :-
         Eni : 'Une route de cristaux suspendus ? Ce sera complexe... mais faisable. 
                 Nous avons de quoi fabriquer des cristaux ici.'
         Vesh : 'Parfait, alors faisons-le !'
-        Lann : 'Je vais partir en premier installer la route lorsque j'aurais les cristaux.
+        Lann : 'Je vais partir en premier installer la route lorsque j'aurai les cristaux.
                 Vous n'aurez plus qu'a 'aller' au 'plafond'.'"), nl, !.
 
 voir(sigles) :-
         position_courante(hall),
         affiche_sigle,
         write("Votre traducteur vous affiche :
-        Vesh : 'Ah Eni tu es revenu, alors tu as trouvé l'oeil ?'
-        Eni : 'Bah... les calculs étaient justes, et pourtant... rien. Pas la moindre variation dans le signal.
-                C’est comme si l’Oeil ne diffusait plus rien du tout.'
-        Vesh : 'On a vérifié et recalibré chaque paramètre. Le détecteur fonctionne.
-                Mais... l’Oeil doit émettre un signal bien trop faible pour notre équipement actuel. Nous ne capterons jamais quoi que ce soit à cette échelle.'
-        Lann : 'Alors, soit l’Oeil s’est affaibli, soit il est bien plus lointain que nous le pensions.
-                Peut-être même hors de portée de ce type de capteur. Si nous voulons le trouver, il va falloir penser... en plus grand.
+        Vesh : 'Ah Eni tu es revenu, alors tu as trouve l'oeil ?'
+        Eni : 'Bah... les calculs etaient justes, et pourtant... rien. Pas la moindre variation dans le signal.
+                C'est comme si l'Oeil ne diffusait plus rien du tout.'
+        Vesh : 'On a verifie et recalibre chaque parametre. Le detecteur fonctionne.
+                Mais... l'Oeil doit emettre un signal bien trop faible pour notre equipement actuel. Nous ne capterons jamais quoi que ce soit à cette echelle.'
+        Lann : 'Alors, soit l'Oeil s'est affaibli, soit il est bien plus lointain que nous le pensions.
+                Peut-être même hors de portee de ce type de capteur. Si nous voulons le trouver, il va falloir penser... en plus grand.
                 Nous allons devoir construire un detecteur bien plus avance et complexe ! Un gigantesque observatoire.'"), nl, !.
 
 
@@ -509,32 +509,32 @@ voir(sigles) :-
         position_courante(laboratoire),
         affiche_sigle,
         write("Votre traducteur vous affiche :
-        Eni : 'C’est officiel… l'observatoire a été un échec. Rien. Même avec sa taille, pas le moindre signal de l’Oeil. 
-                C’est comme si l’Univers refusait de nous guider vers lui.'
-        Vesh : 'On a conçu le plus grand détecteur jamais construit... Et malgré cela, il reste muet. 
-                Peut-être avons-nous mal compris l’Oeil. 
-                Peut-être que son signal n’est pas capté par nos instruments, même à cette échelle.'
-        Lann : 'Je refuse de croire que tous nos efforts soient vains. Mais peut-être devons-nous envisager d’autres méthodes. 
-                Nous pourrions... le trouver par l’observation directe.'
-        Eni : 'Attends, tu veux dire... envoyer une sonde pour repérer l’Oeil ? Dans le vide immense de l’espace ? 
-                Lann, envoyer une sonde au hasard dans l'univers n’a aucune chance de réussir. Même si l’Oeil est quelque part, 
-                il est minuscule à cette échelle. La sonde pourrait le manquer des milliards de fois.'
-        Lann : 'Justement, Vesh. Je ne parle pas d’un envoi unique. Imagine une sonde lancée encore et encore, 
-                un nombre infini de fois, jusqu’à ce qu’elle atteigne l’Oeil. Il y a... un moyen de le faire.'
+        Eni : 'C'est officiel... l'observatoire a ete un echec. Rien. Même avec sa taille, pas le moindre signal de l'Oeil. 
+                C'est comme si l'Univers refusait de nous guider vers lui.'
+        Vesh : 'On a conçu le plus grand detecteur jamais construit... Et malgre cela, il reste muet. 
+                Peut-être avons-nous mal compris l'Oeil. 
+                Peut-être que son signal n'est pas capte par nos instruments, même à cette echelle.'
+        Lann : 'Je refuse de croire que tous nos efforts soient vains. Mais peut-être devons-nous envisager d'autres methodes. 
+                Nous pourrions... le trouver par l'observation directe.'
+        Eni : 'Attends, tu veux dire... envoyer une sonde pour reperer l'Oeil ? Dans le vide immense de l'espace ? 
+                Lann, envoyer une sonde au hasard dans l'univers n'a aucune chance de reussir. Même si l'Oeil est quelque part, 
+                il est minuscule à cette echelle. La sonde pourrait le manquer des milliards de fois.'
+        Lann : 'Justement, Vesh. Je ne parle pas d'un envoi unique. Imagine une sonde lancee encore et encore, 
+                un nombre infini de fois, jusqu'à ce qu'elle atteigne l'Oeil. Il y a... un moyen de le faire.'
         Vesh : 'Un nombre infini de fois ? Lann, que veux-tu dire ?'
-        Lann : 'Les recherches que nous avons faites sur le trou noir de Cravite ont révélé un phénomène inattendu. 
-                Les objets qui tombent dans ce trou noir réapparaissent dans un trou blanc de l’autre côté... 
-                quelques millisecondes avant d’être entrés dans le trou noir. Ce retour temporel pourrait théoriquement être amplifié.'
-        Eni : 'Amplifié... en utilisant un générateur de distorsion ? 
-                Si nous recréons une version miniature de Cravite et canalisons de l’énergie à l’intérieur, 
-                nous pourrions manipuler cette distorsion temporelle pour ramener la sonde en arrière... disons, 
-                toutes les 22 minutes : le temps qu'il faudrait à la sonde pour parcourir le système.'
-        Vesh : 'D'accord, je crois que j'ai une idée de système pour faire tout fonctionner.
+        Lann : 'Les recherches que nous avons faites sur le trou noir de Cravite ont revele un phenomene inattendu. 
+                Les objets qui tombent dans ce trou noir reapparaissent dans un trou blanc de l'autre côte... 
+                quelques millisecondes avant d'être entres dans le trou noir. Ce retour temporel pourrait theoriquement être amplifie.'
+        Eni : 'Amplifie... en utilisant un generateur de distorsion ? 
+                Si nous recreons une version miniature de Cravite et canalisons de l'energie à l'interieur, 
+                nous pourrions manipuler cette distorsion temporelle pour ramener la sonde en arriere... disons, 
+                toutes les 22 minutes : le temps qu'il faudrait à la sonde pour parcourir le systeme.'
+        Vesh : 'D'accord, je crois que j'ai une idee de systeme pour faire tout fonctionner.
                 Mais nous devons aller sur Leviathe, nous aurons besoin des cyclone qui se trouve dessus.
-                En effet, nous devrons construire un lance sonde géant et Les cyclone nous aidrons
+                En effet, nous devrons construire un lance sonde geant et Les cyclone nous aidrons
                 à mettre tout ca en orbite.'
-        Lann : 'Parfait partons sur Leviathe alors. Pye, étant l'apprentie d'Annona pourrais-tu rester ici
-                pour nous construire le générateur de distorsion s'il te plait ?'
+        Lann : 'Parfait partons sur Leviathe alors. Pye, etant l'apprentie d'Annona pourrais-tu rester ici
+                pour nous construire le generateur de distorsion s'il te plait ?'
         Pye : 'Pas de soucis, je m'y mets tout de suite !'"), nl, !.
 
 % Intrus
@@ -797,13 +797,13 @@ decrire(dortoir) :-
 decrire(laboratoire) :-
         write("Vous arrivez dans une piece avec des plans de travail et une multitude d'outils.
         Vous pouvez voir des sigles sur ce qui semble etre un tableau.
-        Derrière vous se trouve la porte pour revenir dans le hall.
+        Derriere vous se trouve la porte pour revenir dans le hall.
         -> (Options : voir sigles, aller hall)"), nl.
 
 decrire(passage_antigrav) :-
         write("Vous vous approchez du mur et appuyez vos pieds au mur.
-        Ils restent collé au mur et vous commencez à marcher.
-        Vous êtes dans le vide et voyez au dessus de votre tete le trou noir de la planete"), nl.
+        Ils restent colles au mur et vous commencez a marcher.
+        Vous êtes dans le vide et voyez au dessus de votre tete le trou noir de la planete."), nl.
 
 
 % Intrus
@@ -851,7 +851,7 @@ decrire(soleil) :-
         Il est vrai qu'une telle decision est diffcilement comprehensible.
         Vous commencez donc a faire demi-tour, reacteurs pleine puissance.
         Malheureusement, vous etes deja trop pres et la gravite du soleil est trop puissante.
-        Vous vous retrouvez bruler par le soleil, puis vous vous retrouvez dans le noir...").
+        Vous vous retrouvez bruler par le soleil, puis vous vous retrouvez dans le noir..."), nl.
 
 
 % Atterrissages
