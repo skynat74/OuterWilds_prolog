@@ -162,9 +162,10 @@ aller(capsule) :-
         regarder, !. 
 
 aller(caverne) :-
-        position_courante(ruines),
-        retract(position_courante(ruines)),
+        position_courante(hall),
+        retract(position_courante(hall)),
         assert(position_courante(caverne)),
+        decire(passage_antigrav),
         regarder, !. 
 
 aller(caverne) :-
@@ -176,19 +177,32 @@ aller(caverne) :-
 aller(plafond) :-
         position_courante(caverne),
         retract(position_courante(caverne)),
-        assert(position_courante(ruines)),
+        assert(position_courante(hall)),
+        decrire(passage_antigrav),
         regarder, !.
 
 aller(dortoir) :-
-        position_courante(ruines),
-        retract(position_courante(ruines)),
+        position_courante(hall),
+        retract(position_courante(hall)),
         assert(position_courante(dortoir)),
         regarder, !.
 
-aller(ruines) :-
+aller(laboratoire) :-
+        position_courante(hall),
+        retract(position_courante(hall)),
+        assert(position_courante(laboratoire)),
+        regarder, !.
+
+aller(hall) :-
         position_courante(dortoir),
         retract(position_courante(dortoir)),
-        assert(position_courante(ruines)),
+        assert(position_courante(hall)),
+        regarder, !.
+
+aller(hall) :-
+        position_courante(laboratoire),
+        retract(position_courante(laboratoire)),
+        assert(position_courante(hall)),
         regarder, !.
 
 % Intrus
@@ -397,7 +411,8 @@ voir(sigles) :-
 
 % Cravite
 voir(structure) :-
-        position_courante(ruines),
+        position_courante(hall),
+        affiche_oeil,
         write("Vous regardez de plus pres la structure, il y a un ecriteau a cote. Vous traduisez :
         Soyez bienvenue en ces lieux, cet autel est un espace dedie a la contemplation de ce qui nous a conduits 
         jusqu'a ce systeme stellaire : le signal de l'œil.
@@ -468,7 +483,7 @@ voir(sigles) :-
                 Vous n'aurez plus qu'a 'aller' au 'plafond'.'"), nl, !.
 
 voir(sigles) :-
-        position_courante(ruines),
+        position_courante(hall),
         affiche_sigle,
         write("Votre traducteur vous affiche :
         Vesh : 'Ah Eni tu es revnue, alors tu as trouvé l'oeil ?'
@@ -765,19 +780,30 @@ decrire(caverne) :-
         Et il y a l'entree de la caverne permettant de revenir dehors.
         -> (Options : voir sigles, aller dehors)"), nl.
 
-decrire(ruines) :-
-        write("Vous arrivez dans ce qui s'apparente a un hall d'entree assez grand ou vous pouvez y apercevoir des endroits intriguants.
+decrire(hall) :-
+        write("Vous arrivez dans ce qui s'apparente a un hall assez grand ou vous pouvez y apercevoir des endroits intriguants.
         Tout d'abord, vous voyez une grande structure au milieu de la salle ainsi que des sigles similaires a ceux du musee sur le mur.
-        Ensuite, il y a des portes menant a d'autres endroits. Une porte mene a l'exterieur, une autre vers ce qui semble etre un dortoir
-        et la derniere vers ce qui pourrait correspondre a une salle a manger.
-        -> (Options : voir structure, voir sigles, aller dortoir, aller salle_a_manger, aller caverne)"), nl.
+        Ensuite, il y a des portes menant a d'autres endroits. Un mur mene au chemin antigravite pour retourner a la caverne, 
+        une autre vers ce qui semble etre un dortoir et la derniere vers ce qui pourrait correspondre a un laboratoire.
+        -> (Options : voir structure, voir sigles, aller dortoir, aller laboratoire, aller caverne)"), nl.
 
 decrire(dortoir) :-
         write("Vous arrivez dans la salle ou se situe plusieurs lits.
         Sur deux d'entre eux se trouve des squelettes nomai, ils semblaient dormir paisiblement avant de mourir.
         Derriere vous se trouve la porte pour revenir dans le hall.
         Au fond de la piece, vous voyez des sigles nomai.
-        -> (Options : voir sigles, aller ruines)"), nl.
+        -> (Options : voir sigles, aller hall)"), nl.
+
+decrire(laboratoire) :-
+        write("Vous arrivez dans une piece avec des plans de travail et une multitude d'outils.
+        Vous pouvez voir des sigles sur ce qui semble etre un tableau.
+        Derrière vous se trouve la porte pour revenir dans le hall.
+        -> (Options : voir sigles, aller hall)"), nl.
+
+decrire(passage_antigrav) :-
+        write("Vous vous approchez du mur et appuyez vos pieds au mur.
+        Ils restent collé au mur et vous commencez à marcher.
+        Vous êtes dans le vide et voyez au dessus de votre tete le trou noir de la planete"), nl.
 
 
 % Intrus
@@ -789,14 +815,7 @@ decrire(fusee) :-
         -> (Options : voir journal, aller espace, aller dehors)"), nl.
 
 decrire(dehors) :-
-        planete(intrus),decrire(soleil) :-
-        write("Vous accelerez en direction du soleil, vous prenez de plus en plus de vitesse.
-        Plus vous vous rapprochez, plus il fait chaud dans le cockpit et moins vous voyez devant vous.
-        Soudainement, vous vous dites qu'aller dans le soleil ne sers a rien et est sacrement dangereux.
-        Il est vrai qu'une telle decision est diffcilement comprehensible.
-        Vous commencez donc a faire demi-tour, reacteurs pleine puissance.
-        Malheureusement, vous etes deja trop pres et la gravite du soleil est trop puissante.
-        Vous vous retrouvez bruler par le soleil, puis vous vous retrouvez dans le noir...").
+        planete(intrus),
         write("Vous regardez autours de vous.
         Vous pouvez voir une navette nomai coincee dans la glace de la comete avec un appareil de communication nomai a ses pieds.
         Vous pouvez aussi apercevoir une crevasse dans la glace s'enfoncant dans l'intrus.
