@@ -419,8 +419,8 @@ voir(sigles) :-
         Vesh : 'Oui et pour l'instant nous n'avons aucun moyen de communiquer avec les capusles ou le vaisseau.
                 Les autres capsules ont pu s'ecraser sur n'importe quelle planete dans ce systeme...
                 Nous devrions essayer de les contacter des que nous le pourrons.'
-        Eni : 'Je suis tout a fait d'accord mais… regardez la surface de cette planete.
-                Elle se deforme, elle craque… Elle semble prete a s'effondrer d'un instant a l'autre.'
+        Eni : 'Je suis tout a fait d'accord mais... regardez la surface de cette planete.
+                Elle se deforme, elle craque... Elle semble prete a s'effondrer d'un instant a l'autre.'
                 J'ai repere une zone un peu plus loin qui paraît plus stable ; on pourrait y trouver refuge temporairement.'
         Vesh : 'Tu as vus juste, la zone est particulieremet instable, allons-y !'"), nl, !.
 
@@ -449,7 +449,7 @@ voir(sigles) :-
         Vesh : 'Ici la capsule de sauvetage 1. Y a-t-il quelqu'un ? Repondez... .
                 Allez... Foli...Keek...que quelqu'un reponde.'
         Lann : 'Ils n'entendent peut-etre pas. Les autres capsules pourraient etre hors de portee, ou...'
-        Eni : 'Ou detruites. Et si notre vaisseau principal a lui aussi ete touche… il n'a sans doute pas survecu a l'impact.
+        Eni : 'Ou detruites. Et si notre vaisseau principal a lui aussi ete touche... il n'a sans doute pas survecu a l'impact.
                 Nous sommes... seuls.'
         Vesh : 'Que faisons nous alors ? Nous pourions reconstruire un vaisseau ?'
         Eni : 'Refaire un vaisseau nous prendrai un temps monstrueux !
@@ -461,11 +461,24 @@ voir(sigles) :-
         Lann : 'Sinon j'ai eu le temps de faire de nouvelles analyses sur la planete et j'ai trouve une zone beaucoup plus stable.
                 Ce serait un abri parfait. Par contre pour l'atteindre nous aurons besoin d'accrocher des cristaux antigravitationnels au plafond
                 pour passer sous la planete. En effet, passer par l'exterieur serait trop risque.'
-        Eni : 'Une route de cristaux suspendus ? Ce sera complexe… mais faisable. 
+        Eni : 'Une route de cristaux suspendus ? Ce sera complexe... mais faisable. 
                 Nous avons de quoi fabriquer des cristaux ici.'
         Vesh : 'Parfait, alors faisons-le !'
         Lann : 'Je vais partir en premier installer la route lorsque j'aurais les cristaux.
                 Vous n'aurez plus qu'a 'aller' au 'plafond'.'"), nl, !.
+
+voir(sigles) :-
+        position_courante(ruines),
+        affiche_sigle,
+        write("Votre traducteur vous affiche :
+        Vesh : 'Ah Eni tu es revnue, alors tu as trouvé l'oeil ?'
+        Eni : 'Bah... les calculs étaient justes, et pourtant... rien. Pas la moindre variation dans le signal.
+                C’est comme si l’Oeil ne diffusait plus rien du tout.'
+        Vesh : 'On a vérifié et recalibré chaque paramètre. Le détecteur fonctionne.
+                Mais... l’Oeil doit émettre un signal bien trop faible pour notre équipement actuel. Nous ne capterons jamais quoi que ce soit à cette échelle.'
+        Lann : 'Alors, soit l’Oeil s’est affaibli, soit il est bien plus lointain que nous le pensions.
+                Peut-être même hors de portée de ce type de capteur. Si nous voulons le trouver, il va falloir penser... en plus grand.
+                Nous allons devoir construire un detecteur bien plus avance et complexe ! Un gigantesque observatoire.'"), nl, !.
 
 
 voir(sigles) :-
@@ -474,8 +487,40 @@ voir(sigles) :-
         write("Votre traducteur vous affiche :
         'Filix : Ca va Pye ? Tu n'as pas l'air bien.'
         'Pye : J'avoue que ca fait beaucoup de pression... 
-                   Ils me demandent quand meme de recreer un generateur similaire a celui du vaisseau mere.'
-        'Filix : Ne t'inquiete pas je suis sur que tu vas y arriver ! "), nl, !.
+                Ils me demandent quand meme de recreer un generateur similaire a celui du vaisseau mere.'
+        'Filix : Ne t'inquiete pas je suis sur que tu vas y arriver !'"), nl, !.
+
+voir(sigles) :-
+        position_courante(laboratoire),
+        affiche_sigle,
+        write("Votre traducteur vous affiche :
+        Eni : 'C’est officiel… l'observatoire a été un échec. Rien. Même avec sa taille, pas le moindre signal de l’Oeil. 
+                C’est comme si l’Univers refusait de nous guider vers lui.'
+        Vesh : 'On a conçu le plus grand détecteur jamais construit... Et malgré cela, il reste muet. 
+                Peut-être avons-nous mal compris l’Oeil. 
+                Peut-être que son signal n’est pas capté par nos instruments, même à cette échelle.'
+        Lann : 'Je refuse de croire que tous nos efforts soient vains. Mais peut-être devons-nous envisager d’autres méthodes. 
+                Nous pourrions... le trouver par l’observation directe.'
+        Eni : 'Attends, tu veux dire... envoyer une sonde pour repérer l’Oeil ? Dans le vide immense de l’espace ? 
+                Lann, envoyer une sonde au hasard dans l'univers n’a aucune chance de réussir. Même si l’Oeil est quelque part, 
+                il est minuscule à cette échelle. La sonde pourrait le manquer des milliards de fois.'
+        Lann : 'Justement, Vesh. Je ne parle pas d’un envoi unique. Imagine une sonde lancée encore et encore, 
+                un nombre infini de fois, jusqu’à ce qu’elle atteigne l’Oeil. Il y a... un moyen de le faire.'
+        Vesh : 'Un nombre infini de fois ? Lann, que veux-tu dire ?'
+        Lann : 'Les recherches que nous avons faites sur le trou noir de Cravite ont révélé un phénomène inattendu. 
+                Les objets qui tombent dans ce trou noir réapparaissent dans un trou blanc de l’autre côté... 
+                quelques millisecondes avant d’être entrés dans le trou noir. Ce retour temporel pourrait théoriquement être amplifié.'
+        Eni : 'Amplifié... en utilisant un générateur de distorsion ? 
+                Si nous recréons une version miniature de Cravite et canalisons de l’énergie à l’intérieur, 
+                nous pourrions manipuler cette distorsion temporelle pour ramener la sonde en arrière... disons, 
+                toutes les 22 minutes : le temps qu'il faudrait à la sonde pour parcourir le système.'
+        Vesh : 'D'accord, je crois que j'ai une idée de système pour faire tout fonctionner.
+                Mais nous devons aller sur Leviathe, nous aurons besoin des cyclone qui se trouve dessus.
+                En effet, nous devrons construire un lance sonde géant et Les cyclone nous aidrons
+                à mettre tout ca en orbite.'
+        Lann : 'Parfait partons sur Leviathe alors. Pye, étant l'apprentie d'Annona pourrais-tu rester ici
+                pour nous construire le générateur de distorsion s'il te plait ?'
+        Pye : 'Pas de soucis, je m'y mets tout de suite !'"), nl, !.
 
 % Intrus
 voir(appareil) :-
@@ -495,12 +540,12 @@ voir(appareil) :-
         'Pye :  Clary, tu nous recois ?'
         'Clary : Oui mais plus faiblement. Je crains que nous ne perdions entierement le contact si vous vous aventurez plus profondement.'
         'Poke : Garde les moteurs de la navette allumes Clary. Nous rentrons des que nous avons identifie l'origine de ces releves d'energie.'
-        'Clary : J'ai bien compris, mais… soyez prudentes, toutes les deux.'"), nl, !.
+        'Clary : J'ai bien compris, mais... soyez prudentes, toutes les deux.'"), nl, !.
 
 voir(appareil) :-
         position_courante(gallerie),
         write("Votre traducteur vous affiche :
-        'Poke : Cette enveloppe de pierre spherique semble etre la source  de l'energie que nous avons releve… Non ?
+        'Poke : Cette enveloppe de pierre spherique semble etre la source  de l'energie que nous avons releve... Non ?
                 Je dirais plutot que la source se trouve a l'interieur de cette pierre. Je detecte une sorte de matiere exotique.
         'Pye : Cette pierre attenue fortement les releves que nous recevons.
                 Ils devraient etre au moins deux fois superieurs a ce qu'on voit actuellement.
@@ -513,13 +558,13 @@ voir(appareil) :-
                 Je n'ai jamais rien vu d'aussi compact ! Mais qu'est ce que c'est que ca ?
         'Pye : Sa magnitude est bien superieur a ce que j'envisageais. Si la pierre venait a ceder,
                 la matiere mortelle qu'elle renferme se repandrait a une telle vitesse qu'elle engloutirait tout ce systeme stellaire en un instant.
-                Et la pression 	ne cesse de croître a mesure que la comete s'en approche…
+                Et la pression 	ne cesse de croître a mesure que la comete s'en approche...
         'Pye : Retourne immediatement a la navette ! Il faut prevenir nos camarades du terrible danger qui les menace.
                 Pose ton materiel et cours !
         'Poke : Que fais tu Pye ?
         'Pye : Plus on en saura sur cette xenomatiere, meilleure seront nos chances de survie. 
                 Je vais essayer d'en apprendre le plus possible. Va prevenir les autres. 
-                Ils pourront peut-etre construire un abri… Aller, Poke ! Maintenant !
+                Ils pourront peut-etre construire un abri... Aller, Poke ! Maintenant !
         
         Vous abaissez votre traducteur... Vous regardez le squelette pres de vous... Ca doit etre Pye."), nl, !.
 
