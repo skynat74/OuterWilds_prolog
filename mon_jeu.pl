@@ -289,6 +289,16 @@ aller(intrus) :-
         decrire(atterrissage_intrus),
         regarder, !.
 
+aller(leviathe) :-
+        position_courante(espace),
+        planete(X),
+        retract(position_courante(espace)),
+        assert(position_courante(dehors)),
+        retract(planete(X)),
+        assert(planete(leviathe)),
+        decrire(atterrissage_leviathe),
+        regarder, !.
+
 aller(_) :-
         write("Vous ne pouvez pas aller par la."),
         fail.
@@ -537,6 +547,19 @@ voir(sigles) :-
                 pour nous construire le generateur de distorsion s'il te plait ?'
         Pye : 'Pas de soucis, je m'y mets tout de suite !'"), nl, !.
 
+% Leviathe
+voir(sigles) :-
+        position_courante(dehors),
+        planete(leviathe),
+        write("Le sol du tunnel pour aller au module de pistage de la sonde s'est effondre.
+        Je me suis permis de ramener des pierres antigravites de Cravite pour passer quand meme.
+        Vous savez comment faire."), nl, !.
+
+voir(dessin) :-
+        position_courante(grotte),
+        write("Vous vous approchez de la fresque et voyez quelque chose ressemblant à ceci :"), nl,
+        affiche_dessin, nl.
+
 % Intrus
 voir(appareil) :-
         position_courante(dehors),
@@ -636,6 +659,15 @@ affiche_oeil :-
                            (#                            ] _x
                           {x                                                 
                             
+        "), nl.
+
+affiche_dessin :-
+        write("
+                  Masque
+                        
+              ]]]       ]]]
+                                
+        Statue     [[[    Nomai 
         "), nl.
 
 
@@ -805,6 +837,23 @@ decrire(passage_antigrav) :-
         Ils restent colles au mur et vous commencez a marcher.
         Vous êtes dans le vide et voyez au dessus de votre tete le trou noir de la planete."), nl.
 
+% Leviathe
+decrire(dehors) :-
+        planete(leviathe),
+        write("Vous arrivez sur la plage de l'ile.
+        Vous voyez une porte permettant de rentrer dans une grotte.
+        De meme qu'un grand batiment atteignable par un tunnel. Le sol du tunnel semble s'etre effondre.
+        A cote du tunnel vous voyez ce qui ressemble a un panneau avec des sigles nomai.
+        Il y a aussi votre fusee calee dans le sable.
+        -> (Options : voir sigles, aller grotte, aller fusee)"), nl.
+
+decrire(grotte) :-
+        write("Vous rentrez dans le grotte et voyez des statues comme celles du musee un peu partout,
+        la difference ici c'est qu'il n'y en a aucune qui soit finalisees.
+        Vous pouvez voir par terre un appareil contenant des sigles nomai.
+        Vous pouvez aussi voir un dessin affiche au mur.
+        Enfin, il y a la porte pour repartir dehors.
+        -> (Options : voir appareil, voir dessin, aller dehors.)"), nl.
 
 % Intrus
 decrire(fusee) :-
