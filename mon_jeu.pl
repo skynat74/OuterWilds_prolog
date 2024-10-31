@@ -968,6 +968,48 @@ decrire(gallerie) :-
         Vous voyez aussi la galerie permettant de remonter a la crevasse.
         -> (Options : voir appareil, aller crevasse)"), nl.
 
+% Espace
+decrire(espace) :-
+        write("Vous prenez les commandes de votre vaisseau, allumez les moteur et vous envolez.
+        Vous depassez la ligne d'horizon a vive allure et ne voyez plus que les etoiles dans le noir...
+        Vous etes desormais dans l'espace, vous pouvez aller ou vous voulez !
+        -> (Options : aller soleil, aller atrebois, aller cravite, aller intrus)"), nl.
+
+decrire(soleil) :-
+        write("Vous accelerez en direction du soleil, vous prenez de plus en plus de vitesse.
+        Plus vous vous rapprochez, plus il fait chaud dans le cockpit et moins vous voyez devant vous.
+        Soudainement, vous vous dites qu'aller dans le soleil ne sert a rien et est sacrement dangereux.
+        Il est vrai qu'une telle decision est difficilement comprehensible.
+        Vous commencez donc a faire demi-tour, reacteurs pleine puissance.
+        Malheureusement, vous etes deja trop pres et la gravite du soleil est trop puissante.
+        Vous vous retrouvez brule par le soleil, puis vous vous retrouvez dans le noir..."), nl.
+
+
+% Atterrissages
+decrire(atterrissage_cravite) :-
+        planete(cravite),
+        write("Vous volez jusqu'a la planete, esquivez une des nombreuses meteorites s'ecrasant sur cravite et vous posez.
+        Vous sortez alors de votre vaisseau, la planete parait assez hostile.
+        Soudainement, vous voyez tout un pan de la planete s'ecrouler pas loin.
+        A travers ce trou vous voyez le centre de la planete... C'est un trou noir.
+        Mieux vaut ne pas tomber en bas, qui sait ce qu'il y a dans un trou noir..."), nl.
+
+decrire(atterrissage_atrebois) :-
+        write("Vous atterrissez tranquillement sur la plateforme de lancement du village...
+        Vous vous empressez de sortir de votre vaisseau pour eteindre le feu que vous venez de lancer.
+        Le feu s'eteint, pas facile d'atterrir sur une plateforme en bois.
+        Vous prenez alors l'ascenseur pour descendre et arrivez au camp."), nl.
+
+decrire(atterrissage_intrus) :-
+        write("Vous atterrissez difficilement sur la surface glacee de la comete.
+        Une fois votre vaisseau stabilise entre trois morceaux de glace, vous sortez de votre vaisseau"), nl.
+
+% Autre
+decrire(mort) :-
+        write("Vous restez un peu dans le noir jusqu'a ce que vous voyiez une sorte de masque nomai arriver au loin.
+        Il est accompagne de rayons violets et vous voyez vos souvenirs depuis votre reveil defiler...
+        Vous rentrer alors dans l'oeil du masque."), nl.
+
 % Oeil de l univers
 decrire(oeil) :-
         write("Vous arrivez sur une planete tres sombre et vos yeux peinent a s'adapter a la luminosite.
@@ -1011,7 +1053,7 @@ decrire(oeil) :-
         En vous approchant de plus pres de chacune d'elles vous voyez qu'il s'agit de petits systemes solaires.
 
         Cependant, plus le temps passe et moins de lumieres sont presentes autour de vous...
-        Il semblerait qu'elle vienne a s'eteindre. Et plus avancez, plus vous entrez dans l'obscurite.
+        Il semblerait qu'elles viennent a s'eteindre. Et plus vous avancez, plus vous entrez dans l'obscurite.
         Deambulant dans le noir, muni de votre lampe torche, vous contournez les arbres sans reel objectif...
         Vous butez alors soudainement sur un feu de camp, eteint, avec une chaise vide autour.
         Aussi curieux soit-il, vous vous demandez si des personnes etaient la avant...
@@ -1049,46 +1091,4 @@ decrire(oeil) :-
 
                                                         FIN
 
-        ")
-
-% Espace
-decrire(espace) :-
-        write("Vous prenez les commandes de votre vaisseau, allumez les moteur et vous envolez.
-        Vous depassez la ligne d'horizon a vive allure et ne voyez plus que les etoiles dans le noir...
-        Vous etes desormais dans l'espace, vous pouvez aller ou vous voulez !
-        -> (Options : aller soleil, aller atrebois, aller cravite, aller intrus)"), nl.
-
-decrire(soleil) :-
-        write("Vous accelerez en direction du soleil, vous prenez de plus en plus de vitesse.
-        Plus vous vous rapprochez, plus il fait chaud dans le cockpit et moins vous voyez devant vous.
-        Soudainement, vous vous dites qu'aller dans le soleil ne sert a rien et est sacrement dangereux.
-        Il est vrai qu'une telle decision est difficilement comprehensible.
-        Vous commencez donc a faire demi-tour, reacteurs pleine puissance.
-        Malheureusement, vous etes deja trop pres et la gravite du soleil est trop puissante.
-        Vous vous retrouvez brule par le soleil, puis vous vous retrouvez dans le noir..."), nl.
-
-
-% Atterrissages
-decrire(atterrissage_cravite) :-
-        planete(cravite),
-        write("Vous volez jusqu'a la planete, esquivez une des nombreuses meteorites s'ecrasant sur cravite et vous posez.
-        Vous sortez alors de votre vaisseau, la planete parait assez hostile.
-        Soudainement, vous voyez tout un pan de la planete s'ecrouler pas loin.
-        A travers ce trou vous voyez le centre de la planete... C'est un trou noir.
-        Mieux vaut ne pas tomber en bas, qui sait ce qu'il y a dans un trou noir..."), nl.
-
-decrire(atterrissage_atrebois) :-
-        write("Vous atterrissez tranquillement sur la plateforme de lancement du village...
-        Vous vous empressez de sortir de votre vaisseau pour eteindre le feu que vous venez de lancer.
-        Le feu s'eteint, pas facile d'atterrir sur une plateforme en bois.
-        Vous prenez alors l'ascenseur pour descendre et arrivez au camp."), nl.
-
-decrire(atterrissage_intrus) :-
-        write("Vous atterrissez difficilement sur la surface glacee de la comete.
-        Une fois votre vaisseau stabilise entre trois morceaux de glace, vous sortez de votre vaisseau"), nl.
-
-% Autre
-decrire(mort) :-
-        write("Vous restez un peu dans le noir jusqu'a ce que vous voyiez une sorte de masque nomai arriver au loin.
-        Il est accompagne de rayons violets et vous voyez vos souvenirs depuis votre reveil defiler...
-        Vous rentrer alors dans l'oeil du masque."), nl.
+        "), nl.
