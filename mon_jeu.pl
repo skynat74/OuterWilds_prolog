@@ -205,6 +205,49 @@ aller(hall) :-
         assert(position_courante(hall)),
         regarder, !.
 
+% Leviathe
+aller(fusee) :-
+        position_courante(dehors),
+        retract(position_courante(dehors)),
+        assert(position_courante(fusee)),
+        regarder, !.
+
+aller(dehors) :-
+        position_courante(fusee),
+        retract(position_courante(fusee)),
+        assert(position_courante(dehors)),
+        regarder, !.
+
+aller(dehors) :-
+        position_courante(grotte),
+        retract(position_courante(grotte)),
+        assert(position_courante(dehors)),
+        regarder, !.
+
+aller(grotte) :-
+        position_courante(dehors),
+        retract(position_courante(dehors)),
+        assert(position_courante(grotte)),
+        regarder, !.
+
+aller(grotte) :-
+        position_courante(plateforme),
+        retract(position_courante(plateforme)),
+        assert(position_courante(grotte)),
+        regarder, !.
+
+aller(plateforme) :-
+        position_courante(grotte),
+        retract(position_courante(grotte)),
+        assert(position_courante(plateforme)),
+        regarder, !.
+
+aller(plafond) :-
+        position_courante(dehors),
+        retract(position_courante(dehors)),
+        assert(position_courante(module)),
+        regarder, !.
+
 % Intrus
 aller(fusee) :-
         position_courante(dehors),
@@ -552,13 +595,42 @@ voir(sigles) :-
         position_courante(dehors),
         planete(leviathe),
         write("Le sol du tunnel pour aller au module de pistage de la sonde s'est effondre.
-        Je me suis permis de ramener des pierres antigravites de Cravite pour passer quand meme.
-        Vous savez comment faire."), nl, !.
+        Je me suis permis de ramener des pierres antigravites pour passer quand meme.
+        Faites comme sur Cravite."), nl, !.
 
 voir(dessin) :-
         position_courante(grotte),
         write("Vous vous approchez de la fresque et voyez quelque chose ressemblant à ceci :"), nl,
-        affiche_dessin, nl.
+        affiche_dessin, nl, !.
+
+voir(appareil) :-
+        position_courante(grotte),
+        write("Votre traducteur vous affiche :
+        Phlox : Yarrow, accepterais-tu de reculer un peu pour que Daz soit plus proche de la statue ? 
+                Lorsqu’elle se lie à quelqu’un, la statue choisit la personne qui se trouve le plus près d’elle.
+        Phlox : ...Tu vois, elle a ouvert les yeux. Cela veut dire que la statue s’est liée à Daz. 
+                A présent, où qu’il soit dans le système stellaire, 
+                la statue de Daz enregistrera ses souvenirs et les enverra au projet sablière noire.
+        Daz : Et maintenant que nous disposons de notre premier lien, 
+                nous pouvons tester notre prototype de stockage de mnémonique.
+        Daz : Chaque statue transmettra les souvenirs d’un nomaï à son unité de stockage, 
+                qui se trouve sur la Sablière noire.
+        Phlox : Chaque unité de stockage sera pourvue d’un masque qui n’est autre que le pendant de la statue. 
+                Celui-ci pourra renvoyer les souvenirs ainsi stockés au nomaï auquel ils appartiennent."), nl, !.
+
+voir(sigles) :-
+        position_courante(grotte),
+        write("Votre traducteur vous affiche :
+        Ramie : J’ai installé les masques à l’intérieur du projet sablière noire phlox. 
+                C’est rassurant de savoir que les statues ne se lieront pas avant la réussite du projet. 
+                J’imagine que l’expérience serait difficile à supporter dans le cas contraire.
+        Phlox : En principe, les statues ne se lieront qu’à la réussite du projet, 
+                mais elles s’activeront également par mesure de sécurité dans le cas d’une défaillance technique.
+        Ramie : Ah oui ? Pourquoi ça ?
+        Phlox : Si quelque chose ne se passe pas comme prévu avec le projet sablière noire, 
+                les statues (et leurs masques) nous avertiront et nous permettrons d’y remédier. 
+                Autrement, nous pourrions ne jamais nous apercevoir du problème.
+        Ramie : Je n’avais pas pensé à ça ! Ce serait là un sort absolument affreux."), nl !.
 
 % Intrus
 voir(appareil) :-
@@ -848,12 +920,22 @@ decrire(dehors) :-
         -> (Options : voir sigles, aller grotte, aller fusee)"), nl.
 
 decrire(grotte) :-
-        write("Vous rentrez dans le grotte et voyez des statues comme celles du musee un peu partout,
-        la difference ici c'est qu'il n'y en a aucune qui soit finalisees.
-        Vous pouvez voir par terre un appareil contenant des sigles nomai.
+        write("Vous rentrez dans le grotte et voyez des statues comme celles du musee un peu partout.
+        Seule une statue a l'air terminée, elle a les yeux ouvert.
+        Vous pouvez voir en face de cette statue un appareil contenant des sigles nomai.
         Vous pouvez aussi voir un dessin affiche au mur.
+        Ensuite, vous voyez une plateforme au dessus accessible via des escaliers.
         Enfin, il y a la porte pour repartir dehors.
-        -> (Options : voir appareil, voir dessin, aller dehors.)"), nl.
+        -> (Options : voir appareil, voir dessin, aller plateforme, aller dehors.)"), nl.
+
+decrire(plateforme) :-
+        write("Vous montez les escaliers et arriver arrivez en haut.
+        Ici, se trouve seulement un tableau avec des sigles nomai.
+        Derriere vous, se trouve l'escalier pour redescendre en bas.
+        -> (Options : voir sigles, aller grotte)"), nl.
+
+decrire(module) :-
+        write(""), nl.
 
 % Intrus
 decrire(fusee) :-
