@@ -1008,5 +1008,5 @@ decrire(atterrissage_intrus) :-
 % Autre
 decrire(mort) :-
         write("Vous restez un peu dans le noir jusqu'a ce que vous voyiez une sorte de masque nomai arriver au loin.
-        Il est accompagne de rayons violets et vous voyez vos souvenirs depuis votre reveil defiler.
+        Il est accompagne de rayons violets et vous voyez vos souvenirs depuis votre reveil defiler...
         Vous rentrer alors dans l'oeil du masque."), nl.
