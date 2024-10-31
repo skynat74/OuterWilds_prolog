@@ -500,9 +500,9 @@ voir(sigles) :-
         Eni : 'Bah... les calculs etaient justes, et pourtant... rien. Pas la moindre variation dans le signal.
                 C'est comme si l'Oeil ne diffusait plus rien du tout.'
         Vesh : 'On a verifie et recalibre chaque parametre. Le detecteur fonctionne.
-                Mais... l'Oeil doit emettre un signal bien trop faible pour notre equipement actuel. Nous ne capterons jamais quoi que ce soit à cette echelle.'
+                Mais... l'Oeil doit emettre un signal bien trop faible pour notre equipement actuel. Nous ne capterons jamais quoi que ce soit a cette echelle.'
         Lann : 'Alors, soit l'Oeil s'est affaibli, soit il est bien plus lointain que nous le pensions.
-                Peut-être même hors de portee de ce type de capteur. Si nous voulons le trouver, il va falloir penser... en plus grand.
+                Peut-etre meme hors de portee de ce type de capteur. Si nous voulons le trouver, il va falloir penser... en plus grand.
                 Nous allons devoir construire un detecteur bien plus avance et complexe ! Un gigantesque observatoire.'"), nl, !.
 
 
@@ -519,30 +519,30 @@ voir(sigles) :-
         position_courante(laboratoire),
         affiche_sigle,
         write("Votre traducteur vous affiche :
-        Eni : 'C'est officiel... l'observatoire a ete un echec. Rien. Même avec sa taille, pas le moindre signal de l'Oeil. 
+        Eni : 'C'est officiel... l'observatoire a ete un echec. Rien. Meme avec sa taille, pas le moindre signal de l'Oeil. 
                 C'est comme si l'Univers refusait de nous guider vers lui.'
-        Vesh : 'On a conçu le plus grand detecteur jamais construit... Et malgre cela, il reste muet. 
-                Peut-être avons-nous mal compris l'Oeil. 
-                Peut-être que son signal n'est pas capte par nos instruments, même à cette echelle.'
-        Lann : 'Je refuse de croire que tous nos efforts soient vains. Mais peut-être devons-nous envisager d'autres methodes. 
+        Vesh : 'On a concu le plus grand detecteur jamais construit... Et malgre cela, il reste muet. 
+                Peut-etre avons-nous mal compris l'Oeil. 
+                Peut-etre que son signal n'est pas capte par nos instruments, meme a cette echelle.'
+        Lann : 'Je refuse de croire que tous nos efforts soient vains. Mais peut-etre devons-nous envisager d'autres methodes. 
                 Nous pourrions... le trouver par l'observation directe.'
         Eni : 'Attends, tu veux dire... envoyer une sonde pour reperer l'Oeil ? Dans le vide immense de l'espace ? 
-                Lann, envoyer une sonde au hasard dans l'univers n'a aucune chance de reussir. Même si l'Oeil est quelque part, 
-                il est minuscule à cette echelle. La sonde pourrait le manquer des milliards de fois.'
+                Lann, envoyer une sonde au hasard dans l'univers n'a aucune chance de reussir. Meme si l'Oeil est quelque part, 
+                il est minuscule a cette echelle. La sonde pourrait le manquer des milliards de fois.'
         Lann : 'Justement, Vesh. Je ne parle pas d'un envoi unique. Imagine une sonde lancee encore et encore, 
-                un nombre infini de fois, jusqu'à ce qu'elle atteigne l'Oeil. Il y a... un moyen de le faire.'
+                un nombre infini de fois, jusqu'a ce qu'elle atteigne l'Oeil. Il y a... un moyen de le faire.'
         Vesh : 'Un nombre infini de fois ? Lann, que veux-tu dire ?'
         Lann : 'Les recherches que nous avons faites sur le trou noir de Cravite ont revele un phenomene inattendu. 
-                Les objets qui tombent dans ce trou noir reapparaissent dans un trou blanc de l'autre côte... 
-                quelques millisecondes avant d'être entres dans le trou noir. Ce retour temporel pourrait theoriquement être amplifie.'
+                Les objets qui tombent dans ce trou noir reapparaissent dans un trou blanc de l'autre cote... 
+                quelques millisecondes avant d'etre entres dans le trou noir. Ce retour temporel pourrait theoriquement etre amplifie.'
         Eni : 'Amplifie... en utilisant un generateur de distorsion ? 
-                Si nous recreons une version miniature de Cravite et canalisons de l'energie à l'interieur, 
+                Si nous recreons une version miniature de Cravite et canalisons de l'energie a l'interieur, 
                 nous pourrions manipuler cette distorsion temporelle pour ramener la sonde en arriere... disons, 
-                toutes les 22 minutes : le temps qu'il faudrait à la sonde pour parcourir le systeme.'
+                toutes les 22 minutes : le temps qu'il faudrait a la sonde pour parcourir le systeme.'
         Vesh : 'D'accord, je crois que j'ai une idee de systeme pour faire tout fonctionner.
                 Mais nous devons aller sur Leviathe, nous aurons besoin des cyclones qui se trouvent dessus.
                 En effet, nous devrons construire un lance sonde geant et les cyclone nous aiderons
-                à mettre tout ca en orbite.'
+                a mettre tout ca en orbite.'
         Lann : 'Parfait! Partons sur Leviathe alors. Pye, etant l'apprentie d'Annona pourrais-tu rester ici
                 pour nous construire le generateur de distorsion s'il te plait ?'
         Pye : 'Pas de soucis, je m'y mets tout de suite !'"), nl, !.
@@ -557,7 +557,7 @@ voir(sigles) :-
 
 voir(dessin) :-
         position_courante(grotte),
-        write("Vous vous approchez de la fresque et voyez quelque chose ressemblant à ceci :"), nl,
+        write("Vous vous approchez de la fresque et voyez quelque chose ressemblant a ceci :"), nl,
         affiche_dessin, nl.
 
 % Intrus
@@ -835,7 +835,7 @@ decrire(laboratoire) :-
 decrire(passage_antigrav) :-
         write("Vous vous approchez du mur et appuyez vos pieds au mur.
         Ils restent colles au mur et vous commencez a marcher.
-        Vous êtes dans le vide et voyez au dessus de votre tete le trou noir de la planete."), nl.
+        Vous etes dans le vide et voyez au dessus de votre tete le trou noir de la planete."), nl.
 
 % Leviathe
 decrire(dehors) :-
@@ -888,7 +888,7 @@ decrire(gallerie) :-
 
 % Oeil de l univers
 decrire(oeil) :-
-        write("Vous arrivez sur une planète tres sombre et vos yeux peinent à s'adapter à la luminosite.
+        write("Vous arrivez sur une planete tres sombre et vos yeux peinent a s'adapter a la luminosite.
         Soudain, vous voyez des eclairs bleu zebrant les environs. 
         En vous avancant, vous discernez le sol sombre de cet etrange endroit.
         Des structures bleues ne semblant respecter aucune physique connue s'elevent dans le ciel aux alentours.
@@ -917,7 +917,7 @@ decrire(oeil) :-
         Tandis que vous prenez de plus en plus de hauteur, vous voyez le musee de haut, 
         lui-meme pose sur une enorme boule noire avec d'enormes eclairs bleus tout autour...
         Sans vous arretez de vous elever, vous voyez de plus en plus de choses autour de vous dont des soleils...
-        Cependant, au bout de quelques secondes, tous ces soleils viennent à exploser.
+        Cependant, au bout de quelques secondes, tous ces soleils viennent a exploser.
 
         En vous retournant, il vous semble tout de meme observer une zone avec de multiples points lumineux...
         Vous vous retrouvez alors projete en avant vers cette zone.
