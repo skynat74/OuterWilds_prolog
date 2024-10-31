@@ -540,10 +540,10 @@ voir(sigles) :-
                 nous pourrions manipuler cette distorsion temporelle pour ramener la sonde en arriere... disons, 
                 toutes les 22 minutes : le temps qu'il faudrait à la sonde pour parcourir le systeme.'
         Vesh : 'D'accord, je crois que j'ai une idee de systeme pour faire tout fonctionner.
-                Mais nous devons aller sur Leviathe, nous aurons besoin des cyclone qui se trouve dessus.
-                En effet, nous devrons construire un lance sonde geant et Les cyclone nous aidrons
+                Mais nous devons aller sur Leviathe, nous aurons besoin des cyclones qui se trouvent dessus.
+                En effet, nous devrons construire un lance sonde geant et les cyclone nous aiderons
                 à mettre tout ca en orbite.'
-        Lann : 'Parfait partons sur Leviathe alors. Pye, etant l'apprentie d'Annona pourrais-tu rester ici
+        Lann : 'Parfait! Partons sur Leviathe alors. Pye, etant l'apprentie d'Annona pourrais-tu rester ici
                 pour nous construire le generateur de distorsion s'il te plait ?'
         Pye : 'Pas de soucis, je m'y mets tout de suite !'"), nl, !.
 
@@ -583,7 +583,7 @@ voir(appareil) :-
 voir(appareil) :-
         position_courante(gallerie),
         write("Votre traducteur vous affiche :
-        'Poke : Cette enveloppe de pierre spherique semble etre la source  de l'energie que nous avons releve... Non ?
+        'Poke : Cette enveloppe de pierre spherique semble etre la source de l'energie que nous avons releve... Non ?
                 Je dirais plutot que la source se trouve a l'interieur de cette pierre. Je detecte une sorte de matiere exotique.
         'Pye : Cette pierre attenue fortement les releves que nous recevons.
                 Ils devraient etre au moins deux fois superieurs a ce qu'on voit actuellement.
@@ -789,9 +789,9 @@ decrire(dehors) :-
         -> (Options : voir sigles, aller fusee, aller trou, aller capsule, aller caverne)"), nl.
 
 decrire(trou) :-
-        write("Vous sautez dans le vide en direction le centre de la planete, c'est-a-dire le trou noir.
+        write("Vous sautez dans le vide en direction du centre de la planete, c'est-a-dire le trou noir.
         Vous rentrez dedans et... Le vide de l'espace vous entoure.
-        Vous apercevez toujours une multitudes d'etoiles ainsi que le soleil au loin,
+        Vous apercevez toujours une multitude d'etoiles ainsi que le soleil au loin,
         mais bizarrement il n'emet pas la meme lumiere que d'habitude... Ce n'est pas le soleil, c'est une autre etoile.
         Vous etes en fait a l'autre bout de la galaxie.
         Vous vous retournez et voyez, de la d'ou vous etes arrivez, une lumiere blanche eblouissante.
@@ -848,18 +848,18 @@ decrire(dehors) :-
         -> (Options : voir sigles, aller grotte, aller fusee)"), nl.
 
 decrire(grotte) :-
-        write("Vous rentrez dans le grotte et voyez des statues comme celles du musee un peu partout,
-        la difference ici c'est qu'il n'y en a aucune qui soit finalisees.
+        write("Vous rentrez dans la grotte et voyez des statues comme celles du musee un peu partout,
+        la difference ici c'est qu'il n'y en a aucune qui soit finalisee.
         Vous pouvez voir par terre un appareil contenant des sigles nomai.
         Vous pouvez aussi voir un dessin affiche au mur.
-        Enfin, il y a la porte pour repartir dehors.
+        Enfin, il y a la porte pour ressortir.
         -> (Options : voir appareil, voir dessin, aller dehors.)"), nl.
 
 % Intrus
 decrire(fusee) :-
         planete(intrus),
         write("Vous partez en direction de votre fusee en vous concentrant pour ne pas glisser sur la glace.
-        Vous arrivez a l'atteindre, vous vous accrochez a elle pour ne pas partir plus loin et rvous entrez par l'ecoutille.
+        Vous arrivez a l'atteindre, vous vous accrochez a elle pour ne pas partir plus loin et vous entrez par l'ecoutille.
         Vous pouvez y voir votre journal de bord ainsi que les commandes du vaisseau.
         -> (Options : voir journal, aller espace, aller dehors)"), nl.
 
@@ -873,18 +873,101 @@ decrire(dehors) :-
 
 decrire(crevasse) :-
         write("Vous arrivez a quelques metres sous la glace dans une caverne de glace.
-        Vous voyez un appareil au sol avec un squellete de nomai, toujours vetu d'une combinaison, a cote.
+        Vous voyez un appareil au sol avec un squelette de nomai, toujours vetu d'une combinaison, a cote.
         Vous voyez une gallerie dans la glace permettant de descendre plus profond.
         Vous voyez aussi la crevasse permettant de remonter a la surface.
         -> (Options : voir appareil, aller gallerie, aller dehors)"), nl.
 
 decrire(gallerie) :-
-        write("Vous prenez la gallerie et arrivez au centre de la comete.
+        write("Vous prenez la galerie et arrivez au centre de la comete.
         Vous voyez un rocher de taille consequente qui semble avoir explose de l'interieur.
         Dans la piece, un autre cadavre de nomai, aussi vetu d'une combinaison, flottant dans les airs.
         A cote du cadavre vous voyez un autre appareil.
-        Vous voyez aussi la gallerie permettant de remonter a la crevasse.
+        Vous voyez aussi la galerie permettant de remonter a la crevasse.
         -> (Options : voir appareil, aller crevasse)"), nl.
+
+% Oeil de l univers
+decrire(oeil) :-
+        write("Vous arrivez sur une planète tres sombre et vos yeux peinent à s'adapter à la luminosite.
+        Soudain, vous voyez des eclairs bleu zebrant les environs. 
+        En vous avancant, vous discernez le sol sombre de cet etrange endroit.
+        Des structures bleues ne semblant respecter aucune physique connue s'elevent dans le ciel aux alentours.
+        Au loin, vous discernez un trou s'enfoncant tres profondement, il vous est impossible de discerner
+        ce qu'il se trouve au fond : le trou est noir et sans fin... Mais il est au plafond.
+
+        Vous decidez tout de meme de vous elevez pour acceder au trou, grace au structure environnantes.
+        La gravite change sous vos pieds et vous parvenez a monter... meme si de votre point de vue vous ne faites qu'avancer.
+        Au bord de la structure, vous voyez le trou s'enfoncer sous vos pieds.
+        D'un elan, vous vous y jetez contre toute pensee rationnelle...
+
+        Rien d'autre que des lumieres bleues ne vous entourent tandis que vous continuez de vous enfoncer dans un trou sans fin.
+        Soudain, les lumieres s'elargissent devant une galerie gigantesque avec ce qui s'apparente a de grands pilliers bleus.
+        Tandis que vous continuez de tomber vous observer ces alentours a la fois terrifie et sans voix.
+        Vous ne sauriez dire si ce que vous voyez autour de vous existe reellement...
+
+        Tout d'un coup, vous vous retrouvez dans le musee d'Atrebois sombre et sans lumiere.
+        Explorant doucement, vous vous retrouvez face a l'etrange statue auquel vous avez fait face au debut de votre aventure.
+        Cependant, l'ecriteau a ete modifie depuis, il est indique :
+        'Les Nomai ne sont jamais parvenus a le voir de leur propre yeux, mais grace a leurs efforts et leur technologie,
+        un atrien a reussi a atteindre l'Oeil de l'univers.'
+
+        Vous continuez tranquillement d'explorer en sachant que cet endroit n'est pas le meme que celui de votre planete natale.
+        Puis en montant a l'etage, vous vous retrouvez face a un petit univers constitue d'enormement de minuscule soleils...
+        En le regardant de plus pres, vous vous retrouvez projeter en arriere.
+        Tandis que vous prenez de plus en plus de hauteur, vous voyez le musee de haut, 
+        lui-meme pose sur une enorme boule noire avec d'enormes eclairs bleus tout autour...
+        Sans vous arretez de vous elever, vous voyez de plus en plus de choses autour de vous dont des soleils...
+        Cependant, au bout de quelques secondes, tous ces soleils viennent à exploser.
+
+        En vous retournant, il vous semble tout de meme observer une zone avec de multiples points lumineux...
+        Vous vous retrouvez alors projete en avant vers cette zone.
+        Cependant, en vous approchant, vous comprenez qu'il s'agit d'une planete d'ou
+        depassent de nombreux arbres eclaires par les mutiples lumieres volant a mi-hauteur.
+
+        Vous vous retrouvez emerveille par ces petites lumieres flottant dans le vide.
+        En vous mettant tranquillement a marcher, vous deambulez entre toutes ces petites lumieres.
+        En vous approchant de plus pres de chacune d'elles vous voyez qu'il s'agit de petits systemes solaires.
+
+        Cependant, plus le temps passe et moins de lumieres sont presentes autour de vous...
+        Il semblerait qu'elle vienne a s'eteindre. Et plus avancez, plus vous entrez dans l'obscurite.
+        Deambulant dans le noir, muni de votre lampe torche, vous contournez les arbres sans reel objectif...
+        Vous butez alors soudainement sur un feu de camp, eteint, avec une chaise vide autour.
+        Aussi curieux soit-il, vous vous demandez si des personnes etaient la avant...
+        Vous songez alors a explorer pour chercher un signe de vie...
+
+        Mais c'est alors que vous entendez le feu de camp s'embraser derriere vous.
+        En vous retournant, vous voyez Esker, Feldspar, Chert, Gabbro, Riebeck et Solanum 
+        n'attendant que vous au coin du feu. 
+        En discutant avec chacun d'eux, ils vous proposent de jouer un morceau de musique, 
+        chacun avec son instrument.
+        Enfin, en parlant avec Solanum, elle vous dit :
+        'Un observateur conscient est entre dans l'Oeil. Je me demande ce qu'il va arriver desormais.'
+        Puis, vous demande :
+        'Est-il temps de le savoir ?'
+        Vous lui repondez que oui... puis vous observez chacun jouer de son intrument autour du feu.
+
+        En observant la fumee se degageant du feu, vous voyez qu'elle prend soudainement une forme arrondie.
+        Puis la forme se colore progressivement, devenant bleue par endroit. Puis entierement bleue.
+        Soudainement, la musique s'arrete et la planete se met a clignoter.
+        Vous entendez alors Esker :
+        'Cela fait longtemps que l'on ne s'est pas retrouve autour d'un feu de camps...
+        Je suis content que l'on ait pu se reunir avant la fin.'
+        
+        Soudainement, tout autour de vous s'etire a l'infini et vous vous retrouvez de nouveau dans le noir.
+        Vous ne voyez rien et ne sentez rien... Cela pendant une duree qui vous semble etre a la fois courte et interminable...
+
+        ...
+
+        ...
+
+        Tout d'un coup, vous voyez une matiere se propager face a vous, puis une tres grande explosion incandescente.
+        Il vous semble voir la naissance d'une etoile, grandissant et s'illuminant toujours plus.
+        Jusqu'a vous atteindre et vous submerger de lumiere...
+
+
+                                                        FIN
+
+        ")
 
 % Espace
 decrire(espace) :-
@@ -896,11 +979,11 @@ decrire(espace) :-
 decrire(soleil) :-
         write("Vous accelerez en direction du soleil, vous prenez de plus en plus de vitesse.
         Plus vous vous rapprochez, plus il fait chaud dans le cockpit et moins vous voyez devant vous.
-        Soudainement, vous vous dites qu'aller dans le soleil ne sers a rien et est sacrement dangereux.
-        Il est vrai qu'une telle decision est diffcilement comprehensible.
+        Soudainement, vous vous dites qu'aller dans le soleil ne sert a rien et est sacrement dangereux.
+        Il est vrai qu'une telle decision est difficilement comprehensible.
         Vous commencez donc a faire demi-tour, reacteurs pleine puissance.
         Malheureusement, vous etes deja trop pres et la gravite du soleil est trop puissante.
-        Vous vous retrouvez bruler par le soleil, puis vous vous retrouvez dans le noir..."), nl.
+        Vous vous retrouvez brule par le soleil, puis vous vous retrouvez dans le noir..."), nl.
 
 
 % Atterrissages
