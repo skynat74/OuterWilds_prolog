@@ -934,8 +934,13 @@ decrire(plateforme) :-
         Derriere vous, se trouve l'escalier pour redescendre en bas.
         -> (Options : voir sigles, aller grotte)"), nl.
 
-decrire(module) :-
-        write(""), nl.
+decrire(module_controle) :-
+        write("Vous arrivez dans un salle avec des appareils et des terminaux nomai.
+        Vous voyez un terminal encore allumé avec, de l'autre cote, un tableau contenant des sigles nomai.
+        Ainsi qu'une porte avec écrit au dessus 'module de pistage' mais l'entrée et cassée.
+        Vous voyez une autre porte avec écrit au dessus 'module de lancement'.
+        Enfin, il y a le tunnel pour repartir dehors.
+        -> (Options : voir terminal, aller module_lancement, aller dehors)"), nl.
 
 % Intrus
 decrire(fusee) :-
@@ -1002,7 +1007,14 @@ decrire(atterrissage_atrebois) :-
 
 decrire(atterrissage_intrus) :-
         write("Vous atterrissez difficilement sur la surface glacee de la comete.
-        Une fois votre vaisseau stabilise entre trois morceaux de glace, vous sortez de votre vaisseau"), nl.
+        Une fois votre vaisseau stabilise entre trois morceaux de glace, vous sortez de votre vaisseau."), nl.
+
+decrire(atterrissage_leviathe) :-
+        write("Vous mettez plein gaz en direction de la plus grosse planète du système.
+        Vous vous rapprochez en passez à coté d'une grande structure detruite en orbite.
+        Ensuite, vous passez à travers l'epaisse couche de nuages qui recouvre la planete.
+        Vous voyez la seule île de la planete et vous dirigez dans sa direction en evitant les cyclones.
+        Vous vous posez sur la plage en stabilisant la fusee dans le sable et sortez de celle-ci."), nl.
 
 % Autre
 decrire(mort) :-
