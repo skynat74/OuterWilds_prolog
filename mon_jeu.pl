@@ -302,6 +302,44 @@ aller(module_pistage) :-
         position_courante(module_lancement),
         decrire(echec_porte), !.
 
+% Station solaire
+aller(fusee) :-
+        position_courante(tarmac),
+        retract(position_courante(tarmac)),
+        assert(position_courante(fusee)),
+        regarder, !.
+
+aller(tarmac) :-
+        position_courante(fusee),
+        retract(position_courante(fusee)),
+        assert(position_courante(tarmac)),
+        regarder, !.
+
+aller(tarmac) :-
+        position_courante(entree),
+        retract(position_courante(entree)),
+        assert(position_courante(tarmac)),
+        regarder, !.
+
+aller(entree) :-
+        position_courante(tarmac),
+        retract(position_courante(tarmac)),
+        assert(position_courante(entree)),
+        regarder, !.
+
+aller(entree) :-
+        position_courante(baie),
+        retract(position_courante(baie)),
+        assert(position_courante(entree)),
+        regarder, !.
+
+aller(baie) :-
+        position_courante(entree),
+        retract(position_courante(entree)),
+        assert(position_courante(baie)),
+        regarder, !.
+
+
 % Intrus
 aller(fusee) :-
         position_courante(dehors),
@@ -394,6 +432,16 @@ aller(leviathe) :-
         retract(planete(X)),
         assert(planete(leviathe)),
         decrire(atterrissage_leviathe),
+        regarder, !.
+
+aller(station_solaire) :-
+        position_courante(espace),
+        planete(X),
+        retract(position_courante(espace)),
+        assert(position_courante(tarmac)),
+        retract(planete(X)),
+        assert(planete(station_solaire)),
+        decrire(atterrissage_station),
         regarder, !.
 
 aller(_) :-
@@ -633,8 +681,8 @@ voir(sigles) :-
         Lann : 'Les recherches que nous avons faites sur le trou noir de Cravite ont revele un phenomene inattendu. 
                 Les objets qui tombent dans ce trou noir reapparaissent dans un trou blanc de l'autre cote... 
                 quelques millisecondes avant d'etre entres dans le trou noir. Ce retour temporel pourrait theoriquement etre amplifie.'
-        Eni : 'Amplifie... en utilisant un generateur de distorsion ? 
-                Si nous recreons une version miniature de Cravite et canalisons de l'energie a l'interieur, 
+        Eni : 'Amplifie... en injectant de l'energie dans la distorsion ? 
+                Si nous recreons une version miniature de Cravite, un générateur de distorsions, et canalisons de l'energie a l'interieur, 
                 nous pourrions manipuler cette distorsion temporelle pour ramener la sonde en arriere... disons, 
                 toutes les 22 minutes : le temps qu'il faudrait a la sonde pour parcourir le systeme.'
         Vesh : 'D'accord, je crois que j'ai une idee de systeme pour faire tout fonctionner.
@@ -643,7 +691,8 @@ voir(sigles) :-
                 a mettre tout ca en orbite.'
         Lann : 'Parfait! Partons sur Leviathe alors. Pye, etant l'apprentie d'Annona pourrais-tu rester ici
                 pour nous construire le generateur de distorsion s'il te plait ?'
-        Pye : 'Pas de soucis, je m'y mets tout de suite !'"), nl, !.
+        Pye : 'Pas de soucis, je m'y mets tout de suite ! Par contre, il va nous falloir une sacrée quantité d'énergie.'
+        Vesh : 'J'ai ma petite idée pour ça aussi.'"), nl, !.
 
 % Leviathe
 voir(sigles) :-
@@ -748,6 +797,63 @@ voir(sigles) :-
                 vous transmettra automatiquement toutes les données pertinentes.
                 Quand la sonde aura trouvé la position de l’Oeil de l’univers, je vous enverrai directement une alerte à toi et Ramie.
                 D’une autre facette, je commence à m’inquiéter pour l’intégrité structurelle de ce canon et l’intégrité morale de son équipage."), nl, !.
+
+% Station solaire
+voir(terminal) :-
+        position_courante(tarmac),
+        write("Votre traducteur vous affiche :
+        IL Y A 281 042 ANS : Aucune commande d’utilisateur reçue depuis 10 minutes. Mise en vieille de l’ensemble des système.
+        IL Y A 6 MINUTES ET 38 SECONDES : Augmentation de l’activité solaire détectée. 
+                L’intégrité de la coque de la station solaire approche du seuil critique. Fermeture des issues de secours."), nl, !.
+
+voir(bureau) :-
+        position_courante(entree),
+        write("Vous vous approchez du bureau et voyez pleins de schéma de machines en tout genre.
+        Vous comprenez rien mais vous fouillez un peu dans les documents.
+        Vous trouvez un tablette sur laquelle vous pouvez traduire : 
+                'code porte leviathe'
+        Vous récupérez le document, il pourrait servir.
+        -> (Obtenu : code_porte)"), nl, !.
+
+voir(sigles) :-
+        position_courante(entree),
+        write("Votre traducteur vous affiche :
+        Pye : Mission : la science nous contraint à faire exploser l’étoile !
+        Idaea : Pourrions nous changer ça ? Travailler avec un ordre de mission aussi morbide sous les yeux ne me réjouit guère.
+        Pye : Il est tout à fait correcte pourtant. Nous allons créer une supernova au nom du progrès scientifique. Voilà notre mission.
+        Idaea : Notre mission est de décider si cet exploit, aussi irresponsable soit-il, est de l’ordre du possible.
+                En voilà une meilleure. Mission : déterminer s’il est possible d’amener l’étoile à exploser.
+        Pye : Tu n’as aucun sens de l’humour.
+        Idaea : Mais moi au moins j’ai un sens de l’éthique !
+        Pye : Je te saurais gré de ne pas partir en supernova avec moi avant que l’étoile ne l’ait fait Idaea."), nl, !.
+
+voir(terminal) :-
+        position_courante(baie),
+        write("L’étoile entre dans la dernière phase de son cycle de vie. Elle approche de géante rouge. 
+        DANGER : Évacuez la station solaire.
+        Temps restant avant la mort de l’étoile : environ 13 MINUTES, 44 SECONDES."), nl, !.
+
+voir(sigles) :-
+        position_courante(baie),
+        write("Votre traducteur vous afffiche :
+        Yarrow : Que s’est-il passé ? La station solaire n’a pas tiré ? 
+        Pye : Elle a tiré Yarrow. Mais ça a échoué. L’étoile a à peine réagit. 
+                Il y a bien eu des changements infinitésimaux en surface mais ils étaient à peine visibles, même au troisième œil.
+                La station solaire ne servira à rien. Elle ne pourra jamais faire exploser l’étoile. 
+                Je ne sais que faire maintenant, mes amis. 
+                Je suppose que nous devrions tout reprendre depuis le début, mais je ne sais comment nous y prendre. 
+        Yarrow : Commencez par rentrer tous les deux sur la Sablière noire, mon amie. 
+                Peut-être qu’une nouvelle tâche vous aidera : 
+                Spire a remarqué une comète, que nous avons appellé l'intrus,
+                qui approche de ce système stellaire et que nous souhaiterions voir de plus près...
+                Pye... Je souffre pour vous deux. Nous savons tous à quel point vous avez travaillé dur. 
+                Je ne peux que vous offrir ma compassion. Comment vas-tu ? Qu’en est-il d’Idaea ?
+        Idaea : Nous allons bien Yarrow (du moins, autant que faire se peut, compte tenu des circonstances), même si nous sommes déçus. 
+                Je n’approuvais peut-être pas l’explosion de l’étoile mais je n’ai jamais souhaité que notre appareil échoue. 
+                J’espérais en avoir fini avec ce funeste projet.
+                Nous allons donc aller sur l'intrus cela devrait faire du bien a Pye
+                
+        Si le projet n'a pas pu etre alimente... Comment se fais-ce que vous soyez dans la boucle temporelle ?"), nl, !.
 
 % Intrus
 voir(appareil) :-
@@ -1086,6 +1192,36 @@ decrire(echec_porte) :-
         write("Vous vous approchez de la porte et essayer un code au hasard.
         Le digicode emet un petit sond grave signifiant que le code n'est pas le bon.
         Vous abandonnez et retournez dans la salle derriere vous."), nl.
+
+% Station solaire
+decrire(fusee) :-
+        planete(station_solaire),
+        write("Vous marchez sur le tarmac a gravite artificielle jusqu'a votre fusee et entrez par l'ecoutille.
+        Vous pouvez y voir votre journal de bord ainsi que les commandes du vaisseau.
+        -> (Options : voir journal, aller espace, aller tarmac)"), nl.
+
+decrire(tarmac) :-
+        write("Vous arrivez sur larmac a gravite artificielle et regardez autous de vous.
+        Vous pouvez voir un terminal nomai allumé.
+        Vous voyez une porte permettant de d'arriver a l'entree de la station.
+        Vous voyez aussi votre fusee bien retenue à la station grace au champ gravitationnel nomai.
+        -> (Options : voir terminal, aller entree, aller fusee)"), nl.
+
+decrire(entree) :-
+        write("Vous arrivez dans un salle contenant plusieurs choses interressantes.
+        D'abord, vous voyez un tableau avec des sigles nomai.
+        Ensuite, vous voyez une sorte de bureau avec pleins d'objets inconnus dessus.
+        Vous voyez aussi un couloir permettant d'aller dans une autre salle avec une grande baie vitree.
+        Enfin, il y a la porte permettant de revenir sur la tarmac.
+        -> (Options : voir sigles, voir bureau, aller baie, aller tarmac)"), nl.
+
+decrire(baie) :-
+        write("Vous arrivez dans une salle avec une enorme baie vitree donnant directement sur le soleil, terriblement près.
+        Vous voyez un cadavre nomai sur un banc qui semblaient regarder le soleil avant de mourir.
+        Vous apercevez un terminal dans un coin de la piece.
+        Vous pouvez voir un autre tableau avec des sigles nomai.
+        Et vous avez derriere vous, le couloir permettant de revenir a l'entree de la station.
+        -> (Options : voir terminal, voir sigles, aller entree)"), nl.
 
 % Intrus
 decrire(fusee) :-
