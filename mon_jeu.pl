@@ -25,9 +25,13 @@ position(traducteur, en_main).
 position(codes, en_main).
 statue(activee).
 
-test(X) :-
+voir_position :-
+        position_courante(X),
         write(X).
 
+voir_planete :-
+        planete(X),
+        write(X).
 
 % position du joueur. Ce predicat sera modifie au fur et a mesure de la partie (avec `retract` et `assert`)
 position_courante(camp).
@@ -224,6 +228,12 @@ aller(dehors) :-
         assert(position_courante(dehors)),
         regarder, !.
 
+aller(dehors) :-
+        position_courante(module_controle),
+        retract(position_courante(module_controle)),
+        assert(position_courante(dehors)),
+        regarder, !.
+
 aller(grotte) :-
         position_courante(dehors),
         retract(position_courante(dehors)),
@@ -245,8 +255,52 @@ aller(plateforme) :-
 aller(plafond) :-
         position_courante(dehors),
         retract(position_courante(dehors)),
-        assert(position_courante(module)),
+        assert(position_courante(module_controle)),
         regarder, !.
+
+aller(module_controle) :-
+        position_courante(module_lancement),
+        retract(position_courante(module_lancement)),
+        assert(position_courante(module_controle)),
+        regarder, !.
+
+aller(module_controle) :-
+        position_courante(module_pistage),
+        retract(position_courante(module_pistage)),
+        assert(position_courante(module_controle)),
+        regarder, !.
+
+aller(module_lancement) :-
+        position_courante(module_controle),
+        retract(position_courante(module_controle)),
+        assert(position_courante(module_lancement)),
+        regarder, !.
+
+aller(module_lancement) :-
+        position_courante(module_pistage),
+        retract(position_courante(module_pistage)),
+        assert(position_courante(module_lancement)),
+        regarder, !.
+
+aller(module_pistage) :-
+        position_courante(module_controle),
+        position(code_porte, en_main),
+        retract(position_courante(module_controle)),
+        assert(position_courante(module_pistage)),
+        regarder, !.
+
+aller(module_pistage) :-
+        position_courante(module_lancement),
+        position(code_porte, en_main),
+        retract(position_courante(module_lancement)),
+        assert(position_courante(module_pistage)),
+        regarder, !.
+
+aller(module_pistage) :-
+        position_courante(module_controle),
+        decrire(echec_porte), !;
+        position_courante(module_lancement),
+        decrire(echec_porte), !.
 
 % Intrus
 aller(fusee) :-
@@ -543,7 +597,8 @@ voir(sigles) :-
         Eni : 'Bah... les calculs etaient justes, et pourtant... rien. Pas la moindre variation dans le signal.
                 C'est comme si l'Oeil ne diffusait plus rien du tout.'
         Vesh : 'On a verifie et recalibre chaque parametre. Le detecteur fonctionne.
-                Mais... l'Oeil doit emettre un signal bien trop faible pour notre equipement actuel. Nous ne capterons jamais quoi que ce soit a cette echelle.'
+                Mais... l'Oeil doit emettre un signal bien trop faible pour notre equipement actuel. 
+                Nous ne capterons jamais quoi que ce soit a cette echelle.'
         Lann : 'Alors, soit l'Oeil s'est affaibli, soit il est bien plus lointain que nous le pensions.
                 Peut-etre meme hors de portee de ce type de capteur. Si nous voulons le trouver, il va falloir penser... en plus grand.
                 Nous allons devoir construire un detecteur bien plus avance et complexe ! Un gigantesque observatoire.'"), nl, !.
@@ -619,7 +674,7 @@ voir(appareil) :-
                 Celui-ci pourra renvoyer les souvenirs ainsi stockés au nomaï auquel ils appartiennent."), nl, !.
 
 voir(sigles) :-
-        position_courante(grotte),
+        position_courante(plateforme),
         write("Votre traducteur vous affiche :
         Ramie : J’ai installé les masques à l’intérieur du projet sablière noire phlox. 
                 C’est rassurant de savoir que les statues ne se lieront pas avant la réussite du projet. 
@@ -630,7 +685,69 @@ voir(sigles) :-
         Phlox : Si quelque chose ne se passe pas comme prévu avec le projet sablière noire, 
                 les statues (et leurs masques) nous avertiront et nous permettrons d’y remédier. 
                 Autrement, nous pourrions ne jamais nous apercevoir du problème.
-        Ramie : Je n’avais pas pensé à ça ! Ce serait là un sort absolument affreux."), nl !.
+        Ramie : Je n’avais pas pensé à ça ! Ce serait là un sort absolument affreux."), nl, !.
+
+voir(terminal) :-
+        position_courante(module_controle),
+        write("Votre traducteur vous affiche :
+        Requête de lancement de sonde reçue du projet sablière noire.
+        Canon aligné sur une trajectoire de sonde choisie aléatoirement. Champ gravitationnel activé.
+        Début de journal de bord : Lance-sondes orbital. Requête de lancement reçue . Lancement de la sonde réussi.
+        Le module de pistage reçoit des données de la sonde.
+        ATTENTION : Structure du lance-sondes orbital compromise lors du lancement. Dégâts détectés sur de multiples modules."), nl, !.
+
+voir(sigles) :-
+        position_courante(module_controle),
+        write("Votre traducteur vous affiche :
+        Mallow : Tu imagines Privett ? Le module de pistage sera le premier à connaître les coordonnées de l’Oeil de l’univers ! 
+                Et tu seras la première à les voir !
+        Privett : Cela m’honore et me terrifie !
+                Tu ne vas pas pousser la puissance du lance-sondes orbital à un niveau qui l’endommagerait n’est ce pas ?
+        Mallow : Ne t’en fais pas mon amie ! De toute façon, nous n’allons tirer qu’une seule fois, 
+                alors qui se soucierait de quelques petits dommages structurels sur le lance-sondes orbital ?
+        Privett : Moi, Mallow ! Je m’en soucie, car nous ne pourrons pas recevoir les données de notre sonde 
+                si l'antenne qui relie le lance-sondes et le module de pistage est détruit !"), nl, !.
+
+voir(sigles) :-
+        position_courante(module_lancement),
+        write("Votre traducteur vous affiche :
+        Cassava : J’ai de mauvaises nouvelles Avens. Yarrow a dit qu’il y avait un problème avec la source d’alimentation envisagée, 
+                donc le lance sonde orbital n’aura pas ordre de tirer. 
+        Avens : J’espère que tu ne me mènes pas en vaisseau Cassava.
+        Cassava : J’aurais bien aimé, mon ami, mais non. Ils ne sont pas certains de pouvoir régler le problème, 
+                donc les activités du lance-sondes orbital sont suspendues jusqu’à nouvel ordre.
+                Rejoins moi sur la station solaire, c'est la que l'on a un problème..."), nl, !.
+
+voir(sigles_mur) :-
+        position_courante(module_lancement),
+        write("Votre traducteur vous affiche :
+        Lami : Papa pourquoi je ne peux pas rentrer dans le module de pistage ?
+        Avens : Le module de pistage est la pièce maitresse pour trouver l'Oeil de l'univers,
+                il contient de trop précieux terminaux pour être abimé par le temps ou des filoux comme toi.
+                Nous l'avons donc connstruit dans un materiaux très solide et verrouillé par un digicode.
+        Lami : Et je peux avoir le code ?
+        Avens : Si tu veux avoir le code il faudra aller sur la station solaire mon grand et fouiller les notes de Pye."), nl, !.
+
+voir(terminal) :-
+        position_courante(module_pistage),
+        write("Votre traducteur vous affiche :
+        Réception des données de la sonde 9 318 087.
+        Récupération des précédentes données de lancement de la Sablière noire.
+        Nombre total de sondes lancées : 9 318 087.
+        Une anomalie spatiale remplissant tous les critères connus relatifs à l’Oeil de l’univers a été détectée par la sonde 9 318 054.
+        Récupération des coordonnées enregistrées de la Sablière noire. Affichage des coordonnées de l’Oeil de l’univers.
+        -> (Obtenu : coordonnees_oeil)"), nl, !.
+
+voir(sigles) :-
+        position_courante(module_pistage),
+        write("Votre traducteur vous affiche :
+        Yarrow : J’ai des nouvelles intéressantes Privett : le projet sablière noire est presque prêt à recevoir 
+                les données de la sonde envoyée par le lance-sondes orbital. Ramie effectue quelques ultimes réglages mais 
+                elle n’en a plus pour très longtemps. Le lance-sondes orbital et son équipage se portent bien ?
+        Privett : Nous allons bien ! Le module de pistage est prêt à enregistrer la trajectoire de vol de chaque tir et 
+                vous transmettra automatiquement toutes les données pertinentes.
+                Quand la sonde aura trouvé la position de l’Oeil de l’univers, je vous enverrai directement une alerte à toi et Ramie.
+                D’une autre facette, je commence à m’inquiéter pour l’intégrité structurelle de ce canon et l’intégrité morale de son équipage."), nl, !.
 
 % Intrus
 voir(appareil) :-
@@ -910,6 +1027,13 @@ decrire(passage_antigrav) :-
         Vous etes dans le vide et voyez au dessus de votre tete le trou noir de la planete."), nl.
 
 % Leviathe
+decrire(fusee) :-
+        planete(leviathe),
+        write("Vous vous dirigez vers votre fusee, vos pieds s'enfoncent dans le sable.
+        Vous arrivez à votre fusee et entrez par l'ecoutille.
+        Vous pouvez y voir votre journal de bord ainsi que les commandes du vaisseau.
+        -> (Options : voir journal, aller espace, aller dehors)"), nl.
+
 decrire(dehors) :-
         planete(leviathe),
         write("Vous arrivez sur la plage de l'ile.
@@ -937,10 +1061,31 @@ decrire(plateforme) :-
 decrire(module_controle) :-
         write("Vous arrivez dans un salle avec des appareils et des terminaux nomai.
         Vous voyez un terminal encore allumé avec, de l'autre cote, un tableau contenant des sigles nomai.
-        Ainsi qu'une porte avec écrit au dessus 'module de pistage' mais l'entrée et cassée.
+        Ainsi qu'une porte avec écrit au dessus 'module de pistage' mais l'entrée est a l'air verrouille par un digicode.
         Vous voyez une autre porte avec écrit au dessus 'module de lancement'.
         Enfin, il y a le tunnel pour repartir dehors.
-        -> (Options : voir terminal, aller module_lancement, aller dehors)"), nl.
+        -> (Options : voir sigles, voir terminal, aller module_lancement, aller module_pistage, aller dehors)"), nl.
+
+decrire(module_lancement) :-
+        write("Vous arrivez dans une autre pièce remplie de terminaux mais cette fois aucun n'est allumé.
+        Par contre vous voyez un autre tableau avec des sigles nomai.
+        Vous voyez une porte avec marque au dessus 'module de pistage' mais elle a l'air verrouille par un digicode.
+        A cote de cette porte, vous voyez d'autres sigles nomai au mur.
+        Ainsi qu'une autre porte avec marque au dessus 'module de controle'.
+        -> (Options : voir sigles, voir sigle_mur, aller module_pistage, aller module_controle)"), nl.
+
+decrire(module_pistage) :-
+        write("Vous arrivez dans une salle avec une sorte d'ecran géant affichant le lance-sondes orbital en orbite.
+        Vous pouvez voir un tableau avec des sigles nomai.
+        Vous voyez egalement un terminal nomai.
+        Vous voyez une porte avec ecrit dessus 'module de lancement'.
+        Enfin, vous voyez une porte avec ecrit au dessus 'module de controle'.
+        -> (Options : vois sigles, voir terminal, aller module_lancement, aller module_controle)"), nl.
+
+decrire(echec_porte) :-
+        write("Vous vous approchez de la porte et essayer un code au hasard.
+        Le digicode emet un petit sond grave signifiant que le code n'est pas le bon.
+        Vous abandonnez et retournez dans la salle derriere vous."), nl.
 
 % Intrus
 decrire(fusee) :-
@@ -978,7 +1123,7 @@ decrire(espace) :-
         write("Vous prenez les commandes de votre vaisseau, allumez les moteur et vous envolez.
         Vous depassez la ligne d'horizon a vive allure et ne voyez plus que les etoiles dans le noir...
         Vous etes desormais dans l'espace, vous pouvez aller ou vous voulez !
-        -> (Options : aller soleil, aller atrebois, aller cravite, aller intrus)"), nl.
+        -> (Options : aller soleil, aller atrebois, aller cravite, aller leviathe, aller station_solaire, aller intrus)"), nl.
 
 decrire(soleil) :-
         write("Vous accelerez en direction du soleil, vous prenez de plus en plus de vitesse.
