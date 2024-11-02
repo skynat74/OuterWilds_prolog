@@ -7,7 +7,7 @@
 %
 
 % il faut declarer les predicats "dynamiques" qui vont etre modifies par le programme.
-:- dynamic position/2, position_courante/1, statue/1, planete/1, nombre_de_morts/1, compteur_temps/1.
+:- dynamic position/2, position_courante/1, statue/1, planete/1, nombre_de_morts/1, compteur_temps/1, sabliere_noire/1.
 :- discontiguous position/2.
 
 % on remet a jours les positions des objets et du joueur
@@ -19,6 +19,7 @@
 :- op(1000, fx, aller).
 :- op(1000, fx, dire).
 :- op(1000, fx, voir).
+:- op(1000, fx, reposer).
 
 % cheats
 position(traducteur, en_main).
@@ -48,6 +49,9 @@ planete(atrebois).
 % la statue n est pas activee au debut
 % statue(desactivee).
 
+% Sabliere noire est en cours de fonctionnement au debut
+sabliere_noire(activee).
+
 % le joueur n est pas encore mort au debut
 nombre_de_morts(0).
 
@@ -66,6 +70,28 @@ compteur_temps(22).
 regarder :-
         position_courante(Place),
         decrire(Place), nl.
+
+% pour prendre le generateur
+prendre(generateur) :-
+        position_courante(salle),
+        planete(sabliere),
+        retract(sabliere_noire(_)),
+        assert(sabliere_noire(desactivee)),
+        assert(position(generateur, en_main)), !.
+
+prendre(_) :-
+        write("Vous ne pouvez pas faire ceci."), nl.
+
+% pour reposer le generateur
+reposer(generateur) :-
+        position_courante(salle),
+        planete(sabliere),
+        retract(sabliere_noire(_)),
+        assert(sabliere_noire(activee)),
+        retract(position(generateur, en_main)), !.
+
+reposer(_) :-
+        write("Vous ne pouvez pas faire ceci."), nl.
 
 % gestion de la mort
 mort :-
@@ -96,7 +122,7 @@ incrementer_morts :-
         assert(nombre_de_morts(NouveauNombre)).
 
 
-% fin de partie
+% Fin de partie
 fin :-
         nl, write("La partie est finie."), nl,
         halt.
@@ -441,6 +467,64 @@ aller(baie) :-
         regarder, !.
 
 
+% Sabliere
+aller(fusee) :-
+        position_courante(dehors),
+        retract(position_courante(dehors)),
+        assert(position_courante(fusee)),
+        regarder, !.
+
+aller(dehors) :-
+        position_courante(fusee),
+        retract(position_courante(fusee)),
+        assert(position_courante(dehors)),
+        regarder, !.
+
+aller(dehors) :-
+        position_courante(ascenseur_haut),
+        retract(position_courante(ascenseur_haut)),
+        assert(position_courante(dehors)),
+        regarder, !.
+
+aller(trappe) :-
+        position_courante(dehors),
+        \+ position(code_trappe, en_main),
+        write("Vous vous rapprochez de la trappe et essayer un code au hasard.
+        Le digicode vous fait savoir que c'est le mauvais code.
+        Vous abandonnez et vous relevez."), !.
+
+aller(trappe) :-
+        position_courante(dehors),
+        position(code_trappe, en_main),
+        decrire(ouerture_trappe),
+        retract(position_courante(dehors)),
+        assert(position_courante(ascenseur_haut)),
+        regarder, !.
+
+aller(projet) :-
+        position_courante(ascenseur_haut),
+        retract(position_courante(ascenseur_haut)),
+        assert(position_courante(ascenseur_bas)),
+        regarder, !.
+
+aller(surface) :-
+        position_courante(ascenseur_bas),
+        retract(position_courante(ascenseur_bas)),
+        assert(position_courante(ascenseur_haut)),
+        regarder, !.
+
+aller(salle) :-
+        position_courante(ascenseur_bas),
+        retract(position_courante(ascenseur_bas)),
+        assert(position_courante(salle)),
+        regarder, !.
+
+aller(ascenceur) :-
+        position_courante(salle),
+        retract(position_courante(salle)),
+        assert(position_courante(ascenseur_bas)),
+        regarder, !.
+
 % Intrus
 aller(fusee) :-
         position_courante(dehors),
@@ -557,6 +641,7 @@ aller(station_solaire) :-
 aller(oeil_univers) :-
         position_courante(espace),
         position(distordeur, en_main),
+        position(coordonnees_oeil, en_main),
         planete(X),
         retract(position_courante(espace)),
         assert(position_courante(oeil_univers)),
@@ -845,7 +930,8 @@ voir(terminal) :-
         Nombre total de sondes lancées : "), write(NbSondes), write(".
         Une anomalie spatiale remplissant tous les critères connus relatifs à l’Oeil de l’univers a été détectée par la sonde 9 318 054.
         Récupération des coordonnées enregistrées de la Sablière noire. Affichage des coordonnées de l’Oeil de l’univers.
-        -> (Obtenu : coordonnees_oeil)"), nl, !.
+        -> (Obtenu : coordonnees_oeil)"),
+        assert(position(coordonnees_oeil, en_main)), nl, !.
 
 voir(sigles) :-
         position_courante(module_pistage),
@@ -872,10 +958,15 @@ voir(bureau) :-
         position_courante(entree),
         write("Vous vous approchez du bureau et voyez pleins de schéma de machines en tout genre.
         Vous comprenez rien mais vous fouillez un peu dans les documents.
-        Vous trouvez un tablette sur laquelle vous pouvez traduire : 
+        Vous trouvez une tablette sur laquelle vous pouvez traduire : 
                 'code porte leviathe'
         Vous récupérez le document, il pourrait servir.
-        -> (Obtenu : code_porte)"), nl, !.
+        Vous en voyez une autre sur laquelle vous pouvez traduire :
+                'code Sabliere noire'
+        Evidemment, vous prenez aussi !
+        -> (Obtenu : code_porte, code_trappe)"),
+        assert(position(code_porte, en_main)),
+        assert(position(code_trappe, en_main)), nl, !.
 
 voir(sigles) :-
         position_courante(entree),
@@ -1189,6 +1280,7 @@ decrire(evenement_statue) :-
         Vous restez au beau milieu du musee, perplexe. Vous regardez autours de vous... 
         Personne d'autre que la ruine nomai contenant des sigles n'a vu ce que vous venez de voir."), nl.
 
+
 % Cravite
 decrire(fusee) :-
         planete(cravite),
@@ -1253,6 +1345,7 @@ decrire(passage_antigrav) :-
         Ils restent colles au mur et vous commencez a marcher.
         Vous etes dans le vide et voyez au dessus de votre tete le trou noir de la planete."), nl.
 
+
 % Leviathe
 decrire(fusee) :-
         planete(leviathe),
@@ -1314,6 +1407,7 @@ decrire(echec_porte) :-
         Le digicode emet un petit sond grave signifiant que le code n'est pas le bon.
         Vous abandonnez et retournez dans la salle derriere vous."), nl.
 
+
 % Station solaire
 decrire(fusee) :-
         planete(station_solaire),
@@ -1344,6 +1438,7 @@ decrire(baie) :-
         Vous pouvez voir un autre tableau avec des sigles nomai.
         Et vous avez derriere vous, le couloir permettant de revenir a l'entree de la station.
         -> (Options : voir terminal, voir sigles, voir sigles_sol, aller entree)"), nl.
+
 
 % Intrus
 decrire(fusee) :-
@@ -1377,6 +1472,7 @@ decrire(gallerie) :-
         Vous voyez aussi la galerie permettant de remonter a la crevasse.
         -> (Options : voir appareil, aller crevasse)"), nl.
 
+
 % Sabliere
 decrire(fusee) :-
         planete(sabliere),
@@ -1392,7 +1488,41 @@ decrire(dehors) :-
         Ah si ! Il y a une trappe dans le sable mais elle est verrouille par un digicode nomai.
         -> (Options : aller trappe, aller fusee)"), nl.
 
-decrire()
+decrire(ouerture_trappe) :-
+        write("Vous vous rapprochez de la trappe et de son digicode.
+        Vous vous rappellez du code sur la bureau de la nomai, vous le tapper sur le digicode.
+        La trappe s'ouvre et laisse place a un ascenceur, vous rentrez dedans.").
+
+decrire(ascenseur_haut) :-
+        write("Vou rentrez dans l'ascenceur et voyez deux bouttons.
+        Un vous permet d'aller au 'projet sabliere noire',
+        l'autre vous permet d'aller a la 'surface'
+        -> (Options : aller projet, aller dehors)"), nl.
+
+decrire(ascenseur_bas) :-
+        write("Vous rentrez dans l'ascenceur et voyez deux bouttons.
+        Un vous permet d'aller au 'projet sabliere noire',
+        l'autre vous permet d'aller a la 'surface'
+        -> (Options : aller salle, aller surface)"), nl.
+
+decrire(salle) :-
+        position(generateur, en_main),
+        write("Vous regardez autour de vous, vous etes dans la salle du projet sabliere noire !
+        Il n'y a pas de gravite ici, vous etes surement au centre de la planete.
+        Le sol tournois sur l'axe de la planete permettant de creer une gravite artificielle.
+        Vous voyez des masques comme ceux que vous voyez lors de vos morts. Trois sont allumes, les autres sont eteints.
+        Vous voyez ce qui s'apparente au generateur de distorsions au centre, vous pouvez le prendre si vous voulez.
+        Derriere vous, se trouve l'ascenceur pour remonter a la surface.
+        -> (Options : prendre generateur, aller ascenceur)"), nl.
+
+decrire(salle) :-
+        \+ position(generateur, en_main),
+        write("Vous regardez autour de vous, vous etes dans la salle du projet sabliere noire !
+        Il n'y a pas de gravite ici, vous etes surement au centre de la planete.
+        Vous voyez des masques comme ceux que vous voyez lors de vos morts. Trois sont allumes, les autres sont eteints.
+        Vous voyez le socle pour le distordeur au centre de la salle.
+        Derriere vous, se trouve l'ascenceur pour remonter a la surface.
+        -> (Options : reposer generateur, aller ascenceur)"), nl.
 
 
 % Espace
@@ -1445,6 +1575,16 @@ decrire(atterrissage_station) :-
         Au moment ou elle passe, vous foncez dessus et vous vous posez un peu brutalement sur la plateforme d'atterrissage.
         Vous vous assurez que la fusee est bien tenue par la gravite artificielle nomai et sortez de la fusee."), nl.
 
+decrire(atterrissage_oeil) :-
+        write("Vous rentrez les coordonnees de l'oeil dans votre navigateur.
+        Vous activez le distordeur...
+        D'un coup, le vaisseau est pris dans une sorte de trou noir.
+        Tout aussi soudainement, la couleur du trou noir devient blanc.
+        Vous vous retrouvez sur une planete tres sombre et vos yeux peinent a s'adapter a la luminosite.
+        Vous sortez de votre fusee et commencez a faire quelques pas un peu effraye.
+        Vous vous retournez... Votre fusee a disparue..."), nl.
+
+
 % Autre
 decrire(mort) :-
         write("Vous restez un peu dans le noir jusqu'a ce que vous voyiez une sorte de masque nomai arriver au loin.
@@ -1476,9 +1616,10 @@ decrire(explosion_etoile) :-
         write("Vous entendez au loin d'étranges bruits.
         Vous voyez petit à petit une lumière bleue s'intensifier."), nl.
 
+
 % Oeil de l univers
 decrire(oeil_univers) :-
-        write("Vous arrivez sur une planete tres sombre et vos yeux peinent a s'adapter a la luminosite.
+        write("
         Soudain, vous voyez des eclairs bleu zebrant les environs. 
         En vous avancant, vous discernez le sol sombre de cet etrange endroit.
         Des structures bleues ne semblant respecter aucune physique connue s'elevent dans le ciel aux alentours.
