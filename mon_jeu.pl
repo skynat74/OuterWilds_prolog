@@ -4,7 +4,7 @@
 %%% Lancez la "requete"
 %%% jouer.
 %%% pour commencer une partie !
-%
+
 
 % il faut declarer les predicats "dynamiques" qui vont etre modifies par le programme.
 :- dynamic position/2, position_courante/1, statue/1, planete/1, nombre_de_morts/1, compteur_temps/1, sabliere_noire/1.
@@ -22,9 +22,11 @@
 :- op(1000, fx, reposer).
 
 % cheats
-position(traducteur, en_main).
-position(codes, en_main).
-statue(activee).
+% position(traducteur, en_main).
+% position(codes, en_main).
+% statue(activee).
+% position(generateur, en_main).
+% position(coordonnees_oeil, en_main).
 
 voir_position :-
         position_courante(X),
@@ -62,7 +64,7 @@ position_courante(camp).
 planete(atrebois).
 
 % la statue n est pas activee au debut
-% statue(desactivee).
+statue(desactivee).   
 
 % Sabliere noire est en cours de fonctionnement au debut
 sabliere_noire(activee).
@@ -70,8 +72,8 @@ sabliere_noire(activee).
 % le joueur n est pas encore mort au debut
 nombre_de_morts(0).
 
-% la boucle commence a 22 minutes
-compteur_temps(22).
+% la boucle commence a 0 minutes, pour aller jusqu a 22 minutes
+compteur_temps(0).
 
 
 % AAAAAAAAAAA     UUUU       UUUU     TTTTTTTTTTTT     RRRRRRRRRRRR     EEEEEEEEEEEE     SSSSSSSSSSSS
@@ -131,7 +133,7 @@ reinit :-
         assert(planete(atrebois)),
         incrementer_morts,
         retract(compteur_temps(_)),
-        assert(compteur_temps(22)),
+        assert(compteur_temps(0)),
         decrire(reveil),
         regarder, nl.
 
@@ -151,25 +153,25 @@ fin :-
 % Gestion de la boucle temporelle
 incrementer_temps :-
     compteur_temps(T),
-    NouveauTemps is T - 1,
+    NouveauTemps is T + 1,
     retract(compteur_temps(T)),
     assert(compteur_temps(NouveauTemps)), !.
 
 verifier_boucle :-
     compteur_temps(X),
-    X =< 0,
+    X >= 22,
     decrire(mort_supernova),
     mort, !.
 
 verifier_boucle :-
     compteur_temps(T),
-    T = 1,
+    T = 21,
     decrire(explosion_etoile),
     incrementer_temps, !.
 
 verifier_boucle :-
     compteur_temps(T),
-    T > 1,
+    T < 21,
     incrementer_temps, !.
 
 % verifie si le joueur est dans un lieu en exterieur, permettant de voir l'etoile s'effondrer
@@ -181,6 +183,18 @@ en_exterieur :-
         position_courante(camp);
         position_courante(etage);
         position_courante(tarmac).
+
+% Permet d attendre une minute
+attendre :-
+        verifier_boucle.
+
+attendre_boucle :-
+        retract(compteur_temps(_)),
+        assert(compteur_temps(21)),
+        verifier_boucle,
+        retract(compteur_temps(_)),
+        assert(compteur_temps(22)),
+        verifier_boucle.
 
 
 % affiche les instructions du jeu
@@ -194,6 +208,7 @@ instructions :-
         write("prendre(objet).          -- pour prendre un objet."), nl,
         write("reposer(objet).          -- pour remettre un objet a l'endroit ou vous l'avez trouvez."), nl,
         write("regarder.                -- pour regarder autour de vous."), nl,
+        write("attendre.                -- pour attendre une minute."), nl,
         write("instructions.            -- pour revoir ce message !."), nl,
         write("fin.                     -- pour terminer la partie et quitter."), nl,
         nl.
@@ -642,14 +657,14 @@ aller(leviathe) :-
 aller(station_solaire) :-
         position_courante(espace),
         nombre_de_morts(X),
-        X =< 6,
+        X =< 3,
         decrire(mort_station),
         mort, !.
 
 aller(station_solaire) :-
         position_courante(espace),
-        nombre_de_morts(X),
-        X > 6,
+        nombre_de_morts(N),
+        N > 3,
         planete(X),
         retract(position_courante(espace)),
         assert(position_courante(tarmac)),
@@ -670,7 +685,7 @@ aller(sabliere) :-
 
 aller(oeil_univers) :-
         position_courante(espace),
-        position(distordeur, en_main),
+        position(generateur, en_main),
         position(coordonnees_oeil, en_main),
         planete(X),
         retract(position_courante(espace)),
@@ -978,10 +993,9 @@ voir(sigles) :-
 voir(terminal) :-
         position_courante(tarmac),
         compteur_temps(T),
-        Temps_passe is 22 - T,
         write("Votre traducteur vous affiche :
         IL Y A 281 042 ANS : Aucune commande d’utilisateur recue depuis 10 minutes. Mise en vieille de l’ensemble des systeme.
-        IL Y A "), write(Temps_passe), write(" MINUTES : Augmentation de l’activite solaire detectee. 
+        IL Y A "), write(T), write(" MINUTES : Augmentation de l’activite solaire detectee. 
                 L’integrite de la coque de la station solaire approche du seuil critique. Fermeture des issues de secours."), nl, !.
 
 voir(bureau) :-
@@ -1013,9 +1027,10 @@ voir(sigles) :-
 voir(terminal) :-
         position_courante(baie),
         compteur_temps(T),
+        Temps_restant is 22 - T,
         write("L’etoile entre dans la derniere phase de son cycle de vie. Elle approche de geante rouge. 
         DANGER : Évacuez la station solaire.
-        Temps restant avant la mort de l’etoile : environ "), write(T), write(" MINUTES."), nl, !.
+        Temps restant avant la mort de l’etoile : environ "), write(Temps_restant), write(" MINUTES."), nl, !.
 
 voir(sigles) :-
         position_courante(baie),
@@ -1047,7 +1062,7 @@ voir(sigles_sol) :-
                 Et dire qu'il suffisait simplement de prendre le generateur de distorsion du projet Sabliere noire 
                 dans un vaisseau pour que celui ci distorde le vaisseau jusqu'au coordonnees que l'on aurait trouve...
                 Il suffisait juste de 'aller' a 'oeil_univers'.
-                Tous etait la..."), nl.
+                Tout etait la..."), nl.
 
 % Intrus
 voir(appareil) :-
@@ -1212,18 +1227,18 @@ parler :-
         position_courante(dehors),
         planete(intrus),
         compteur_temps(X),
-        X =< 17,
+        X =< 16,
         write("Ben ca alors ! Salut toi ! J’imagine que ton premier decollage s’est bien passe, alors? 
-        Bienvenue sur l'intrus. J’espere que tu n’as rien contre la galce.
+        Bienvenue sur l'intrus. J’espere que tu n’as rien contre la glace.
         -> (Options : dire que_fais_tu_ici)"), nl, !.
 
 parler :-
         position_courante(dehors),
         planete(intrus),
         compteur_temps(X),
-        X > 17,
-        write("Les etoiles ! Elles sont toutes en train de mourir ! Avec autant de supernovae, ca ne peut-etre que ca ! 
-        On est les prochains tu comprends ? Notre soleil ! Nom d’un Âtrien, on est les prochains !
+        X > 16,
+        write("Les etoiles ! Elles sont toutes en train de mourir ! Avec autant de supernovas, ca ne peut-etre que ca ! 
+        On est les prochains tu comprends ? Notre soleil ! Nom d’un Atrien, on est les prochains !
         -> (Options : dire comment_ca)"), nl, !.
 
 
@@ -1536,7 +1551,7 @@ decrire(ascenseur_bas) :-
         -> (Options : aller salle, aller surface)"), nl.
 
 decrire(salle) :-
-        position(generateur, en_main),
+        \+ position(generateur, en_main),
         write("Vous regardez autour de vous, vous etes dans la salle du projet sabliere noire !
         Il n'y a pas de gravite ici, vous etes surement au centre de la planete.
         Le sol tournois sur l'axe de la planete permettant de creer une gravite artificielle.
@@ -1546,7 +1561,7 @@ decrire(salle) :-
         -> (Options : prendre generateur, aller ascenceur)"), nl.
 
 decrire(salle) :-
-        \+ position(generateur, en_main),
+        position(generateur, en_main),
         write("Vous regardez autour de vous, vous etes dans la salle du projet sabliere noire !
         Il n'y a pas de gravite ici, vous etes surement au centre de la planete.
         Vous voyez des masques comme ceux que vous voyez lors de vos morts. Trois sont allumes, les autres sont eteints.
@@ -1557,7 +1572,7 @@ decrire(salle) :-
 decrire(prise_generateur) :-
         write("Vous retirez le generateur de distorsions de son socle.
         Soudainement, les lumieres de la salle s'eteignent et le sol arrete de tourner.
-        Maintenant le mort est definitive..."), nl.
+        Maintenant la mort est definitive..."), nl.
 
 
 % Espace
