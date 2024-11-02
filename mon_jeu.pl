@@ -7,7 +7,7 @@
 %
 
 % il faut declarer les predicats "dynamiques" qui vont etre modifies par le programme.
-:- dynamic position/2, position_courante/1, statue/1, planete/1, au_moins_une_mort/1.
+:- dynamic position/2, position_courante/1, statue/1, planete/1, nombre_de_morts/1, compteur_temps/1.
 :- discontiguous position/2.
 
 % on remet a jours les positions des objets et du joueur
@@ -33,6 +33,14 @@ voir_planete :-
         planete(X),
         write(X).
 
+voir_temps :-
+        compteur_temps(X),
+        write(X).
+
+voir_nb_mort :-
+        nombre_de_morts(X),
+        write(X).
+
 % position du joueur. Ce predicat sera modifie au fur et a mesure de la partie (avec `retract` et `assert`)
 position_courante(camp).
 planete(atrebois).
@@ -41,29 +49,116 @@ planete(atrebois).
 % statue(desactivee).
 
 % le joueur n est pas encore mort au debut
-au_moins_une_mort(faux).
+nombre_de_morts(0).
 
-% position des objets
+% la boucle commence a 22 minutes
+compteur_temps(22).
 
-% ramasser un objet
-prendre(X) :-
-        position(X, en_main),
-        write("Vous l'avez deja !"), nl,
-        !.
 
-prendre(X) :-
-        position_courante(P),
-        position(X, P),
-        retract(position(X, P)),
-        assert(position(X, en_main)),
-        write("OK."), nl,
-        !.
+% AAAAAAAAAAA     UUUU       UUUU     TTTTTTTTTTTT     RRRRRRRRRRRR     EEEEEEEEEEEE     SSSSSSSSSSSS
+% AAAAA    AAAAA  UUUU       UUUU         TTTT         RRRR      RRRR   EEEE            SSSS
+% AAAAAAAAAAAAAA  UUUU       UUUU         TTTT         RRRRRRRRRRRRR    EEEEEEEEEEEE      SSSSSSSSSSSS
+% AAAAA    AAAAA  UUUU       UUUU         TTTT         RRRR   RRRR      EEEE                     SSSS
+% AAAAA    AAAAA    UUUUUUUUUUUU          TTTT         RRRR     RRRR    EEEEEEEEEEEE     SSSSSSSSSSSS
 
-prendre(X) :-
-        write("??? Je ne vois pas de "),
-        write(X),
-        write(" ici."), nl,
-        fail.
+
+% regarder autour de soi
+regarder :-
+        position_courante(Place),
+        decrire(Place), nl.
+
+% gestion de la mort
+mort :-
+        statue(activee),
+        decrire(mort), nl,
+        reinit.
+
+mort :-
+        statue(desactivee),
+        write("Le noir de la mort ne se dissipa jamais... Les autres Atriens ne vous reverrons plus jamais."),
+        fin.
+
+reinit :-
+        retract(position_courante(_)),
+        assert(position_courante(camp)),
+        retract(planete(_)),
+        assert(planete(atrebois)),
+        incrementer_morts,
+        retract(compteur_temps(_)),
+        assert(compteur_temps(22)),
+        decrire(reveil),
+        regarder, nl.
+
+incrementer_morts :-
+        nombre_de_morts(N),
+        NouveauNombre is N + 1,
+        retract(nombre_de_morts(N)),
+        assert(nombre_de_morts(NouveauNombre)).
+
+
+% fin de partie
+fin :-
+        nl, write("La partie est finie."), nl,
+        halt.
+
+
+% Gestion de la boucle temporelle
+decrementer_temps :-
+    compteur_temps(T),
+    NouveauTemps is T - 1,
+    retract(compteur_temps(T)),
+    assert(compteur_temps(NouveauTemps)), !.
+
+verifier_boucle :-
+    compteur_temps(X),
+    X =< 0,
+    decrire(mort_supernova),
+    mort, !.
+
+verifier_boucle :-
+    compteur_temps(T),
+    T = 1,
+    decrire(explosion_etoile),
+    decrementer_temps, !.
+
+verifier_boucle :-
+    compteur_temps(T),
+    T > 1,
+    decrementer_temps, !.
+
+% verifie si le joueur est dans un lieu en exterieur, permettant de voir l'étoile s'effondrer
+en_exterieur :-
+        position_courante(dehors),
+        \+ planete(leviathe);
+        position_courante(baie);
+        position_courante(espace);
+        position_courante(camp);
+        position_courante(etage);
+        position_courante(tarmac).
+
+
+% affiche les instructions du jeu
+instructions :-
+        nl,
+        write("Les commandes doivent etre donnees avec la syntaxe Prolog habituelle."), nl,
+        write("Les commandes existantes sont :"), nl,
+        write("jouer.                   -- pour commencer une partie."), nl,
+        write("dire(mot).               -- pour dire quelque chose aux pnj."), nl,
+        write("aller(direction).        -- pour aller dans cette direction."), nl,
+        write("prendre(objet).          -- pour prendre un objet."), nl,
+        write("lacher(objet).           -- pour lacher un objet en votre possession."), nl,
+        write("regarder.                -- pour regarder autour de vous."), nl,
+        write("instructions.            -- pour revoir ce message !."), nl,
+        write("fin.                     -- pour terminer la partie et quitter."), nl,
+        nl.
+
+
+
+% lancer une nouvelle partie
+jouer :-
+        instructions,
+        decrire(reveil),
+        regarder.
 
 
 % DDDDDDDDDDDD     EEEEEEEEEEEE     PPPPPPPPPPP       LLLLL             AAAAAAAAA     CCCCCCCCCCCCC   EEEEEEEEEEEE     MMMMM      MMMMM     EEEEEEEEEEEE     NNNN        NNNN    TTTTTTTTTTTT     SSSSSSSSSSSS
@@ -71,6 +166,12 @@ prendre(X) :-
 % DDDD        DDD  EEEEEEEEEEEE     PPPPPPPPPPPP      LLLLL             AAAAAAAAAAA CCCC              EEEEEEEEEEEE     MMMMMMMMMMMMMMMM     EEEEEEEEEEEE     NNNN NNN    NNNN        TTTT       SSSSSSSSSSSS
 % DDDD        DDD  EEEE             PPPP              LLLLL             AAAA   AAAA CCCC              EEEE             MMMMMMMMMMMMMMMM     EEEE             NNNN   NNN  NNNN        TTTT                 SSSS
 % DDDDDDDDDDDD     EEEEEEEEEEEE     PPPP              LLLLLLLLLLLLLLL   AAAA   AAAA    CCCCCCCCCCCCC  EEEEEEEEEEEE     MMMMM       MMMM     EEEEEEEEEEEE     NNNN      NNNNN        TTTT       SSSSSSSSSSSS
+
+% A chaque fois que le joueur se deplace, le temps avance
+aller(_) :-
+        verifier_boucle,
+        fail.
+
 
 % Atrebois
 aller(musee) :-
@@ -436,6 +537,15 @@ aller(leviathe) :-
 
 aller(station_solaire) :-
         position_courante(espace),
+        nombre_de_morts(X),
+        X =< 6,
+        decrire(mort_station),
+        mort, !.
+
+aller(station_solaire) :-
+        position_courante(espace),
+        nombre_de_morts(X),
+        X > 6,
         planete(X),
         retract(position_courante(espace)),
         assert(position_courante(tarmac)),
@@ -444,73 +554,21 @@ aller(station_solaire) :-
         decrire(atterrissage_station),
         regarder, !.
 
+aller(oeil_univers) :-
+        position_courante(espace),
+        position(distordeur, en_main),
+        planete(X),
+        retract(position_courante(espace)),
+        assert(position_courante(oeil_univers)),
+        retract(planete(X)),
+        assert(planete(oeil_univers)),
+        decrire(atterrissage_oeil),
+        regarder,
+        fin, !.
+
 aller(_) :-
         write("Vous ne pouvez pas aller par la."),
         fail.
-
-
-% AAAAAAAAAAA     UUUU       UUUU     TTTTTTTTTTTT     RRRRRRRRRRRR     EEEEEEEEEEEE     SSSSSSSSSSSS
-% AAAAA    AAAAA  UUUU       UUUU         TTTT         RRRR      RRRR   EEEE            SSSS
-% AAAAAAAAAAAAAA  UUUU       UUUU         TTTT         RRRRRRRRRRRRR    EEEEEEEEEEEE      SSSSSSSSSSSS
-% AAAAA    AAAAA  UUUU       UUUU         TTTT         RRRR   RRRR      EEEE                     SSSS
-% AAAAA    AAAAA    UUUUUUUUUUUU          TTTT         RRRR     RRRR    EEEEEEEEEEEE     SSSSSSSSSSSS
-
-
-% regarder autour de soi
-regarder :-
-        position_courante(Place),
-        decrire(Place), nl.
-
-% morts
-mort :-
-        statue(activee),
-        decrire(mort), nl,
-        reveil.
-
-mort :-
-        statue(desactivee),
-        write("Le noir de la mort ne se dissipa jamais... Les autres Atriens ne vous reverrons plus jamais."),
-        fin.
-
-reveil :-
-        retract(position_courante(_)),
-        assert(position_courante(camp)),
-        retract(planete(_)),
-        assert(planete(atrebois)),
-        retract(au_moins_une_mort(_)),
-        assert(au_moins_une_mort(vrai)),
-        decrire(reveil),
-        regarder, nl.
-
-
-% fin de partie
-fin :-
-        nl, write("La partie est finie."), nl,
-        halt.
-
-
-% affiche les instructions du jeu
-instructions :-
-        nl,
-        write("Les commandes doivent etre donnees avec la syntaxe Prolog habituelle."), nl,
-        write("Les commandes existantes sont :"), nl,
-        write("jouer.                   -- pour commencer une partie."), nl,
-        write("dire(mot).               -- pour dire quelque chose aux pnj."), nl,
-        write("aller(direction).        -- pour aller dans cette direction."), nl,
-        write("prendre(objet).          -- pour prendre un objet."), nl,
-        write("lacher(objet).           -- pour lacher un objet en votre possession."), nl,
-        write("regarder.                -- pour regarder autour de vous."), nl,
-        write("instructions.            -- pour revoir ce message !."), nl,
-        write("fin.                     -- pour terminer la partie et quitter."), nl,
-        nl.
-
-
-
-% lancer une nouvelle partie
-jouer :-
-        instructions,
-        decrire(reveil),
-        regarder.
 
 
 % VVVV         VVVV      OOOOOOOOOOOO      IIIIIIIIIIIIII     RRRRRRRRRRRR
@@ -779,10 +837,12 @@ voir(sigles_mur) :-
 
 voir(terminal) :-
         position_courante(module_pistage),
+        nombre_de_morts(X),
+        NbSondes is 9318054 + X,
         write("Votre traducteur vous affiche :
-        Réception des données de la sonde 9 318 087.
+        Réception des données de la sonde "), write(NbSondes), write(".
         Récupération des précédentes données de lancement de la Sablière noire.
-        Nombre total de sondes lancées : 9 318 087.
+        Nombre total de sondes lancées : "), write(NbSondes), write(".
         Une anomalie spatiale remplissant tous les critères connus relatifs à l’Oeil de l’univers a été détectée par la sonde 9 318 054.
         Récupération des coordonnées enregistrées de la Sablière noire. Affichage des coordonnées de l’Oeil de l’univers.
         -> (Obtenu : coordonnees_oeil)"), nl, !.
@@ -801,9 +861,11 @@ voir(sigles) :-
 % Station solaire
 voir(terminal) :-
         position_courante(tarmac),
+        compteur_temps(T),
+        Temps_passe is 22 - T,
         write("Votre traducteur vous affiche :
         IL Y A 281 042 ANS : Aucune commande d’utilisateur reçue depuis 10 minutes. Mise en vieille de l’ensemble des système.
-        IL Y A 6 MINUTES ET 38 SECONDES : Augmentation de l’activité solaire détectée. 
+        IL Y A "), write(Temps_passe), write(" MINUTES : Augmentation de l’activité solaire détectée. 
                 L’intégrité de la coque de la station solaire approche du seuil critique. Fermeture des issues de secours."), nl, !.
 
 voir(bureau) :-
@@ -829,9 +891,10 @@ voir(sigles) :-
 
 voir(terminal) :-
         position_courante(baie),
+        compteur_temps(T),
         write("L’étoile entre dans la dernière phase de son cycle de vie. Elle approche de géante rouge. 
         DANGER : Évacuez la station solaire.
-        Temps restant avant la mort de l’étoile : environ 13 MINUTES, 44 SECONDES."), nl, !.
+        Temps restant avant la mort de l’étoile : environ "), write(T), write(" MINUTES.") nl, !.
 
 voir(sigles) :-
         position_courante(baie),
@@ -851,9 +914,19 @@ voir(sigles) :-
         Idaea : Nous allons bien Yarrow (du moins, autant que faire se peut, compte tenu des circonstances), même si nous sommes déçus. 
                 Je n’approuvais peut-être pas l’explosion de l’étoile mais je n’ai jamais souhaité que notre appareil échoue. 
                 J’espérais en avoir fini avec ce funeste projet.
-                Nous allons donc aller sur l'intrus cela devrait faire du bien a Pye
+        Pye : Je vais aller sur l'intrus ca me fera du bien vous avez raison...
+        Idaea : Je vais personnellement rester ici si ca ne te derange pas.
                 
         Si le projet n'a pas pu etre alimente... Comment se fais-ce que vous soyez dans la boucle temporelle ?"), nl, !.
+
+voir(sigles_sol) :-
+        position_courante(baie),
+        write("Votre traducteur vous affiche :
+        Idaea : Quel dommage que le projet n'ai pas fonctionne... 
+                Et dire qu'il suffisait simplement de prendre le generateur de distorsion du projet Sabliere noire 
+                dans un vaisseau pour que celui ci distorde le vaisseau jusqu'au coordonnees que l'on aurait trouve...
+                Il suffisait juste de 'aller' a 'oeil_univers'.
+                Tous etait la..."), nl.
 
 % Intrus
 voir(appareil) :-
@@ -975,7 +1048,8 @@ affiche_dessin :-
 
 parler :-
         position_courante(camp),
-        au_moins_une_mort(faux),
+        nombre_de_morts(X),
+        X =< 0,
         write("Si c'est pas notre pilote ! Je vois que tu es de retour de ta derniere nuit a la belle etoile avant ton decollage.
         Alors ca y est, c'est le grand jour ? J'ai l'impression que tu as rejoint le programme spatial pas plus tard qu'hier, 
         et voila soudain que tu t'appretes a partir pour ton premier voyage en solitaire.
@@ -984,11 +1058,22 @@ parler :-
 
 parler :-
         position_courante(camp),
-        au_moins_une_mort(vrai),
+        nombre_de_morts(X),
+        X > 0,
         write("Alors, t'as pas hate de t'envoler a bord de cette fusee ? Le plein est fait, y'a plus qu'a decoller !
         -> (Options : dire allons-y, dire ok, dire je_viens_de_mourir). "), nl, !.
+
+parler:-
+        position_courante(etage),
+        nombre_de_morts(X),
+        X > 0,
+        write("Hé ! Regarde, la statue a ouvert les yeux ! Tu aurais bien aimé voir ça, pas vrai ? (Soupir...) Moi aussi.
+        Je suis encore bien loin d'avoir percé le secret de cette statue."), nl, !.
         
-        
+parler :-
+        position_courante(etage),
+        position(codes, en_main),
+        write("Aller c'est l'heure, part explorer l'espace jeune atrien !"), nl, !.
 
 parler :-
         position_courante(etage),
@@ -1002,6 +1087,25 @@ parler :-
         assert(position(traducteur, en_main)),
         assert(position(codes, en_main)), nl.
 
+parler :-
+        position_courante(dehors),
+        planete(intrus),
+        compteur_temps(X),
+        X =< 17,
+        write("Ben ça alors ! Salut toi ! J’imagine que ton premier décollage s’est bien passé, alors? 
+        Bienvenue sur l'intrus. J’espère que tu n’as rien contre la galce.
+        -> (Options : dire que_fais_tu_ici)"), nl.
+
+parler :-
+        position_courante(dehors),
+        planete(intrus),
+        compteur_temps(X),
+        X > 17,
+        write("Les étoiles ! Elles sont toutes en train de mourir ! Avec autant de supernovae, ça ne peut-être que ça ! 
+        On est les prochains tu comprends ? Notre soleil ! Nom d’un Âtrien, on est les prochains !
+        -> (Options : dire comment_ca)"), nl.
+
+
 % interaction personnages
 dire(allons-y) :-
         position_courante(camp),
@@ -1012,15 +1116,32 @@ dire(allons-y) :-
 dire(ok) :-
         position_courante(camp),
         write("Ha ha ! Tout est pret de mon cote - on va enfin pouvoir tester le nouveau systeme d'atterrissage 
-        hydraulique avec un pilote plutot que le systeme automatique ! ... En parlant de pilote, 
+        hydraulique avec un pilote plutot que le systeme automatique !... En parlant de pilote, 
         evite de t'ecraser a ton premier atterrissage, compris ? Quoi qu'il en soit, tu vas devoir parler a 
         Cornee a l'observatoire pour obtenir les codes de lancement si tu veux pouvoir decoller."), nl.
 
 dire(je_viens_de_mourir) :-
         position_courante(camp),
-        au_moins_une_mort(vrai),
         write("Hola ! On a fait un cauchemar ? Tu dors encore a moitie, mais tu m'as l'air bel et bien en vie.
         Je sais que c'est la tradition de dormir a la belle etoile la veille d'un depart, mais si tu veux mon avis, ca vous rend un peu nerveux."), nl.
+
+dire(que_fais_tu_ici) :-
+        position_courante(dehors),
+        planete(intrus),
+        write("Cornée m’a fait remarquer que nos cartes étaient obsolètes, donc je suis la pour les mettre a jour. 
+        Mais il y a quelque chose de... comment dire... bizarre. J’ai vu... Allez, bien dix supernovas ? Même douze peut-être ? 
+        On dépasse la dizaine maintenant, et ça, ce n’est pas normal, tu sais. Pas normal du tout...
+        Reviens me voir plus tard je vais essayer de voir ce que je peux trouver à ce sujet..."), nl.
+
+dire(comment_ca) :
+        position_courante(dehors),
+        planete(intrus),
+        write("C’est les étoiles. Toutes les autres étoiles sont en train de mourir, tu vois. 
+        Oh, pourquoi il fallait qu’on naisse pendant l’extinction de l’univers ? Et notre soleil, il va… Les cartes des étoiles ! 
+        Pourquoi ? Il fallait vraiment que je les mette à jour, hein ? J’aurais préféré ne rien savoir, mais non, non ! 
+        Il a fallu que je mette les cartes étoiles à jour ! Il fallait que j’aille fureter ou je n’aurais pas dû ! 
+        Et maintenant, notre soleil est sur le point de.. sur le point de… Oh… Je ne me sens pas très bien… 
+        J'aimerais que tu t’en ailles s’il te plait."), nl.
 
 
 % DDDDDDDDDDDD     EEEEEEEEEEEE     SSSSSSSSSSSS      CCCCCCCCCCCCC  RRRRRRRRRRRR     IIIIIIIIIIIII    PPPPPPPPPPP       TTTTTTTTTTTT     IIIIIIIIIIIII    OOOOOOOOOOO     NNNN        NNNN     SSSSSSSSSSSS
@@ -1217,11 +1338,12 @@ decrire(entree) :-
 
 decrire(baie) :-
         write("Vous arrivez dans une salle avec une enorme baie vitree donnant directement sur le soleil, terriblement près.
-        Vous voyez un cadavre nomai sur un banc qui semblaient regarder le soleil avant de mourir.
+        Vous voyez un cadavre nomai sur un banc qui semblaient regarder le soleil avant de mourir, 
+        vous pouvez voir qu'il y a des sigles a cote de celui-ci.
         Vous apercevez un terminal dans un coin de la piece.
         Vous pouvez voir un autre tableau avec des sigles nomai.
         Et vous avez derriere vous, le couloir permettant de revenir a l'entree de la station.
-        -> (Options : voir terminal, voir sigles, aller entree)"), nl.
+        -> (Options : voir terminal, voir sigles, voir sigles_sol, aller entree)"), nl.
 
 % Intrus
 decrire(fusee) :-
@@ -1234,10 +1356,11 @@ decrire(fusee) :-
 decrire(dehors) :-
         planete(intrus),
         write("Vous regardez autours de vous.
+        Vous voyez Chail, une astronaute qui est partie dans l'espace avant vous, avec une carte.
         Vous pouvez voir une navette nomai coincee dans la glace de la comete avec un appareil de communication nomai a ses pieds.
         Vous pouvez aussi apercevoir une crevasse dans la glace s'enfoncant dans l'intrus.
         Enfin, vous voyez votre fusee qui ne bouge pas trop de la ou vous l'avez laissee.
-        -> (Options : voir appareil, aller crevasse, aller fusee)"), nl.
+        -> (Options : parler, voir appareil, aller crevasse, aller fusee)"), nl.
 
 decrire(crevasse) :-
         write("Vous arrivez a quelques metres sous la glace dans une caverne de glace.
@@ -1253,6 +1376,24 @@ decrire(gallerie) :-
         A cote du cadavre vous voyez un autre appareil.
         Vous voyez aussi la galerie permettant de remonter a la crevasse.
         -> (Options : voir appareil, aller crevasse)"), nl.
+
+% Sabliere
+decrire(fusee) :-
+        planete(sabliere),
+        write("Vous repartez vers votre fusee en ayant vos pieds qui s'enfoncent dans le sable.
+        Vous l'atteignez et rentrez par l'ecoutille.
+        Vous pouvez y voir votre journal de bord ainsi que les commandes du vaisseau.
+        -> (Options : voir journal, aller espace, aller dehors)"), nl.
+
+decrire(dehors) :-
+        planete(sabliere),
+        write("Vous regardez autours de vous.
+        Il n'y rien... Vous, du sable et votre fusee...
+        Ah si ! Il y a une trappe dans le sable mais elle est verrouille par un digicode nomai.
+        -> (Options : aller trappe, aller fusee)"), nl.
+
+decrire()
+
 
 % Espace
 decrire(espace) :-
@@ -1297,14 +1438,46 @@ decrire(atterrissage_leviathe) :-
         Vous voyez la seule île de la planete et vous dirigez dans sa direction en evitant les cyclones.
         Vous vous posez sur la plage en stabilisant la fusee dans le sable et sortez de celle-ci."), nl.
 
+decrire(atterrissage_station) :-
+        write("Vous rapprochez de la station solaire et vous concentrez, l'atterrissage va etre complique.
+        En effet, la station solaire est très proche du soleil donc très dangereuse.
+        Vous epousez l'orbite du soleil et attendez que la station passe a cote de vous.
+        Au moment ou elle passe, vous foncez dessus et vous vous posez un peu brutalement sur la plateforme d'atterrissage.
+        Vous vous assurez que la fusee est bien tenue par la gravite artificielle nomai et sortez de la fusee."), nl.
+
 % Autre
 decrire(mort) :-
         write("Vous restez un peu dans le noir jusqu'a ce que vous voyiez une sorte de masque nomai arriver au loin.
         Il est accompagne de rayons violets et vous voyez vos souvenirs depuis votre reveil defiler...
         Vous rentrer alors dans l'oeil du masque."), nl.
 
+decrire(mort_station) :-
+        write("Vous rapprochez de la station solaire et vous concentrez, l'atterrissage va etre complique.
+        En effet, la station solaire est très proche du soleil donc très dangereuse.
+        Malheureusement, vous faites une erreur dans votre maneuvre et vous retrouvez brule dans le soleil.
+        Il faudra reessayer jusqu'a avoir assez d'experience ou alors se la faire en explorant autre part peut-etre.
+        Apres que votre corps ai été completement carbonise vous vous retrouvez dans le noir."), nl.
+
+decrire(mort_supernova) :-
+        write("Petit a petit la lumière bleue s'intensifie, se rapprochant de vous.
+        Elle arrive jusqu'a vous et vous brule intensement.
+        La lumière disparait d'un coup pour laisser la place au noir total..."), nl.
+
+decrire(explosion_etoile) :-
+        en_exterieur,
+        write("Vous entendez d'étranges bruits dans le ciel.
+        Vous vous retourner et voyez le soleil, etonnament rouge et gros, se tordre.
+        Vous voyez l'étoile s'effondrer sous son propre poid, la lumière disparait pendant une petite seconde.
+        Soudainement, la lumière reapparait sous la forme d'une giganteque explosion bleue.
+        Il ne vous reste plus beaucoup de temps avant que l'explosion arrive jusqu'à vous."), nl.
+
+decrire(explosion_etoile) :-
+        \+ en_exterieur,
+        write("Vous entendez au loin d'étranges bruits.
+        Vous voyez petit à petit une lumière bleue s'intensifier."), nl.
+
 % Oeil de l univers
-decrire(oeil) :-
+decrire(oeil_univers) :-
         write("Vous arrivez sur une planete tres sombre et vos yeux peinent a s'adapter a la luminosite.
         Soudain, vous voyez des eclairs bleu zebrant les environs. 
         En vous avancant, vous discernez le sol sombre de cet etrange endroit.
