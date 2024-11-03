@@ -22,13 +22,7 @@
 :- op(1000, fx, prendre).
 :- op(1000, fx, reposer).
 
-% cheats
-% position(traducteur, en_main).
-% position(codes, en_main).
-% statue(activee).
-% position(generateur, en_main).
-% position(coordonnees_oeil, en_main).
-
+% Tests pour debogage
 voir_position :-
         position_courante(X),
         write(X).
@@ -73,7 +67,7 @@ sabliere_noire(activee).
 % le joueur n est pas encore mort au debut
 nombre_de_morts(0).
 
-% la boucle commence a 0 minutes, pour aller jusqu a 22 minutes
+% la boucle commence a 0 minutes, pour aller jusqu a 17 minutes
 compteur_temps(0).
 
 
@@ -160,19 +154,19 @@ incrementer_temps :-
 
 verifier_boucle :-
     compteur_temps(X),
-    X >= 22,
+    X >= 17,
     decrire(mort_supernova), nl,
     mort, !.
 
 verifier_boucle :-
     compteur_temps(T),
-    T = 21,
+    T = 16,
     decrire(explosion_etoile), nl,
     incrementer_temps, !.
 
 verifier_boucle :-
     compteur_temps(T),
-    T < 21,
+    T < 16,
     incrementer_temps, !.
 
 % verifie si le joueur est dans un lieu en exterieur, permettant de voir l'etoile s'effondrer
@@ -191,10 +185,10 @@ attendre :-
 
 attendre_boucle :-
         retract(compteur_temps(_)),
-        assert(compteur_temps(21)),
+        assert(compteur_temps(16)),
         verifier_boucle,
         retract(compteur_temps(_)),
-        assert(compteur_temps(22)),
+        assert(compteur_temps(17)),
         verifier_boucle.
 
 
@@ -873,7 +867,7 @@ voir(sigles) :-
         Eni : 'Amplifie... en injectant de l'energie dans la distorsion ? 
                 Si nous recreons une version miniature de Cravite, un generateur de distorsions, et canalisons de l'energie a l'interieur, 
                 nous pourrions manipuler cette distorsion temporelle pour ramener la sonde en arriere... disons, 
-                toutes les 22 minutes : le temps qu'il faudrait a la sonde pour parcourir le systeme.'
+                toutes les 17 minutes : le temps qu'il faudrait a la sonde pour parcourir le systeme.'
         Vesh : 'D'accord, je crois que j'ai une idee de systeme pour faire tout fonctionner.
                 Mais nous devons aller sur Leviathe, nous aurons besoin des cyclones qui se trouvent dessus.
                 En effet, nous devrons construire un lance sonde geant et les cyclone nous aiderons
@@ -1028,7 +1022,7 @@ voir(sigles) :-
 voir(terminal) :-
         position_courante(baie),
         compteur_temps(T),
-        Temps_restant is 22 - T,
+        Temps_restant is 17 - T,
         write("L'etoile entre dans la derniere phase de son cycle de vie. Elle approche de geante rouge. 
         DANGER : Evacuez la station solaire.
         Temps restant avant la mort de l'etoile : environ "), write(Temps_restant), write(" MINUTES."), nl, !.
@@ -1228,7 +1222,7 @@ parler :-
         position_courante(dehors),
         planete(intrus),
         compteur_temps(X),
-        X =< 16,
+        X =< 10,
         write("Ben ca alors ! Salut toi ! J'imagine que ton premier decollage s'est bien passe, alors? 
         Bienvenue sur l'intrus. J'espere que tu n'as rien contre la glace.
         -> (Options : dire que_fais_tu_ici)"), nl, !.
@@ -1237,7 +1231,7 @@ parler :-
         position_courante(dehors),
         planete(intrus),
         compteur_temps(X),
-        X > 16,
+        X > 10,
         write("Les etoiles ! Elles sont toutes en train de mourir ! Avec autant de supernovas, ca ne peut-etre que ca ! 
         On est les prochains tu comprends ? Notre soleil ! Nom d'un Atrien, on est les prochains !
         -> (Options : dire comment_ca)"), nl, !.
