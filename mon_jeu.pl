@@ -204,6 +204,7 @@ instructions :-
         write("reposer(objet).          -- pour remettre un objet a l'endroit ou vous l'avez trouvez."), nl,
         write("regarder.                -- pour regarder autour de vous."), nl,
         write("attendre.                -- pour attendre une minute."), nl,
+        write("attendre_boucle.         -- pour attendre la fin de la boucle."), nl,
         write("instructions.            -- pour revoir ce message !."), nl,
         write("fin.                     -- pour terminer la partie et quitter."), nl,
         nl.
@@ -519,7 +520,7 @@ aller(dehors) :-
 aller(trappe) :-
         position_courante(dehors),
         \+ position(code_trappe, en_main),
-        write("Vous vous rapprochez de la trappe et essayer un code au hasard.
+        write("Vous vous rapprochez de la trappe et essayez un code au hasard.
         Le digicode vous fait savoir que c'est le mauvais code.
         Vous abandonnez et vous relevez."), !.
 
@@ -1591,9 +1592,9 @@ decrire(soleil) :-
 % Atterrissages
 decrire(atterrissage_cravite) :-
         planete(cravite),
-        write("Vous volez jusqu'a la planete, esquivez une des nombreuses meteorites s'ecrasant sur cravite et vous posez.
+        write("Vous volez jusqu'a la planete, esquivez une des nombreuses meteorites s'ecrasant sur Cravite et vous posez.
         Vous sortez alors de votre vaisseau, la planete parait assez hostile.
-        Soudainement, vous voyez tout un pan de la planete s'ecrouler pas loin.
+        Soudainement, vous voyez tout un pan de la planete s'ecrouler non loin de vous.
         A travers ce trou vous voyez le centre de la planete... C'est un trou noir.
         Mieux vaut ne pas tomber en bas, qui sait ce qu'il y a dans un trou noir..."), nl.
 
@@ -1615,11 +1616,11 @@ decrire(atterrissage_leviathe) :-
         En vous posant sur la plage, vous parvenez a stabiliser la fusee dans le sable et sortez de celle-ci."), nl.
 
 decrire(atterrissage_station) :-
-        write("Vous rapprochez de la station solaire et vous concentrez, l'atterrissage va etre complique.
+        write("Vous vous rapprochez de la station solaire et vous concentrez, l'atterrissage va etre complique.
         En effet, la station solaire est tres proche du soleil donc tres dangereuse.
         Vous epousez l'orbite du soleil et attendez que la station passe a cote de vous.
         Au moment ou elle passe, vous foncez dessus et vous vous posez un peu brutalement sur la plateforme d'atterrissage.
-        Vous vous assurez que la fusee est bien tenue par la gravite artificielle nomai et sortez de la fusee."), nl.
+        Vous vous assurez que la fusee soit bien tenue par la gravite artificielle nomai et sortez de la fusee."), nl.
 
 decrire(atterrissage_sabliere) :-
         write("Vous mettez pleine puissance en direction de Sabliere.
@@ -1643,11 +1644,11 @@ decrire(mort) :-
         Vous rentrer alors dans l'oeil du masque."), nl.
 
 decrire(mort_station) :-
-        write("Vous rapprochez de la station solaire et vous concentrez, l'atterrissage va etre complique.
+        write("Vous vous rapprochez de la station solaire et vous concentrez, l'atterrissage va etre complique.
         En effet, la station solaire est tres proche du soleil donc tres dangereuse.
-        Malheureusement, vous faites une erreur dans votre maneuvre et vous retrouvez brule dans le soleil.
+        A l'approche, vous faites une erreur dans votre maneuvre et vous retrouvez brule dans le soleil.
         Il faudra reessayer jusqu'a avoir assez d'experience ou alors y acceder d'une autre maniere peut-etre.
-        Apres que votre corps ai ete completement carbonise, vous vous retrouvez dans le noir."), nl.
+        Apres que votre corps ait ete completement carbonise, vous vous retrouvez dans le noir."), nl.
 
 decrire(mort_supernova) :-
         write("Petit a petit la lumiere bleue s'intensifie, se rapprochant de vous.
