@@ -554,7 +554,7 @@ aller(salle) :-
         assert(position_courante(salle)),
         regarder, !.
 
-aller(ascenceur) :-
+aller(ascenseur) :-
         position_courante(salle),
         retract(position_courante(salle)),
         assert(position_courante(ascenseur_bas)),
@@ -586,15 +586,15 @@ aller(crevasse) :-
         regarder, !.
 
 aller(crevasse) :-
-        position_courante(gallerie),
-        retract(position_courante(gallerie)),
+        position_courante(galerie),
+        retract(position_courante(galerie)),
         assert(position_courante(crevasse)),
         regarder, !.
 
-aller(gallerie) :-
+aller(galerie) :-
         position_courante(crevasse),
         retract(position_courante(crevasse)),
-        assert(position_courante(gallerie)),
+        assert(position_courante(galerie)),
         regarder, !.
 
 % deplacements spaciaux
@@ -657,14 +657,14 @@ aller(leviathe) :-
 aller(station_solaire) :-
         position_courante(espace),
         nombre_de_morts(X),
-        X =< 3,
+        X < 2,
         decrire(mort_station),
         mort, !.
 
 aller(station_solaire) :-
         position_courante(espace),
         nombre_de_morts(N),
-        N > 3,
+        N >= 2,
         planete(X),
         retract(position_courante(espace)),
         assert(position_courante(tarmac)),
@@ -734,7 +734,7 @@ voir(journal) :-
         position_courante(fusee),
         write("C'est mon premier jour dans le programme spatial !
         J'ai vraiment hate de partir explorer toutes les planetes de notre systeme solaire.
-        Je pars avec le traducteur et grace a lui je suis sur que je pourrai en apprendre davantage sur les numai...
+        Je pars avec le traducteur et grace a lui je suis sur que je pourrai en apprendre davantage sur les nomai...
         Je reussirai a comprendre pourquoi ils on disparu, tout le monde sera fier de moi sur Atrebois !"), nl, !.
 
 voir(sigles) :-
@@ -899,30 +899,30 @@ voir(appareil) :-
         position_courante(grotte),
         write("Votre traducteur vous affiche :
         Phlox : Yarrow, accepterais-tu de reculer un peu pour que Daz soit plus proche de la statue ? 
-                Lorsqu’elle se lie a quelqu’un, la statue choisit la personne qui se trouve le plus pres d’elle.
-        Phlox : ...Tu vois, elle a ouvert les yeux. Cela veut dire que la statue s’est liee a Daz. 
-                A present, ou qu’il soit dans le systeme stellaire, 
+                Lorsqu'elle se lie a quelqu'un, la statue choisit la personne qui se trouve le plus pres d'elle.
+        Phlox : ...Tu vois, elle a ouvert les yeux. Cela veut dire que la statue s'est liee a Daz. 
+                A present, ou qu'il soit dans le systeme stellaire, 
                 la statue de Daz enregistrera ses souvenirs et les enverra au projet sabliere noire.
         Daz : Et maintenant que nous disposons de notre premier lien, 
                 nous pouvons tester notre prototype de stockage de mnemonique.
-        Daz : Chaque statue transmettra les souvenirs d’un nomai a son unite de stockage, 
+        Daz : Chaque statue transmettra les souvenirs d'un nomai a son unite de stockage, 
                 qui se trouve sur la Sabliere noire.
-        Phlox : Chaque unite de stockage sera pourvue d’un masque qui n’est autre que le pendant de la statue. 
-                Celui-ci pourra renvoyer les souvenirs ainsi stockes au nomai auquel ils appartiennent."), nl, !.
+        Phlox : Chaque unite de stockage sera pourvue d'un masque qui n'est autre que le pendant de la statue. 
+                Celui-ci pourra renvoyer les souvenirs ainsi stockes au nomai auquel elles appartiennent."), nl, !.
 
 voir(sigles) :-
         position_courante(plateforme),
         write("Votre traducteur vous affiche :
-        Ramie : J’ai installe les masques a l’interieur du projet sabliere noire phlox. 
-                C’est rassurant de savoir que les statues ne se lieront pas avant la reussite du projet. 
-                J’imagine que l’experience serait difficile a supporter dans le cas contraire.
-        Phlox : En principe, les statues ne se lieront qu’a la reussite du projet, 
-                mais elles s’activeront egalement par mesure de securite dans le cas d’une defaillance technique.
+        Ramie : J'ai installe les masques a l'interieur du projet sabliere noire Phlox. 
+                C'est rassurant de savoir que les statues ne se lieront pas avant la reussite du projet. 
+                J'imagine que l'experience serait difficile a supporter dans le cas contraire.
+        Phlox : En principe, les statues ne se lieront qu'a la reussite du projet, 
+                mais elles s'activeront egalement par mesure de securite dans le cas d'une defaillance technique.
         Ramie : Ah oui ? Pourquoi ca ?
         Phlox : Si quelque chose ne se passe pas comme prevu avec le projet sabliere noire, 
-                les statues (et leurs masques) nous avertiront et nous permettrons d’y remedier. 
+                les statues (et leurs masques) nous avertiront et nous permettrons d'y remedier. 
                 Autrement, nous pourrions ne jamais nous apercevoir du probleme.
-        Ramie : Je n’avais pas pense a ca ! Ce serait la un sort absolument affreux."), nl, !.
+        Ramie : Je n'avais pas pense a ca ! Ce serait la un sort absolument affreux."), nl, !.
 
 voir(terminal) :-
         position_courante(module_controle),
@@ -931,28 +931,28 @@ voir(terminal) :-
         Canon aligne sur une trajectoire de sonde choisie aleatoirement. Champ gravitationnel active.
         Debut de journal de bord : Lance-sondes orbital. Requete de lancement recue . Lancement de la sonde reussi.
         Le module de pistage recoit des donnees de la sonde.
-        ATTENTION : Structure du lance-sondes orbital compromise lors du lancement. Degâts detectes sur de multiples modules."), nl, !.
+        ATTENTION : Structure du lance-sondes orbital compromise lors du lancement. Degats detectes sur de multiples modules."), nl, !.
 
 voir(sigles) :-
         position_courante(module_controle),
         write("Votre traducteur vous affiche :
-        Mallow : Tu imagines Privett ? Le module de pistage sera le premier a connaitre les coordonnees de l’Oeil de l’univers ! 
+        Mallow : Tu imagines Privett ? Le module de pistage sera le premier a connaitre les coordonnees de l'Oeil de l'univers ! 
                 Et tu seras la premiere a les voir !
-        Privett : Cela m’honore et me terrifie !
-                Tu ne vas pas pousser la puissance du lance-sondes orbital a un niveau qui l’endommagerait n’est ce pas ?
-        Mallow : Ne t’en fais pas mon amie ! De toute facon, nous n’allons tirer qu’une seule fois, 
+        Privett : Cela m'honore et me terrifie !
+                Tu ne vas pas pousser la puissance du lance-sondes orbital a un niveau qui l'endommagerait n'est ce pas ?
+        Mallow : Ne t'en fais pas mon amie ! De toute facon, nous n'allons tirer qu'une seule fois, 
                 alors qui se soucierait de quelques petits dommages structurels sur le lance-sondes orbital ?
-        Privett : Moi, Mallow ! Je m’en soucie, car nous ne pourrons pas recevoir les donnees de notre sonde 
+        Privett : Moi, Mallow ! Je m'en soucie, car nous ne pourrons pas recevoir les donnees de notre sonde 
                 si l'antenne qui relie le lance-sondes et le module de pistage est detruit !"), nl, !.
 
 voir(sigles) :-
         position_courante(module_lancement),
         write("Votre traducteur vous affiche :
-        Cassava : J’ai de mauvaises nouvelles Avens. Yarrow a dit qu’il y avait un probleme avec la source d’alimentation envisagee, 
-                donc le lance sonde orbital n’aura pas ordre de tirer. 
-        Avens : J’espere que tu ne me menes pas en vaisseau Cassava.
-        Cassava : J’aurais bien aime, mon ami, mais non. Ils ne sont pas certains de pouvoir regler le probleme, 
-                donc les activites du lance-sondes orbital sont suspendues jusqu’a nouvel ordre.
+        Cassava : J'ai de mauvaises nouvelles Avens. Yarrow a dit qu'il y avait un probleme avec la source d'alimentation envisagee, 
+                donc le lance sonde orbital n'aura pas ordre de tirer. 
+        Avens : J'espere que tu ne me menes pas en vaisseau Cassava.
+        Cassava : J'aurais bien aime, mon ami, mais non. Ils ne sont pas certains de pouvoir regler le probleme, 
+                donc les activites du lance-sondes orbital sont suspendues jusqu'a nouvel ordre.
                 Rejoins moi sur la station solaire, c'est la que l'on a un probleme..."), nl, !.
 
 voir(sigles_mur) :-
@@ -973,30 +973,30 @@ voir(terminal) :-
         Reception des donnees de la sonde "), write(NbSondes), write(".
         Recuperation des precedentes donnees de lancement de la Sabliere noire.
         Nombre total de sondes lancees : "), write(NbSondes), write(".
-        Une anomalie spatiale remplissant tous les criteres connus relatifs a l’Oeil de l’univers a ete detectee par la sonde 9 318 054.
-        Recuperation des coordonnees enregistrees de la Sabliere noire. Affichage des coordonnees de l’Oeil de l’univers.
+        Une anomalie spatiale remplissant tous les criteres connus relatifs a l'Oeil de l'univers a ete detectee par la sonde 9 318 054.
+        Recuperation des coordonnees enregistrees de la Sabliere noire. Affichage des coordonnees de l'Oeil de l'univers.
         -> (Obtenu : coordonnees_oeil)"),
         assert(position(coordonnees_oeil, en_main)), nl, !.
 
 voir(sigles) :-
         position_courante(module_pistage),
         write("Votre traducteur vous affiche :
-        Yarrow : J’ai des nouvelles interessantes Privett : le projet sabliere noire est presque pret a recevoir 
+        Yarrow : J'ai des nouvelles interessantes Privett : le projet sabliere noire est presque pret a recevoir 
                 les donnees de la sonde envoyee par le lance-sondes orbital. Ramie effectue quelques ultimes reglages mais 
-                elle n’en a plus pour tres longtemps. Le lance-sondes orbital et son equipage se portent bien ?
+                elle n'en a plus pour tres longtemps. Le lance-sondes orbital et son equipage se portent bien ?
         Privett : Nous allons bien ! Le module de pistage est pret a enregistrer la trajectoire de vol de chaque tir et 
                 vous transmettra automatiquement toutes les donnees pertinentes.
-                Quand la sonde aura trouve la position de l’Oeil de l’univers, je vous enverrai directement une alerte a toi et Ramie.
-                D’une autre facette, je commence a m’inquieter pour l’integrite structurelle de ce canon et l’integrite morale de son equipage."), nl, !.
+                Quand la sonde aura trouve la position de l'Oeil de l'univers, je vous enverrai directement une alerte a toi et Ramie.
+                D'une autre facette, je commence a m'inquieter pour l'integrite structurelle de ce canon et l'integrite morale de son equipage."), nl, !.
 
 % Station solaire
 voir(terminal) :-
         position_courante(tarmac),
         compteur_temps(T),
         write("Votre traducteur vous affiche :
-        IL Y A 281 042 ANS : Aucune commande d’utilisateur recue depuis 10 minutes. Mise en vieille de l’ensemble des systeme.
-        IL Y A "), write(T), write(" MINUTES : Augmentation de l’activite solaire detectee. 
-                L’integrite de la coque de la station solaire approche du seuil critique. Fermeture des issues de secours."), nl, !.
+        IL Y A 281 042 ANS : Aucune commande d'utilisateur recue depuis 10 minutes. Mise en vieille de l'ensemble des systeme.
+        IL Y A "), write(T), write(" MINUTES : Augmentation de l'activite solaire detectee. 
+                L'integrite de la coque de la station solaire approche du seuil critique. Fermeture des issues de secours."), nl, !.
 
 voir(bureau) :-
         position_courante(entree),
@@ -1015,50 +1015,50 @@ voir(bureau) :-
 voir(sigles) :-
         position_courante(entree),
         write("Votre traducteur vous affiche :
-        Pye : Mission : la science nous contraint a faire exploser l’etoile !
+        Pye : Mission : la science nous contraint a faire exploser l'etoile !
         Idaea : Pourrions nous changer ca ? Travailler avec un ordre de mission aussi morbide sous les yeux ne me rejouit guere.
         Pye : Il est tout a fait correcte pourtant. Nous allons creer une supernova au nom du progres scientifique. Voila notre mission.
-        Idaea : Notre mission est de decider si cet exploit, aussi irresponsable soit-il, est de l’ordre du possible.
-                En voila une meilleure. Mission : determiner s’il est possible d’amener l’etoile a exploser.
-        Pye : Tu n’as aucun sens de l’humour.
-        Idaea : Mais moi au moins j’ai un sens de l’ethique !
-        Pye : Je te saurais gre de ne pas partir en supernova avec moi avant que l’etoile ne l’ait fait Idaea."), nl, !.
+        Idaea : Notre mission est de decider si cet exploit, aussi irresponsable soit-il, est de l'ordre du possible.
+                En voila une meilleure. Mission : determiner s'il est possible d'amener l'etoile a exploser.
+        Pye : Tu n'as aucun sens de l'humour.
+        Idaea : Mais moi au moins j'ai un sens de l'ethique !
+        Pye : Je te saurais gre de ne pas partir en supernova avec moi avant que l'etoile ne l'ait fait Idaea."), nl, !.
 
 voir(terminal) :-
         position_courante(baie),
         compteur_temps(T),
         Temps_restant is 22 - T,
-        write("L’etoile entre dans la derniere phase de son cycle de vie. Elle approche de geante rouge. 
-        DANGER : Évacuez la station solaire.
-        Temps restant avant la mort de l’etoile : environ "), write(Temps_restant), write(" MINUTES."), nl, !.
+        write("L'etoile entre dans la derniere phase de son cycle de vie. Elle approche de geante rouge. 
+        DANGER : Evacuez la station solaire.
+        Temps restant avant la mort de l'etoile : environ "), write(Temps_restant), write(" MINUTES."), nl, !.
 
 voir(sigles) :-
         position_courante(baie),
         write("Votre traducteur vous afffiche :
-        Yarrow : Que s’est-il passe ? La station solaire n’a pas tire ? 
-        Pye : Elle a tire Yarrow. Mais ca a echoue. L’etoile a a peine reagit. 
-                Il y a bien eu des changements infinitesimaux en surface mais ils etaient a peine visibles, meme au troisieme œil.
-                La station solaire ne servira a rien. Elle ne pourra jamais faire exploser l’etoile. 
+        Yarrow : Que s'est-il passe ? La station solaire n'a pas tire ? 
+        Pye : Elle a tire Yarrow. Mais ca a echoue. L'etoile a a peine reagit. 
+                Il y a bien eu des changements infinitesimaux en surface mais ils etaient a peine visibles, meme au troisieme oeil.
+                La station solaire ne servira a rien. Elle ne pourra jamais faire exploser l'etoile. 
                 Je ne sais que faire maintenant, mes amis. 
                 Je suppose que nous devrions tout reprendre depuis le debut, mais je ne sais comment nous y prendre. 
         Yarrow : Commencez par rentrer tous les deux sur la Sabliere noire, mon amie. 
-                Peut-etre qu’une nouvelle tâche vous aidera : 
+                Peut-etre qu'une nouvelle tache vous aidera : 
                 Spire a remarque une comete, que nous avons appelle l'intrus,
                 qui approche de ce systeme stellaire et que nous souhaiterions voir de plus pres...
                 Pye... Je souffre pour vous deux. Nous savons tous a quel point vous avez travaille dur. 
-                Je ne peux que vous offrir ma compassion. Comment vas-tu ? Qu’en est-il d’Idaea ?
+                Je ne peux que vous offrir ma compassion. Comment vas-tu ? Qu'en est-il d'Idaea ?
         Idaea : Nous allons bien Yarrow (du moins, autant que faire se peut, compte tenu des circonstances), meme si nous sommes decus. 
-                Je n’approuvais peut-etre pas l’explosion de l’etoile mais je n’ai jamais souhaite que notre appareil echoue. 
-                J’esperais en avoir fini avec ce funeste projet.
+                Je n'approuvais peut-etre pas l'explosion de l'etoile mais je n'ai jamais souhaite que notre appareil echoue. 
+                J'esperais en avoir fini avec ce funeste projet.
         Pye : Je vais aller sur l'intrus ca me fera du bien vous avez raison...
         Idaea : Je vais personnellement rester ici si ca ne te derange pas.
                 
-        Si le projet n'a pas pu etre alimente... Comment se fais-ce que vous soyez dans la boucle temporelle ?"), nl, !.
+        Si le projet n'a pas pu etre alimente... Comment est-il possible que vous soyiez dans la boucle temporelle ?"), nl, !.
 
 voir(sigles_sol) :-
         position_courante(baie),
         write("Votre traducteur vous affiche :
-        Idaea : Quel dommage que le projet n'ai pas fonctionne... 
+        Idaea : Quel dommage que le projet n'ait pas fonctionne... 
                 Et dire qu'il suffisait simplement de prendre le generateur de distorsion du projet Sabliere noire 
                 dans un vaisseau pour que celui ci distorde le vaisseau jusqu'au coordonnees que l'on aurait trouve...
                 Il suffisait juste de 'aller' a 'oeil_univers'.
@@ -1085,7 +1085,7 @@ voir(appareil) :-
         'Clary : J'ai bien compris, mais... soyez prudentes, toutes les deux.'"), nl, !.
 
 voir(appareil) :-
-        position_courante(gallerie),
+        position_courante(galerie),
         write("Votre traducteur vous affiche :
         'Poke : Cette enveloppe de pierre spherique semble etre la source de l'energie que nous avons releve... Non ?
                 Je dirais plutot que la source se trouve a l'interieur de cette pierre. Je detecte une sorte de matiere exotique.
@@ -1228,8 +1228,8 @@ parler :-
         planete(intrus),
         compteur_temps(X),
         X =< 16,
-        write("Ben ca alors ! Salut toi ! J’imagine que ton premier decollage s’est bien passe, alors? 
-        Bienvenue sur l'intrus. J’espere que tu n’as rien contre la glace.
+        write("Ben ca alors ! Salut toi ! J'imagine que ton premier decollage s'est bien passe, alors? 
+        Bienvenue sur l'intrus. J'espere que tu n'as rien contre la glace.
         -> (Options : dire que_fais_tu_ici)"), nl, !.
 
 parler :-
@@ -1238,7 +1238,7 @@ parler :-
         compteur_temps(X),
         X > 16,
         write("Les etoiles ! Elles sont toutes en train de mourir ! Avec autant de supernovas, ca ne peut-etre que ca ! 
-        On est les prochains tu comprends ? Notre soleil ! Nom d’un Atrien, on est les prochains !
+        On est les prochains tu comprends ? Notre soleil ! Nom d'un Atrien, on est les prochains !
         -> (Options : dire comment_ca)"), nl, !.
 
 
@@ -1264,20 +1264,20 @@ dire(je_viens_de_mourir) :-
 dire(que_fais_tu_ici) :-
         position_courante(dehors),
         planete(intrus),
-        write("Cornee m’a fait remarquer que nos cartes etaient obsoletes, donc je suis la pour les mettre a jour. 
-        Mais il y a quelque chose de... comment dire... bizarre. J’ai vu... Allez, bien dix supernovas ? Meme douze peut-etre ? 
-        On depasse la dizaine maintenant, et ca, ce n’est pas normal, tu sais. Pas normal du tout...
+        write("Cornee m'a fait remarquer que nos cartes etaient obsoletes, donc je suis la pour les mettre a jour. 
+        Mais il y a quelque chose de... comment dire... bizarre. J'ai vu... Allez, bien dix supernovas ? Meme douze peut-etre ? 
+        On depasse la dizaine maintenant, et ca, ce n'est pas normal, tu sais. Pas normal du tout...
         Reviens me voir plus tard, je vais essayer de voir ce que je peux trouver a ce sujet..."), nl.
 
 dire(comment_ca) :-
         position_courante(dehors),
         planete(intrus),
-        write("C’est les etoiles. Toutes les autres etoiles sont en train de mourir, tu vois. 
-        Oh, pourquoi il fallait qu’on naisse pendant l’extinction de l’univers ? Et notre soleil, il va… Les cartes des etoiles ! 
-        Pourquoi ? Il fallait vraiment que je les mette a jour, hein ? J’aurais prefere ne rien savoir, mais non, non ! 
-        Il a fallu que je mette les cartes etoiles a jour ! Il fallait que j’aille fureter ou je n’aurais pas du ! 
+        write("C'est les etoiles. Toutes les autres etoiles sont en train de mourir, tu vois. 
+        Oh, pourquoi il fallait qu'on naisse pendant l'extinction de l'univers ? Et notre soleil, il va… Les cartes des etoiles ! 
+        Pourquoi ? Il fallait vraiment que je les mette a jour, hein ? J'aurais prefere ne rien savoir, mais non, non ! 
+        Il a fallu que je mette les cartes etoiles a jour ! Il fallait que j'aille fureter ou je n'aurais pas du ! 
         Et maintenant, notre soleil est sur le point de.. sur le point de… Oh… Je ne me sens pas tres bien… 
-        J'aimerais que tu t’en ailles s’il te plait."), nl.
+        J'aimerais que tu t'en ailles s'il te plait."), nl.
 
 
 % DDDDDDDDDDDD     EEEEEEEEEEEE     SSSSSSSSSSSS      CCCCCCCCCCCCC  RRRRRRRRRRRR     IIIIIIIIIIIII    PPPPPPPPPPP       TTTTTTTTTTTT     IIIIIIIIIIIII    OOOOOOOOOOO     NNNN        NNNN     SSSSSSSSSSSS
@@ -1418,15 +1418,15 @@ decrire(grotte) :-
         -> (Options : voir appareil, voir dessin, aller plateforme, aller dehors.)"), nl.
 
 decrire(plateforme) :-
-        write("Vous montez les escaliers et arriver arrivez en haut.
+        write("Vous montez les escaliers et arrivez en haut.
         Ici, se trouve seulement un tableau avec des sigles nomai.
         Derriere vous, se trouve l'escalier pour redescendre en bas.
         -> (Options : voir sigles, aller grotte)"), nl.
 
 decrire(module_controle) :-
-        write("Vous arrivez dans un salle avec des appareils et des terminaux nomai.
+        write("Vous arrivez dans une salle avec des appareils et des terminaux nomai.
         Vous voyez un terminal encore allume avec, de l'autre cote, un tableau contenant des sigles nomai.
-        Ainsi qu'une porte avec ecrit au dessus 'module de pistage' mais l'entree est a l'air verrouille par un digicode.
+        Ainsi qu'une porte avec ecrit au dessus 'module de pistage' mais l'entree a l'air verrouille par un digicode.
         Vous voyez une autre porte avec ecrit au dessus 'module de lancement'.
         Enfin, il y a le tunnel pour repartir dehors.
         -> (Options : voir sigles, voir terminal, aller module_lancement, aller module_pistage, aller dehors)"), nl.
@@ -1437,7 +1437,7 @@ decrire(module_lancement) :-
         Vous voyez une porte avec marque au dessus 'module de pistage' mais elle a l'air verrouille par un digicode.
         A cote de cette porte, vous voyez d'autres sigles nomai au mur.
         Ainsi qu'une autre porte avec marque au dessus 'module de controle'.
-        -> (Options : voir sigles, voir sigle_mur, aller module_pistage, aller module_controle)"), nl.
+        -> (Options : voir sigles, aller module_pistage, aller module_controle)"), nl.
 
 decrire(module_pistage) :-
         write("Vous arrivez dans une salle avec une sorte d'ecran geant affichant le lance-sondes orbital en orbite.
@@ -1505,11 +1505,11 @@ decrire(dehors) :-
 decrire(crevasse) :-
         write("Vous arrivez a quelques metres sous la glace dans une caverne de glace.
         Vous voyez un appareil au sol avec un squelette de nomai, toujours vetu d'une combinaison, a cote.
-        Vous voyez une gallerie dans la glace permettant de descendre plus profond.
+        Vous voyez une galerie dans la glace permettant de descendre plus profond.
         Vous voyez aussi la crevasse permettant de remonter a la surface.
-        -> (Options : voir appareil, aller gallerie, aller dehors)"), nl.
+        -> (Options : voir appareil, aller galerie, aller dehors)"), nl.
 
-decrire(gallerie) :-
+decrire(galerie) :-
         write("Vous prenez la galerie et arrivez au centre de la comete.
         Vous voyez un rocher de taille consequente qui semble avoir explose de l'interieur.
         Dans la piece, un autre cadavre de nomai, aussi vetu d'une combinaison, flottant dans les airs.
@@ -1536,16 +1536,16 @@ decrire(dehors) :-
 decrire(ouerture_trappe) :-
         write("Vous vous rapprochez de la trappe et de son digicode.
         Vous vous rappellez du code sur la bureau de la nomai, vous le tapper sur le digicode.
-        La trappe s'ouvre et laisse place a un ascenceur, vous rentrez dedans.").
+        La trappe s'ouvre et laisse place a un ascenseur, vous rentrez dedans.").
 
 decrire(ascenseur_haut) :-
-        write("Vou rentrez dans l'ascenceur et voyez deux bouttons.
+        write("Dans l'ascenseur, vous voyez deux boutons.
         Un vous permet d'aller au 'projet sabliere noire',
         l'autre vous permet d'aller a la 'surface'
         -> (Options : aller projet, aller dehors)"), nl.
 
 decrire(ascenseur_bas) :-
-        write("Vous rentrez dans l'ascenceur et voyez deux bouttons.
+        write("Dans l'ascenseur, vous voyez deux boutons.
         Un vous permet d'aller au 'projet sabliere noire',
         l'autre vous permet d'aller a la 'surface'
         -> (Options : aller salle, aller surface)"), nl.
@@ -1557,8 +1557,8 @@ decrire(salle) :-
         Le sol tournois sur l'axe de la planete permettant de creer une gravite artificielle.
         Vous voyez des masques comme ceux que vous voyez lors de vos morts. Trois sont allumes, les autres sont eteints.
         Vous voyez ce qui s'apparente au generateur de distorsions au centre, vous pouvez le prendre si vous voulez.
-        Derriere vous, se trouve l'ascenceur pour remonter a la surface.
-        -> (Options : prendre generateur, aller ascenceur)"), nl.
+        Derriere vous, se trouve l'ascenseur pour remonter a la surface.
+        -> (Options : prendre generateur, aller ascenseur)"), nl.
 
 decrire(salle) :-
         position(generateur, en_main),
@@ -1566,8 +1566,8 @@ decrire(salle) :-
         Il n'y a pas de gravite ici, vous etes surement au centre de la planete.
         Vous voyez des masques comme ceux que vous voyez lors de vos morts. Trois sont allumes, les autres sont eteints.
         Vous voyez le socle pour le distordeur au centre de la salle.
-        Derriere vous, se trouve l'ascenceur pour remonter a la surface.
-        -> (Options : reposer generateur, aller ascenceur)"), nl.
+        Derriere vous, se trouve l'ascenseur pour remonter a la surface.
+        -> (Options : reposer generateur, aller ascenseur)"), nl.
 
 decrire(prise_generateur) :-
         write("Vous retirez le generateur de distorsions de son socle.
@@ -1614,10 +1614,10 @@ decrire(atterrissage_intrus) :-
 
 decrire(atterrissage_leviathe) :-
         write("Vous mettez plein gaz en direction de la plus grosse planete du systeme.
-        Vous vous rapprochez en passez a cote d'une grande structure detruite en orbite.
+        Vous vous rapprochez en passant a cote d'une grande structure detruite en orbite.
         Ensuite, vous passez a travers l'epaisse couche de nuages qui recouvre la planete.
-        Vous voyez la seule ile de la planete et vous dirigez dans sa direction en evitant les cyclones.
-        Vous vous posez sur la plage en stabilisant la fusee dans le sable et sortez de celle-ci."), nl.
+        Vous voyez sa seule ile et vous dirigez dans sa direction en evitant les cyclones...
+        En vous posant sur la plage, vous parvenez a stabiliser la fusee dans le sable et sortez de celle-ci."), nl.
 
 decrire(atterrissage_station) :-
         write("Vous rapprochez de la station solaire et vous concentrez, l'atterrissage va etre complique.
@@ -1651,8 +1651,8 @@ decrire(mort_station) :-
         write("Vous rapprochez de la station solaire et vous concentrez, l'atterrissage va etre complique.
         En effet, la station solaire est tres proche du soleil donc tres dangereuse.
         Malheureusement, vous faites une erreur dans votre maneuvre et vous retrouvez brule dans le soleil.
-        Il faudra reessayer jusqu'a avoir assez d'experience ou alors se la faire en explorant autre part peut-etre.
-        Apres que votre corps ai ete completement carbonise vous vous retrouvez dans le noir."), nl.
+        Il faudra reessayer jusqu'a avoir assez d'experience ou alors y acceder d'une autre maniere peut-etre.
+        Apres que votre corps ai ete completement carbonise, vous vous retrouvez dans le noir."), nl.
 
 decrire(mort_supernova) :-
         write("Petit a petit la lumiere bleue s'intensifie, se rapprochant de vous.
