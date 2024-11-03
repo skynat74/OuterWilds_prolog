@@ -1,5 +1,6 @@
 %%% INFO-501, TP3
 %%% Enzo Goldstein
+%%% Natal Fevre-Burdy
 %%%
 %%% Lancez la "requete"
 %%% jouer.
