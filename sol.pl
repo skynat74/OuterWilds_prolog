@@ -2,12 +2,8 @@ aller musee.
 aller etage.
 parler.
 aller musee.
-aller fusee.
-aller espace.
-aller soleil.
-aller fusee.
-aller espace.
-aller soleil.
+attendre_boucle.
+attendre_boucle.
 aller fusee.
 aller espace.
 aller station_solaire.
@@ -18,12 +14,9 @@ aller fusee.
 aller espace.
 aller leviathe.
 aller plafond.
+aller module_pistage.
 voir terminal.
-aller module_controle.
-aller dehors.
-aller fusee.
-aller espace.
-aller soleil.
+attendre_boucle.
 aller fusee.
 aller espace.
 aller sabliere.

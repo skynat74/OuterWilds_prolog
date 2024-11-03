@@ -13,12 +13,12 @@
 % on remet a jours les positions des objets et du joueur
 :- retractall(position(_, _)), retractall(position_courante(_)).
 
-% on declare des operateurs, pour autoriser `prendre torche` au lieu de `prendre(torche)`
-:- op(1000, fx, prendre).
-:- op(1000, fx, lacher).
+% on declare des operateurs, pour autoriser `aller camp` au lieu de `aller(camp)`
 :- op(1000, fx, aller).
+:- op(1000, fx, lacher).
 :- op(1000, fx, dire).
 :- op(1000, fx, voir).
+:- op(1000, fx, prendre).
 :- op(1000, fx, reposer).
 
 % cheats
@@ -160,13 +160,13 @@ incrementer_temps :-
 verifier_boucle :-
     compteur_temps(X),
     X >= 22,
-    decrire(mort_supernova),
+    decrire(mort_supernova), nl,
     mort, !.
 
 verifier_boucle :-
     compteur_temps(T),
     T = 21,
-    decrire(explosion_etoile),
+    decrire(explosion_etoile), nl,
     incrementer_temps, !.
 
 verifier_boucle :-
@@ -285,7 +285,7 @@ aller(fusee) :-
 aller(fusee) :-
         position_courante(camp),
         write("Vous vous dirigez vers la fusee... Vous voyez un ascenseur vous indiquant que vous 
-        n'avez pas les codes de lancement necessaire. Vous faites demi-tour."), nl.
+        n'avez pas les codes de lancement necessaire. Vous faites demi-tour."), nl, !.
 
 % Cravite
 aller(fusee) :-
