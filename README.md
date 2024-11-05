@@ -39,9 +39,9 @@ Les instructions s'afficheront, il ne vous reste plus qu'à jouer.
 
 Pour lancer le jeu sur Windows vous devez télécharger le fichier 'OuterWildsProlog.pl' ou cloner le Github sur votre machine. Vous allez ensuite ouvrir l'application SWI-Prolog et vous intéresser au menu en haut. Vous allez alors cliquer sur 'File -> Consult... -> Choisir fichier' comme ci dessous :
 
-![Capture d'écran de l'application SWI-Prolog](images/SWI-Prolog_app_File.png)
-
 ![Capture d'écran de la recherche de dossier](images/SWI-Prolog_app_Consult.png)
+
+![Capture d'écran de l'application SWI-Prolog](images/SWI-Prolog_app_File.png)
 
 Le programme se lance, il ne vous reste plus qu'a taper `jouer`, qui sera affiché comme `?- jouer`, pour lancer le jeu.\
 Les instructions s'afficheront, il ne vous reste plus qu'à jouer.
