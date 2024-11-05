@@ -55,6 +55,10 @@ De plus, pour Windows, puisque c'est une application vous pouvez juste fermer la
 
 Le jeu est court, il ne possède donc pas de fonctionnalité de sauvegarde.
 
+## Aide
+
+Si vous vous retrouvez bloqué à un moment ou si vous voulez directement passer à la fin du jeu, un fichier de solution nommé '[sol.pl](sol.pl)' est accessible dans ce Github.
+
 ## Crédits
 
 Ce jeu est un projet universitaire développé au sein du module Info501 de l'Université Savoie Mont Blanc par :
