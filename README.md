@@ -20,7 +20,7 @@ Le terme 'sudo' est nécessaire pour installer en mode administrateur. En foncti
 Vous devrez aller sur la [page de téléchargement](https://www.swi-prolog.org/download/devel) de SWI-Prolog et installer la version correspondant à votre système d'exploitation.\
 Par exemple, pour installer sur un Windows en 64 bits :
 
-![capture d'écran des liens de téléchargement SWI-Prolog](images/SWI-Prolog_lien_telechargement)
+![capture d'écran des liens de téléchargement SWI-Prolog](images/SWI-Prolog_lien_telechargement.png)
 
 ## Lancer le jeu
 
