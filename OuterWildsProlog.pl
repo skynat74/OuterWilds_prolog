@@ -21,6 +21,7 @@
 :- op(1000, fx, voir).
 :- op(1000, fx, prendre).
 :- op(1000, fx, reposer).
+:- op(1000, fx, attendre).
 
 % Tests pour debogage
 voir_position :-
@@ -59,7 +60,7 @@ position_courante(camp).
 planete(atrebois).
 
 % la statue n est pas activee au debut
-statue(desactivee).   
+statue(activee).   
 
 % Sabliere noire est en cours de fonctionnement au debut
 sabliere_noire(activee).
@@ -180,22 +181,33 @@ en_exterieur :-
         position_courante(tarmac).
 
 % Permet d attendre une minute
-attendre :-
-        verifier_boucle.
+attendre(NbMinute) :-
+        compteur_temps(Tc),
+        Min is Tc + 1,
+        Max is Tc + NbMinute,
+        Max > 17,
+        forall(between(Min, 18, _), 
+                verifier_boucle
+        ), !.
+
+attendre(NbMinute) :-
+        compteur_temps(Tc),
+        Min is Tc + 1,
+        Max is Tc + NbMinute,
+        Max =< 17,
+        forall(between(Min, Max, _), 
+                verifier_boucle
+        ), !.
 
 attendre_boucle :-
-        retract(compteur_temps(_)),
-        assert(compteur_temps(16)),
-        verifier_boucle,
-        retract(compteur_temps(_)),
-        assert(compteur_temps(17)),
-        verifier_boucle.
+        attendre(18).
 
 
 % affiche les instructions du jeu
 instructions :-
         nl,
         write("Les commandes doivent etre donnees avec la syntaxe Prolog habituelle."), nl,
+        write("Les commandes avec des parentheses peuvent etre ecrites sans parentheses.")
         write("Les commandes existantes sont :"), nl,
         write("jouer.                   -- pour commencer une partie."), nl,
         write("dire(mot).               -- pour dire quelque chose aux pnj."), nl,
@@ -203,8 +215,7 @@ instructions :-
         write("prendre(objet).          -- pour prendre un objet."), nl,
         write("reposer(objet).          -- pour remettre un objet a l'endroit ou vous l'avez trouvez."), nl,
         write("regarder.                -- pour regarder autour de vous."), nl,
-        write("attendre.                -- pour attendre une minute."), nl,
-        write("attendre_boucle.         -- pour attendre la fin de la boucle."), nl,
+        write("attendre(n).             -- pour attendre n minutes."), nl,
         write("instructions.            -- pour revoir ce message !."), nl,
         write("fin.                     -- pour terminer la partie et quitter."), nl,
         nl.
@@ -1057,7 +1068,7 @@ voir(sigles_sol) :-
         Idaea : Quel dommage que le projet n'ait pas fonctionne... 
                 Et dire qu'il suffisait simplement de prendre le generateur de distorsion du projet Sabliere noire 
                 dans un vaisseau pour que celui ci distorde le vaisseau jusqu'au coordonnees que l'on aurait trouve...
-                Il suffisait juste de 'aller' a 'oeil_univers'.
+                Il suffisait juste de 'aller' a 'oeil_univers' avec les coordonnées du module de pistage...
                 Tout etait la..."), nl.
 
 % Intrus
