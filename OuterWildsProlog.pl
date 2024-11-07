@@ -207,7 +207,7 @@ attendre_boucle :-
 instructions :-
         nl,
         write("Les commandes doivent etre donnees avec la syntaxe Prolog habituelle."), nl,
-        write("Les commandes avec des parentheses peuvent etre ecrites sans parentheses.")
+        write("Les commandes avec des parentheses peuvent etre ecrites sans parentheses."), nl,
         write("Les commandes existantes sont :"), nl,
         write("jouer.                   -- pour commencer une partie."), nl,
         write("dire(mot).               -- pour dire quelque chose aux pnj."), nl,
